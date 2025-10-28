@@ -1,6 +1,8 @@
-# Graphics Module
+# Graphics Framework
 
 `Work in progress`
+
+![Preview](PREVIEW.png)
 
 ### About
 
