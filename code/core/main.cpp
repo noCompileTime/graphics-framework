@@ -16,6 +16,8 @@
 
 #include "tools/shaders_converter.hpp"
 
+#include "images/tga_image.hpp"
+
 auto main() -> int32_t
 {
          tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders");
@@ -110,6 +112,8 @@ auto main() -> int32_t
     square_vao.attach_elements (square_ebo);
 
     square_vao.attach_attribute({ 0, 3, opengl::constants::float_type, offsetof(math::vec3, x) });
+
+    auto tga_image = images::TgaImage::load("chess.tga");
 
     math::mat4 transform;
     //transform.translate({ 1.0f, 0.0f, 0.0f });
