@@ -12,7 +12,7 @@
 
 #include "opengl/constants/buffer.hpp"
 #include "opengl/constants/commands.hpp"
-#include "opengl/constants/shader.hpp"
+#include "opengl/constants/shader_stage.hpp"
 
 #include "tools/shaders_converter.hpp"
 
