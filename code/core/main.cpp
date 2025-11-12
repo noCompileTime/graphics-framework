@@ -69,12 +69,12 @@ auto main() -> int32_t
     opengl::ShaderStage base_shader_vert;
     base_shader_vert.type(opengl::constants::vertex_shader);
     base_shader_vert.create();
-    base_shader_vert.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
+    base_shader_vert.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
 
     opengl::ShaderStage base_shader_frag;
     base_shader_frag.type(opengl::constants::fragment_shader);
     base_shader_frag.create();
-    base_shader_frag.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
+    base_shader_frag.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
 
     opengl::Shader base_shader;
     base_shader.create();
@@ -82,12 +82,12 @@ auto main() -> int32_t
     base_shader.attach(base_shader_frag);
     base_shader.link();
 
-    std::vector<math::vec3> square_vertices
+    std::vector<core::vertex::sprite> square_vertices
     {
-        { -0.5f, -0.5f, 0.0f },
-        {  0.5f, -0.5f, 0.0f },
-        {  0.5f,  0.5f, 0.0f },
-        { -0.5f,  0.5f, 0.0f }
+        { { -0.5f, -0.5f }, { 0.0f, 0.0f } },
+        { {  0.5f, -0.5f }, { 1.0f, 0.0f } },
+        { {  0.5f,  0.5f }, { 1.0f, 1.0f } },
+        { { -0.5f,  0.5f }, { 0.0f, 1.0f } }
     };
 
     std::vector<uint32_t> square_elements
@@ -106,10 +106,11 @@ auto main() -> int32_t
 
     opengl::VertexArray square_vao;
     square_vao.create();
-    square_vao.attach_vertices (square_vbo, sizeof(math::vec3));
+    square_vao.attach_vertices (square_vbo, sizeof(core::vertex::sprite));
     square_vao.attach_elements (square_ebo);
 
-    square_vao.attach_attribute({ 0, 3, opengl::constants::float_type, offsetof(math::vec3, x) });
+    square_vao.attach_attribute({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, position.x) });
+    square_vao.attach_attribute({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, texcoord.x) });
 
     auto tga_image = images::TgaImage::load("chess.tga");
 
