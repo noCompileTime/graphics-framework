@@ -5,14 +5,12 @@
 #include "core/platform_time.hpp"
 #include "core/window_manager.hpp"
 
-#include "opengl/commands.hpp"
 #include "opengl/functions.hpp"
+#include "opengl/headers.hpp"
+
+#include "opengl/commands.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/vertex_array.hpp"
-
-#include "opengl/constants/buffer.hpp"
-#include "opengl/constants/commands.hpp"
-#include "opengl/constants/shader_stage.hpp"
 
 #include "tools/shaders_converter.hpp"
 
@@ -116,8 +114,6 @@ auto main() -> int32_t
     auto tga_image = images::TgaImage::load("chess.tga");
 
     math::mat4 transform;
-    //transform.translate({ 1.0f, 0.0f, 0.0f });
-    transform.scale({ 0.5f, 0.5f, 0.5f });
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
@@ -162,7 +158,7 @@ auto main() -> int32_t
 
          square_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 6, 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size(), 0);
 
         window_manager.window_context().update();
     }
