@@ -5,12 +5,13 @@
 #include "core/platform_time.hpp"
 #include "core/window_manager.hpp"
 
-#include "opengl/functions.hpp"
-#include "opengl/headers.hpp"
-
 #include "opengl/commands.hpp"
 #include "opengl/shader.hpp"
+#include "opengl/texture.hpp"
 #include "opengl/vertex_array.hpp"
+
+#include "opengl/functions.hpp"
+#include "opengl/headers.hpp"
 
 #include "tools/shaders_converter.hpp"
 
@@ -40,7 +41,7 @@ auto main() -> int32_t
     core::WindowManager window_manager;
                         window_manager.init(factory, window_configuration);
 
-    window_manager.window_events().callbacks.on_close = [&window_active]
+    window_manager.window_events().callbacks.on_close = [&]
     {
         window_active = false;
     };
@@ -49,12 +50,12 @@ auto main() -> int32_t
 
     core::InputManager input_manager;
 
-    window_manager.window_input().callbacks.on_key_press = [&input_manager](const core::input::code key, const core::input::state state)
+    window_manager.window_input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state)
     {
         input_manager.update(key, state);
     };
 
-    window_manager.window_input().callbacks.on_btn_press = [&input_manager](const core::input::code btn, const core::input::state state)
+    window_manager.window_input().callbacks.on_btn_press = [&](const core::input::code btn, const core::input::state state)
     {
         input_manager.update(btn, state);
     };
@@ -92,8 +93,8 @@ auto main() -> int32_t
 
     std::vector<uint32_t> square_elements
     {
-        0, 1, 2,
-        0, 2, 3
+        2, 1, 0,
+        0, 3, 2
     };
 
     opengl::Buffer square_vbo;
@@ -112,7 +113,13 @@ auto main() -> int32_t
     square_vao.attach_attribute({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, position.x) });
     square_vao.attach_attribute({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, texcoord.x) });
 
-    auto tga_image = images::TgaImage::load("chess.tga");
+    auto [width, height, pixels] = images::TgaImage::load("chess.tga");
+
+    opengl::Texture square_texture;
+    square_texture.type(opengl::constants::texture_2d);
+    square_texture.create();
+    square_texture.storage(width, height, opengl::constants::rgb8, 1);
+    square_texture.update (width, height, opengl::constants::rgb,  0, pixels.data());
 
     math::mat4 transform;
 
@@ -156,6 +163,8 @@ auto main() -> int32_t
         opengl::Commands::clear(opengl::constants::color_buffer);
 
         base_shader.bind();
+
+        square_texture.bind(0);
 
          square_vao.bind();
 
