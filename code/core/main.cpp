@@ -119,7 +119,7 @@ auto main() -> int32_t
     square_texture.type(opengl::constants::texture_2d);
     square_texture.create();
     square_texture.storage(width, height, opengl::constants::rgb8, 1);
-    square_texture.update (width, height, opengl::constants::rgb,  0, pixels.data());
+    square_texture.upload (width, height, opengl::constants::rgb,  0, pixels.data());
 
     math::mat4 transform;
 
