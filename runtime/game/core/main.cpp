@@ -25,17 +25,14 @@ auto main() -> int32_t
 
     core::PlatformFunctions::init(factory);
 
-    const auto platform_monitor = factory->create_platform_monitor();
-               platform_monitor->init();
-
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
 
     constexpr core::window::configuration window_configuration
     {
         "Graphics Framework",
-         window_width,  //platform_monitor->width
-         window_height  //platform_monitor->height
+         window_width,
+         window_height
     };
                    auto window_active { true };
     core::WindowManager window_manager;
