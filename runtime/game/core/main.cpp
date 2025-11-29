@@ -67,13 +67,11 @@ auto main() -> int32_t
 
     opengl::Functions::init();
 
-    opengl::ShaderStage base_shader_vert;
-    base_shader_vert.type(opengl::constants::vertex_shader);
+    opengl::ShaderStage base_shader_vert { opengl::constants::vertex_shader };
     base_shader_vert.create();
     base_shader_vert.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
 
-    opengl::ShaderStage base_shader_frag;
-    base_shader_frag.type(opengl::constants::fragment_shader);
+    opengl::ShaderStage base_shader_frag { opengl::constants::fragment_shader };
     base_shader_frag.create();
     base_shader_frag.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
 
