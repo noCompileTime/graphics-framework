@@ -113,8 +113,7 @@ auto main() -> int32_t
 
     auto [width, height, pixels] = images::TgaImage::load("squares.tga");
 
-    opengl::Texture square_texture;
-    square_texture.type(opengl::constants::texture_2d);
+    opengl::Texture square_texture { opengl::constants::texture_2d };
     square_texture.create();
     square_texture.storage(width, height, opengl::constants::rgb8, 1);
     square_texture.upload (width, height, opengl::constants::rgb,  0, pixels.data());
