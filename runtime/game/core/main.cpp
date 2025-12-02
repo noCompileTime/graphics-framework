@@ -142,8 +142,6 @@ auto main() -> int32_t
     camera_ubo.bind_base(opengl::constants::uniform_buffer, core::buffer::camera);
     camera_ubo.storage(core::buffer::make_data(camera_matrices), 0);
 
-    opengl::Commands::clear(0.5f, 0.5f, 0.5f, 1.0f);
-
     core::PlatformTime platform_time;
                        platform_time.start();
 
@@ -154,6 +152,7 @@ auto main() -> int32_t
         window_manager.update();
          input_manager.update();
 
+        opengl::Commands::clear(0.5f, 0.5f, 0.5f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer);
 
         base_shader.bind();
