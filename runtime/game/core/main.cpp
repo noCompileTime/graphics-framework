@@ -57,7 +57,7 @@ auto main() -> int32_t
         input_manager.update(btn, state);
     };
 
-    input_manager.input_actions().set_action(core::input::code::key_escape, [&window_active]
+    input_manager.input_actions().set_action(core::input::code::key_escape, [&]
     {
         window_active = false;
     });
