@@ -159,7 +159,7 @@ auto main() -> int32_t
 
         square_texture.bind(0);
 
-         square_vao.bind();
+            square_vao.bind();
 
         opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size(), 0);
 
