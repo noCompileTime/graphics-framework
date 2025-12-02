@@ -155,7 +155,7 @@ auto main() -> int32_t
         opengl::Commands::clear(0.5f, 0.5f, 0.5f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer);
 
-        base_shader.bind();
+           base_shader.bind();
 
         square_texture.bind(0);
 
