@@ -1,7 +1,6 @@
 #include "core/file.hpp"
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
-#include "core/platform_functions.hpp"
 #include "core/platform_time.hpp"
 #include "core/window_manager.hpp"
 
@@ -19,11 +18,9 @@
 
 auto main() -> int32_t
 {
-         tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders");
+    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders");
 
-                       const auto factory = core::PlatformFactory::create();
-
-    core::PlatformFunctions::init(factory);
+    const auto factory = core::PlatformFactory::create();
 
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
