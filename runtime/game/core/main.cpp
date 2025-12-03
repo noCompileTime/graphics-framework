@@ -20,8 +20,6 @@ auto main() -> int32_t
 {
     tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders");
 
-    const auto factory = core::PlatformFactory::create();
-
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
 
@@ -33,7 +31,7 @@ auto main() -> int32_t
     };
                    auto window_active { true };
     core::WindowManager window_manager;
-                        window_manager.init(factory, window_configuration);
+                        window_manager.init(core::PlatformFactory::create(), window_configuration);
 
     window_manager.window_events().callbacks.on_close = [&]
     {
