@@ -116,8 +116,8 @@ auto main() -> int32_t
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
-    transform_ubo.bind_base(opengl::constants::uniform_buffer, core::buffer::transform);
     transform_ubo.storage(core::buffer::make_data(&transform), 0);
+    transform_ubo.bind(opengl::constants::uniform_buffer, core::buffer::transform);
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
@@ -136,8 +136,8 @@ auto main() -> int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.bind_base(opengl::constants::uniform_buffer, core::buffer::camera);
     camera_ubo.storage(core::buffer::make_data(camera_matrices), 0);
+    camera_ubo.bind(opengl::constants::uniform_buffer, core::buffer::camera);
 
     core::PlatformTime platform_time;
                        platform_time.start();
