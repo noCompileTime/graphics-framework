@@ -103,7 +103,7 @@ auto main() -> int32_t
     square_vao.attach_attribute({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, position.x) });
     square_vao.attach_attribute({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, texcoord.x) });
 
-    auto [pixels, width, height] = images::TgaImage::load("squares.tga");
+    auto [pixels, width, height, channels] = images::TgaImage::load("squares.tga");
 
     opengl::Texture square_texture { opengl::constants::texture_2d };
     square_texture.create();
