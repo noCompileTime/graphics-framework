@@ -7,6 +7,7 @@
 #include "opengl/commands.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
+#include "opengl/texture_sampler.hpp"
 #include "opengl/vertex_array.hpp"
 
 #include "opengl/functions.hpp"
@@ -97,11 +98,16 @@ auto main() -> int32_t
 
     opengl::VertexArray square_vao;
     square_vao.create();
-    square_vao.attach_vertices (square_vbo, sizeof(core::vertex::sprite));
-    square_vao.attach_elements (square_ebo);
+    square_vao.attach_vertices(square_vbo, sizeof(core::vertex::sprite));
+    square_vao.attach_elements(square_ebo);
 
     square_vao.attach_attribute({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, position.x) });
     square_vao.attach_attribute({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, texcoord.x) });
+
+    opengl::TextureSampler base_sampler;
+    base_sampler.create();
+    base_sampler.parameter(opengl::constants::texture_min_filter, opengl::constants::nearest);
+    base_sampler.parameter(opengl::constants::texture_mag_filter, opengl::constants::nearest);
 
     auto [pixels, width, height, channels] = images::TgaImage::load("squares.tga");
 
@@ -152,6 +158,7 @@ auto main() -> int32_t
 
            base_shader.bind();
 
+          base_sampler.bind(0);
         square_texture.bind(0);
 
             square_vao.bind();
