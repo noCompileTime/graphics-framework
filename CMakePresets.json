@@ -3,17 +3,19 @@
   "version": 10,
   "cmakeMinimumRequired": {
     "major": 4,
-    "minor": 0
+    "minor": 2,
+    "patch": 0
   },
   "configurePresets": [
     {
       "name": "default",
-      "generator": "Visual Studio 17 2022",
+      "generator": "Visual Studio 18 2026",
       "cacheVariables": {
         "CMAKE_CXX_STANDARD": "23",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_STANDARD_LIBRARIES": "",
         "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_CXX_FLAGS": "/MP /EHsc",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG":   "${sourceDir}/build",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build"
       },
