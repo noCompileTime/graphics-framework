@@ -1,3 +1,6 @@
 [submodule "modules/common"]
 	path = modules/common
 	url = https://github.com/noCompileTimes/common-module.git
+[submodule "modules/graphics"]
+    path = modules/graphics
+    url = https://github.com/noCompileTimes/graphics-module.git
