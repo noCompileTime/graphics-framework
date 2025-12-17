@@ -116,7 +116,7 @@ auto main() -> int32_t
     square_texture.storage(width, height, opengl::constants::rgb8, 1);
     square_texture.upload (width, height, opengl::constants::rgb,  0, pixels.data());
 
-    math::mat4 transform;
+    math::mat4 transform { 1.0f };
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
@@ -125,10 +125,10 @@ auto main() -> int32_t
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
-    math::mat4 view;
+    math::mat4 view { 1.0f };
                view.translate({ 0.0f, 0.0f, -3.0f });
 
-    math::mat4 projection;
+    math::mat4 projection { 1.0f };
              //projection.ortho(-aspect_ratio, aspect_ratio, -1.0f, 1.0f);
                projection.perspective(45.0f, aspect_ratio, 0.1f, 100.0f);
 
