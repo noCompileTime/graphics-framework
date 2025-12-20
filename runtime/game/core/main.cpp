@@ -105,10 +105,10 @@ auto main() -> int32_t
 
     std::vector<core::vertex::sprite> square_vertices
     {
-        { { -0.5f, -0.5f }, { 0.0f, 0.0f } },
-        { {  0.5f, -0.5f }, { 1.0f, 0.0f } },
-        { {  0.5f,  0.5f }, { 1.0f, 1.0f } },
-        { { -0.5f,  0.5f }, { 0.0f, 1.0f } }
+        { { -half_size, -half_size }, { 0.0f, 0.0f } },
+        { {  half_size, -half_size }, { 1.0f, 0.0f } },
+        { {  half_size,  half_size }, { 1.0f, 1.0f } },
+        { { -half_size,  half_size }, { 0.0f, 1.0f } }
     };
 
     std::vector<uint32_t> square_elements
@@ -158,7 +158,7 @@ auto main() -> int32_t
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
-    transform_ubo.storage(core::buffer::make_data(&transform), 0);
+    transform_ubo.storage(core::buffer::make_data(&transform), opengl::constants::dynamic_draw);
     transform_ubo.bind(opengl::constants::uniform_buffer, core::buffer::transform);
 
     auto aspect_ratio = static_cast<float>(window_width) /
@@ -167,8 +167,7 @@ auto main() -> int32_t
                view.translate({ 0.0f, 0.0f, -3.0f });
 
     math::mat4 projection { 1.0f };
-             //projection.ortho(-aspect_ratio, aspect_ratio, -1.0f, 1.0f);
-               projection.perspective(45.0f, aspect_ratio, 0.1f, 100.0f);
+               projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 
     std::vector camera_matrices
     {
@@ -181,6 +180,11 @@ auto main() -> int32_t
     camera_ubo.storage(core::buffer::make_data(camera_matrices), 0);
     camera_ubo.bind(opengl::constants::uniform_buffer, core::buffer::camera);
 
+    opengl::Buffer material_ubo;
+    material_ubo.create();
+    material_ubo.storage(core::buffer::make_null_data<math::rgb>(), opengl::constants::dynamic_draw);
+    material_ubo.bind(opengl::constants::uniform_buffer, core::buffer::material);
+
     math::mat4 ground_transform({ 5.0f, 0.5f, 1.0f });
                ground_transform.translation({ 0.0f, -(size - quarter_size), 0.0f });
 
@@ -189,6 +193,18 @@ auto main() -> int32_t
 
     math::mat4 right_wall_transform(wall_scale);
                right_wall_transform.translation({ 1.375f, -quarter_size, 0.0f });
+
+    core::Object  object;
+
+    input_manager.input_actions().set_action(core::input::code::key_right, [&]
+    {
+        object.roll(1.0f);
+    });
+
+    input_manager.input_actions().set_action(core::input::code::key_left, [&]
+    {
+        object.roll(-1.0f);
+    });
 
     core::PlatformTime platform_time;
                        platform_time.start();
@@ -200,7 +216,9 @@ auto main() -> int32_t
         window_manager.update();
          input_manager.update();
 
-        opengl::Commands::clear(0.5f, 0.5f, 0.5f, 1.0f);
+                object.update();
+
+        opengl::Commands::clear(0.105f, 0.235f, 0.325f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer);
 
            base_sprite_shader.bind();
@@ -210,13 +228,15 @@ auto main() -> int32_t
 
             square_vao.bind();
 
+        transform_ubo.upload(core::buffer::make_data(&object.matrix()), 0);
+
         opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size(), 0);
 
         base_shader.bind();
          object_vao.bind();
 
         transform_ubo.upload(core::buffer::make_data(&ground_transform), 0);
-        //material_ubo.upload(core::buffer::make_data(&ground_rgb), 0);
+         material_ubo.upload(core::buffer::make_data(&ground_rgb), 0);
 
         opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
 
