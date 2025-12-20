@@ -164,7 +164,7 @@ auto main() -> int32_t
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
     math::mat4 view { 1.0f };
-               view.translate({ 0.0f, 0.0f, -3.0f });
+               view.translate({ 0.0f, 0.0f, -2.5f });
 
     math::mat4 projection { 1.0f };
                projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
