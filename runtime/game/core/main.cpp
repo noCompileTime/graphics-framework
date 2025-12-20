@@ -17,6 +17,19 @@
 
 #include "images/tga_image.hpp"
 
+#include "object.hpp"
+
+const std::vector<math::vec3> vertices
+{
+    { -half_size, -half_size, 0.0f },
+    {  half_size, -half_size, 0.0f },
+    {  half_size,  half_size, 0.0f },
+
+    { -half_size, -half_size, 0.0f },
+    {  half_size,  half_size, 0.0f },
+    { -half_size,  half_size, 0.0f }
+};
+
 auto main() -> int32_t
 {
     tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders");
@@ -60,19 +73,35 @@ auto main() -> int32_t
 
     opengl::Functions::init();
 
+    /* shaders */
+
     opengl::ShaderStage base_shader_vert { opengl::constants::vertex_shader };
     base_shader_vert.create();
-    base_shader_vert.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
+    base_shader_vert.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
 
     opengl::ShaderStage base_shader_frag { opengl::constants::fragment_shader };
     base_shader_frag.create();
-    base_shader_frag.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
+    base_shader_frag.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
+
+    opengl::ShaderStage base_sprite_shader_vert { opengl::constants::vertex_shader };
+    base_sprite_shader_vert.create();
+    base_sprite_shader_vert.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
+
+    opengl::ShaderStage base_sprite_shader_frag { opengl::constants::fragment_shader };
+    base_sprite_shader_frag.create();
+    base_sprite_shader_frag.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
 
     opengl::Shader base_shader;
     base_shader.create();
     base_shader.attach(base_shader_vert);
     base_shader.attach(base_shader_frag);
     base_shader.link();
+
+    opengl::Shader base_sprite_shader;
+    base_sprite_shader.create();
+    base_sprite_shader.attach(base_sprite_shader_vert);
+    base_sprite_shader.attach(base_sprite_shader_frag);
+    base_sprite_shader.link();
 
     std::vector<core::vertex::sprite> square_vertices
     {
@@ -103,6 +132,15 @@ auto main() -> int32_t
 
     square_vao.attach_attribute({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, position.x) });
     square_vao.attach_attribute({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, texcoord.x) });
+
+    opengl::Buffer object_vbo;
+    object_vbo.create();
+    object_vbo.storage(core::buffer::make_data(vertices), 0);
+
+    opengl::VertexArray object_vao;
+    object_vao.create();
+    object_vao.attach_vertices (object_vbo, sizeof(math::vec3));
+    object_vao.attach_attribute({ 0, 3, opengl::constants::float_type, offsetof(math::vec3, x) });
 
     opengl::TextureSampler base_sampler;
     base_sampler.create();
@@ -143,6 +181,15 @@ auto main() -> int32_t
     camera_ubo.storage(core::buffer::make_data(camera_matrices), 0);
     camera_ubo.bind(opengl::constants::uniform_buffer, core::buffer::camera);
 
+    math::mat4 ground_transform({ 5.0f, 0.5f, 1.0f });
+               ground_transform.translation({ 0.0f, -(size - quarter_size), 0.0f });
+
+    math::mat4 left_wall_transform(wall_scale);
+               left_wall_transform.translation({ -1.375f, -quarter_size, 0.0f });
+
+    math::mat4 right_wall_transform(wall_scale);
+               right_wall_transform.translation({ 1.375f, -quarter_size, 0.0f });
+
     core::PlatformTime platform_time;
                        platform_time.start();
 
@@ -156,7 +203,7 @@ auto main() -> int32_t
         opengl::Commands::clear(0.5f, 0.5f, 0.5f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer);
 
-           base_shader.bind();
+           base_sprite_shader.bind();
 
           base_sampler.bind(0);
         square_texture.bind(0);
@@ -164,6 +211,22 @@ auto main() -> int32_t
             square_vao.bind();
 
         opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size(), 0);
+
+        base_shader.bind();
+         object_vao.bind();
+
+        transform_ubo.upload(core::buffer::make_data(&ground_transform), 0);
+        //material_ubo.upload(core::buffer::make_data(&ground_rgb), 0);
+
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
+
+        transform_ubo.upload(core::buffer::make_data(&left_wall_transform), 0);
+
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
+
+        transform_ubo.upload(core::buffer::make_data(&right_wall_transform), 0);
+
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
 
         window_manager.window_context().update();
     }
