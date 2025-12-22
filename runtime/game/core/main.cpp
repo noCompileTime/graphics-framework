@@ -19,7 +19,7 @@
 
 #include "object.hpp"
 
-const std::vector<math::vec3> vertices
+const std::vector<core::vertex::type::basic> vertices
 {
     { -half_size, -half_size, 0.0f },
     {  half_size, -half_size, 0.0f },
@@ -103,7 +103,7 @@ auto main() -> int32_t
     base_sprite_shader.attach(base_sprite_shader_frag);
     base_sprite_shader.link();
 
-    std::vector<core::vertex::sprite> square_vertices
+    std::vector<core::vertex::type::sprite> square_vertices
     {
         { { -half_size, -half_size }, { 0.0f, 0.0f } },
         { {  half_size, -half_size }, { 1.0f, 0.0f } },
@@ -127,11 +127,11 @@ auto main() -> int32_t
 
     opengl::VertexArray square_vao;
     square_vao.create();
-    square_vao.attach_vertices(square_vbo, sizeof(core::vertex::sprite));
+    square_vao.attach_vertices(square_vbo, sizeof(core::vertex::type::sprite));
     square_vao.attach_elements(square_ebo);
 
-    square_vao.attach_attribute({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, position.x) });
-    square_vao.attach_attribute({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::sprite, texcoord.x) });
+    square_vao.attach_attribute({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, position.x) });
+    square_vao.attach_attribute({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, texcoord.x) });
 
     opengl::Buffer object_vbo;
     object_vbo.create();
