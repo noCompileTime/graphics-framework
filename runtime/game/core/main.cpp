@@ -119,11 +119,11 @@ auto main() -> int32_t
 
     opengl::Buffer square_vbo;
     square_vbo.create();
-    square_vbo.storage(core::buffer::make_data(square_vertices), 0);
+    square_vbo.storage(core::data::make_buffer(square_vertices), 0);
 
     opengl::Buffer square_ebo;
     square_ebo.create();
-    square_ebo.storage(core::buffer::make_data(square_elements), 0);
+    square_ebo.storage(core::data::make_buffer(square_elements), 0);
 
     opengl::VertexArray square_vao;
     square_vao.create();
@@ -135,7 +135,7 @@ auto main() -> int32_t
 
     opengl::Buffer object_vbo;
     object_vbo.create();
-    object_vbo.storage(core::buffer::make_data(vertices), 0);
+    object_vbo.storage(core::data::make_buffer(vertices), 0);
 
     opengl::VertexArray object_vao;
     object_vao.create();
@@ -158,8 +158,8 @@ auto main() -> int32_t
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
-    transform_ubo.storage(core::buffer::make_data(&transform), opengl::constants::dynamic_draw);
-    transform_ubo.bind(opengl::constants::uniform_buffer, core::buffer::transform);
+    transform_ubo.storage(core::data::make_buffer(&transform), opengl::constants::dynamic_draw);
+    transform_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffers_location::transform));
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
@@ -177,13 +177,13 @@ auto main() -> int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(core::buffer::make_data(camera_matrices), 0);
-    camera_ubo.bind(opengl::constants::uniform_buffer, core::buffer::camera);
+    camera_ubo.storage(core::data::make_buffer(camera_matrices), 0);
+    camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffers_location::camera));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
-    material_ubo.storage(core::buffer::make_null_data<math::rgb>(), opengl::constants::dynamic_draw);
-    material_ubo.bind(opengl::constants::uniform_buffer, core::buffer::material);
+    material_ubo.storage(core::data::make_null_buffer<math::rgb>(), opengl::constants::dynamic_draw);
+    material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffers_location::material));
 
     math::mat4 ground_transform({ 5.0f, 0.5f, 1.0f });
                ground_transform.translation({ 0.0f, -(size - quarter_size), 0.0f });
@@ -223,28 +223,28 @@ auto main() -> int32_t
 
            base_sprite_shader.bind();
 
-          base_sampler.bind(0);
-        square_texture.bind(0);
+          base_sampler.bind(std::to_underlying(core::data::texture_location::albedo));
+        square_texture.bind(std::to_underlying(core::data::texture_location::albedo));
 
             square_vao.bind();
 
-        transform_ubo.upload(core::buffer::make_data(&object.matrix()), 0);
+        transform_ubo.upload(core::data::make_buffer(&object.matrix()), 0);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size(), 0);
 
         base_shader.bind();
          object_vao.bind();
 
-        transform_ubo.upload(core::buffer::make_data(&ground_transform), 0);
-         material_ubo.upload(core::buffer::make_data(&ground_rgb), 0);
+        transform_ubo.upload(core::data::make_buffer(&ground_transform), 0);
+         material_ubo.upload(core::data::make_buffer(&ground_rgb), 0);
 
         opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
 
-        transform_ubo.upload(core::buffer::make_data(&left_wall_transform), 0);
+        transform_ubo.upload(core::data::make_buffer(&left_wall_transform), 0);
 
         opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
 
-        transform_ubo.upload(core::buffer::make_data(&right_wall_transform), 0);
+        transform_ubo.upload(core::data::make_buffer(&right_wall_transform), 0);
 
         opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
 
