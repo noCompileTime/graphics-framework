@@ -159,7 +159,7 @@ auto main() -> int32_t
     opengl::Buffer transform_ubo;
     transform_ubo.create();
     transform_ubo.storage(core::data::make_buffer(&transform), opengl::constants::dynamic_draw);
-    transform_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffers_location::transform));
+    transform_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffer_location::transform));
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
@@ -178,12 +178,12 @@ auto main() -> int32_t
     opengl::Buffer camera_ubo;
     camera_ubo.create();
     camera_ubo.storage(core::data::make_buffer(camera_matrices), 0);
-    camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffers_location::camera));
+    camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffer_location::camera));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
     material_ubo.storage(core::data::make_null_buffer<math::rgb>(), opengl::constants::dynamic_draw);
-    material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffers_location::material));
+    material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffer_location::material));
 
     math::mat4 ground_transform({ 5.0f, 0.5f, 1.0f });
                ground_transform.translation({ 0.0f, -(size - quarter_size), 0.0f });
