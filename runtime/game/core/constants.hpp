@@ -1,6 +1,6 @@
 #pragma once
 
-constexpr auto             size =        0.5f;
+constexpr auto             size =        0.5f; // TODO move this in object? same for platforms?
 constexpr auto        half_size = size * 0.5f;
 constexpr auto     quarter_size = size * 0.25f;
 
