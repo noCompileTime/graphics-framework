@@ -16,6 +16,7 @@
         "CMAKE_CXX_STANDARD_LIBRARIES": "",
         "CMAKE_CXX_EXTENSIONS": "OFF",
         "CMAKE_CXX_FLAGS": "/MP /EHsc",
+        "CMAKE_EXE_LINKER_FLAGS": "/ENTRY:mainCRTStartup",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG":   "${sourceDir}/build",
         "CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE": "${sourceDir}/build"
       },

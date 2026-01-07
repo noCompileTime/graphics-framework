@@ -1,7 +1,7 @@
 #include "core/file.hpp"
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
-#include "core/platform_time.hpp"
+#include "core/time.hpp"
 #include "core/window_manager.hpp"
 
 #include "opengl/commands.hpp"
@@ -206,12 +206,12 @@ auto main() -> int32_t
         object.roll(-1.0f);
     });
 
-    core::PlatformTime platform_time;
-                       platform_time.start();
+    core::Time time;
+               time.start();
 
     while (window_active)
     {
-         platform_time.tick();
+        time.tick();
 
         window_manager.update();
          input_manager.update();

@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-#include "core/platform_time.hpp"
+#include "core/time.hpp"
 
 namespace core
 {
@@ -40,7 +40,7 @@ namespace core
             return;
         }
 
-        _animation_time += PlatformTime::delta() * 2.0f;
+        _animation_time += Time::delta() * 2.0f;
 
         const auto t = std::clamp(_animation_time, 0.0f, 1.0f);
 
