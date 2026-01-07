@@ -32,7 +32,7 @@ const std::vector<core::vertex::type::basic> vertices
 
 auto main() -> int32_t
 {
-    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders");
+    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders", 0);
 
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
