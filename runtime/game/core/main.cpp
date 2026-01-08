@@ -32,7 +32,7 @@ const std::vector<core::vertex::type::basic> vertices
 
 auto main() -> int32_t
 {
-    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders", 0);
+    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "/", 0);
 
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
@@ -77,19 +77,19 @@ auto main() -> int32_t
 
     opengl::ShaderStage base_shader_vert { opengl::constants::vertex_shader };
     base_shader_vert.create();
-    base_shader_vert.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
+    base_shader_vert.source(core::File::read("base_shader.vert", std::ios::binary));
 
     opengl::ShaderStage base_shader_frag { opengl::constants::fragment_shader };
     base_shader_frag.create();
-    base_shader_frag.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
+    base_shader_frag.source(core::File::read("base_shader.frag", std::ios::binary));
 
     opengl::ShaderStage base_sprite_shader_vert { opengl::constants::vertex_shader };
     base_sprite_shader_vert.create();
-    base_sprite_shader_vert.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
+    base_sprite_shader_vert.source(core::File::read("base_sprite_shader.vert", std::ios::binary));
 
     opengl::ShaderStage base_sprite_shader_frag { opengl::constants::fragment_shader };
     base_sprite_shader_frag.create();
-    base_sprite_shader_frag.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
+    base_sprite_shader_frag.source(core::File::read("base_sprite_shader.frag", std::ios::binary));
 
     opengl::Shader base_shader;
     base_shader.create();
