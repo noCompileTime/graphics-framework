@@ -147,7 +147,7 @@ auto main() -> int32_t
     base_sampler.parameter(opengl::constants::texture_min_filter, opengl::constants::nearest);
     base_sampler.parameter(opengl::constants::texture_mag_filter, opengl::constants::nearest);
 
-    auto [pixels, width, height, channels] = images::TgaImage::load("squares.tga");
+    auto [pixels, width, height, channels] = images::TgaImage::load("base_albedo.tga");
 
     opengl::Texture square_texture { opengl::constants::texture_2d };
     square_texture.create();
