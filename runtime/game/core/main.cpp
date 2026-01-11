@@ -221,7 +221,7 @@ auto main() -> int32_t
         opengl::Commands::clear(0.105f, 0.235f, 0.325f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer);
 
-           base_sprite_shader.bind();
+        base_sprite_shader.bind();
 
           base_sampler.bind(std::to_underlying(core::data::texture_location::albedo));
         square_texture.bind(std::to_underlying(core::data::texture_location::albedo));
