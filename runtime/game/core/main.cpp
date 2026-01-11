@@ -119,11 +119,11 @@ auto main() -> int32_t
 
     opengl::Buffer square_vbo;
     square_vbo.create();
-    square_vbo.storage(core::data::make_buffer(square_vertices), 0);
+    square_vbo.storage(core::data::make_buffer(square_vertices));
 
     opengl::Buffer square_ebo;
     square_ebo.create();
-    square_ebo.storage(core::data::make_buffer(square_elements), 0);
+    square_ebo.storage(core::data::make_buffer(square_elements));
 
     opengl::VertexArray square_vao;
     square_vao.create();
@@ -135,7 +135,7 @@ auto main() -> int32_t
 
     opengl::Buffer object_vbo;
     object_vbo.create();
-    object_vbo.storage(core::data::make_buffer(vertices), 0);
+    object_vbo.storage(core::data::make_buffer(vertices));
 
     opengl::VertexArray object_vao;
     object_vao.create();
@@ -151,8 +151,8 @@ auto main() -> int32_t
 
     opengl::Texture square_texture { opengl::constants::texture_2d };
     square_texture.create();
-    square_texture.storage(width, height, opengl::constants::rgb8, 1);
-    square_texture.upload (width, height, opengl::constants::rgb,  0, pixels.data());
+    square_texture.storage(width, height, opengl::constants::rgb8);
+    square_texture.upload (width, height, opengl::constants::rgb, 0, pixels.data());
 
     math::mat4 transform { 1.0f };
 
@@ -177,7 +177,7 @@ auto main() -> int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(core::data::make_buffer(camera_matrices), 0);
+    camera_ubo.storage(core::data::make_buffer(camera_matrices));
     camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffer_location::camera));
 
     opengl::Buffer material_ubo;
