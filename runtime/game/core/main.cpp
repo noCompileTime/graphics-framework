@@ -147,12 +147,12 @@ auto main() -> int32_t
     base_sampler.parameter(opengl::constants::texture_min_filter, opengl::constants::nearest);
     base_sampler.parameter(opengl::constants::texture_mag_filter, opengl::constants::nearest);
 
-    auto [pixels, width, height, channels] = images::TgaImage::load("base_albedo.tga");
+    auto base_image = images::TgaImage::load("base_albedo.tga");
 
     opengl::Texture square_texture { opengl::constants::texture_2d };
     square_texture.create();
-    square_texture.storage(width, height, opengl::constants::rgb8);
-    square_texture.upload (width, height, opengl::constants::rgb, 0, pixels.data());
+    square_texture.storage(base_image, opengl::constants::rgb8);
+    square_texture.upload (base_image, opengl::constants::rgb);
 
     math::mat4 transform { 1.0f };
 
@@ -228,25 +228,25 @@ auto main() -> int32_t
 
             square_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&object.matrix()), 0);
+        transform_ubo.upload(core::data::make_buffer(&object.matrix()));
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size(), 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size());
 
         base_shader.bind();
          object_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&ground_transform), 0);
-         material_ubo.upload(core::data::make_buffer(&ground_rgb), 0);
+        transform_ubo.upload(core::data::make_buffer(&ground_transform));
+         material_ubo.upload(core::data::make_buffer(&ground_rgb));
 
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size());
 
-        transform_ubo.upload(core::data::make_buffer(&left_wall_transform), 0);
+        transform_ubo.upload(core::data::make_buffer(&left_wall_transform));
 
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size());
 
-        transform_ubo.upload(core::data::make_buffer(&right_wall_transform), 0);
+        transform_ubo.upload(core::data::make_buffer(&right_wall_transform));
 
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), 0);
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size());
 
         window_manager.window_context().update();
     }
