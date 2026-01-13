@@ -4,14 +4,14 @@
 #include "core/time.hpp"
 #include "core/window_manager.hpp"
 
+#include "opengl/functions.hpp"
+#include "opengl/headers.hpp"
+
 #include "opengl/commands.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
 #include "opengl/texture_sampler.hpp"
 #include "opengl/vertex_array.hpp"
-
-#include "opengl/functions.hpp"
-#include "opengl/headers.hpp"
 
 #include "tools/shaders_converter.hpp"
 
