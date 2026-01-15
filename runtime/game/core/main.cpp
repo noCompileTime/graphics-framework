@@ -218,7 +218,7 @@ auto main() -> int32_t
 
                 object.update();
 
-        opengl::Commands::clear(0.105f, 0.235f, 0.325f, 1.0f);
+        opengl::Commands::clear(0.105f, 0.235f, 0.325f);
         opengl::Commands::clear(opengl::constants::color_buffer);
 
         base_sprite_shader.bind();
