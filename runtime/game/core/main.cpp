@@ -177,7 +177,7 @@ auto main() -> int32_t
 
     opengl::Buffer material_ubo;
     material_ubo.create();
-    material_ubo.storage(core::data::make_null_buffer<math::rgb>(), opengl::constants::dynamic_draw);
+    material_ubo.storage(sizeof(math::rgb), opengl::constants::dynamic_draw);
     material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::buffer_location::material));
 
     math::mat4 ground_transform({ 5.0f, 0.5f, 1.0f });
