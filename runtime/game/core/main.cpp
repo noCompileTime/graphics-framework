@@ -47,13 +47,6 @@ auto main() -> int32_t
     core::WindowManager window_manager;
                         window_manager.init(core::PlatformFactory::create(), window_configuration);
 
-    window_manager.window_events().callbacks.on_close = [&]
-    {
-        window_active = false;
-    };
-
-    window_manager.window().show();
-
     core::InputManager input_manager;
 
     window_manager.window_input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state)
@@ -66,10 +59,12 @@ auto main() -> int32_t
         input_manager.update(btn, state);
     };
 
-    input_manager.input_actions().set_action(core::input::code::key_escape, [&]
+    window_manager.window_events().callbacks.on_close = [&]
     {
         window_active = false;
-    });
+    };
+
+    window_manager.window().show();
 
     opengl::Functions::init();
 
