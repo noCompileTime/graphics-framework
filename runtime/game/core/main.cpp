@@ -125,8 +125,8 @@ auto main() -> int32_t
     square_vao.attach_vertices(square_vbo, sizeof(core::vertex::type::sprite));
     square_vao.attach_elements(square_ebo);
 
-    square_vao.attach({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, position.x) });
-    square_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, texcoord.x) });
+    square_vao.attach({ 0, 2, opengl::constants::type_float, offsetof(core::vertex::type::sprite, position.x) });
+    square_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::sprite, texcoord.x) });
 
     opengl::Buffer object_vbo;
     object_vbo.create();
@@ -135,7 +135,7 @@ auto main() -> int32_t
     opengl::VertexArray object_vao;
     object_vao.create();
     object_vao.attach_vertices(object_vbo, sizeof(math::vec3));
-    object_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(math::vec3, x) });
+    object_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(math::vec3, x) });
 
     opengl::TextureSampler base_sampler;
     base_sampler.create();
