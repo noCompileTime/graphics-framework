@@ -16,6 +16,7 @@
 #include "tools/shaders_converter.hpp"
 
 #include "images/tga_image.hpp"
+#include "models/obj_model.hpp"
 
 #include "object.hpp"
 
@@ -98,35 +99,24 @@ auto main() -> int32_t
     base_sprite_shader.attach(base_sprite_shader_frag);
     base_sprite_shader.link();
 
-    std::vector<core::vertex::type::sprite> square_vertices
-    {
-        { { -half_size, -half_size }, { 0.0f, 0.0f } },
-        { {  half_size, -half_size }, { 1.0f, 0.0f } },
-        { {  half_size,  half_size }, { 1.0f, 1.0f } },
-        { { -half_size,  half_size }, { 0.0f, 1.0f } }
-    };
-
-    std::vector<uint32_t> square_elements
-    {
-        2, 1, 0,
-        0, 3, 2
-    };
+    auto [cube_vertices, cube_elements] = models::ObjModel::load("base_cube.obj").geometry;
 
     opengl::Buffer square_vbo;
     square_vbo.create();
-    square_vbo.storage(core::data::make_buffer(square_vertices));
+    square_vbo.storage(core::data::make_buffer(cube_vertices));
 
     opengl::Buffer square_ebo;
     square_ebo.create();
-    square_ebo.storage(core::data::make_buffer(square_elements));
+    square_ebo.storage(core::data::make_buffer(cube_elements));
 
     opengl::VertexArray square_vao;
     square_vao.create();
-    square_vao.attach_vertices(square_vbo, sizeof(core::vertex::type::sprite));
+    square_vao.attach_vertices(square_vbo, sizeof(core::vertex::type::model));
     square_vao.attach_elements(square_ebo);
 
-    square_vao.attach({ 0, 2, opengl::constants::type_float, offsetof(core::vertex::type::sprite, position.x) });
-    square_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::sprite, texcoord.x) });
+    square_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(core::vertex::type::model, position.x) });
+    square_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::model, texcoord.x) });
+    square_vao.attach({ 2, 3, opengl::constants::type_float, offsetof(core::vertex::type::model,   normal.x) });
 
     opengl::Buffer object_vbo;
     object_vbo.create();
@@ -225,7 +215,7 @@ auto main() -> int32_t
 
         transform_ubo.upload(core::data::make_buffer(&object.matrix()));
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, square_elements.size());
+        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size());
 
         base_shader.bind();
          object_vao.bind();
