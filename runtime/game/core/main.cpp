@@ -101,22 +101,22 @@ auto main() -> int32_t
 
     auto [cube_vertices, cube_elements] = models::ObjModel::load("base_cube.obj").geometry;
 
-    opengl::Buffer square_vbo;
-    square_vbo.create();
-    square_vbo.storage(core::data::make_buffer(cube_vertices));
+    opengl::Buffer cube_vbo;
+    cube_vbo.create();
+    cube_vbo.storage(core::data::make_buffer(cube_vertices));
 
-    opengl::Buffer square_ebo;
-    square_ebo.create();
-    square_ebo.storage(core::data::make_buffer(cube_elements));
+    opengl::Buffer cube_ebo;
+    cube_ebo.create();
+    cube_ebo.storage(core::data::make_buffer(cube_elements));
 
-    opengl::VertexArray square_vao;
-    square_vao.create();
-    square_vao.attach_vertices(square_vbo, sizeof(core::vertex::type::model));
-    square_vao.attach_elements(square_ebo);
+    opengl::VertexArray cube_vao;
+    cube_vao.create();
+    cube_vao.attach_vertices(cube_vbo, sizeof(core::vertex::type::model));
+    cube_vao.attach_elements(cube_ebo);
 
-    square_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(core::vertex::type::model, position.x) });
-    square_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::model, texcoord.x) });
-    square_vao.attach({ 2, 3, opengl::constants::type_float, offsetof(core::vertex::type::model,   normal.x) });
+    cube_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(core::vertex::type::model, position.x) });
+    cube_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::model, texcoord.x) });
+    cube_vao.attach({ 2, 3, opengl::constants::type_float, offsetof(core::vertex::type::model,   normal.x) });
 
     opengl::Buffer object_vbo;
     object_vbo.create();
@@ -211,7 +211,7 @@ auto main() -> int32_t
           base_sampler.bind(std::to_underlying(core::data::texture_location::albedo));
         square_texture.bind(std::to_underlying(core::data::texture_location::albedo));
 
-            square_vao.bind();
+            cube_vao.bind();
 
         transform_ubo.upload(core::data::make_buffer(&object.matrix()));
 
@@ -239,9 +239,12 @@ auto main() -> int32_t
     transform_ubo.destroy();
        camera_ubo.destroy();
 
-    square_vbo.destroy();
-    square_ebo.destroy();
-    square_vao.destroy();
+    cube_vbo.destroy();
+    cube_ebo.destroy();
+    cube_vao.destroy();
+
+    object_vbo.destroy();
+    object_vao.destroy();
 
     window_manager.release();
 
