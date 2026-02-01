@@ -40,7 +40,7 @@ namespace core
             return;
         }
 
-        _animation_time += Time::delta() * 2.0f;
+        _animation_time += Time::delta_time() * 2.0f;
 
         const auto t = std::clamp(_animation_time, 0.0f, 1.0f);
 
