@@ -1,7 +1,8 @@
 #include "core/file.hpp"
+#include "core/time.hpp"
+
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
-#include "core/time.hpp"
 #include "core/window_manager.hpp"
 
 #include "opengl/functions.hpp"
