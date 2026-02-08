@@ -8,7 +8,6 @@
 #include "core/window_manager.hpp"
 
 #include "opengl/functions.hpp"
-#include "opengl/headers.hpp"
 
 #include "opengl/commands.hpp"
 #include "opengl/shader.hpp"
