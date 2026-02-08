@@ -7,6 +7,13 @@
 #include "core/platform_factory.hpp"
 #include "core/window_manager.hpp"
 
+#include "opengl/constants/buffer.hpp"
+#include "opengl/constants/commands.hpp"
+#include "opengl/constants/common.hpp"
+#include "opengl/constants/shader.hpp"
+#include "opengl/constants/texture.hpp"
+#include "opengl/constants/texture_sampler.hpp"
+
 #include "opengl/functions.hpp"
 
 #include "opengl/commands.hpp"
@@ -105,11 +112,11 @@ auto main() -> int32_t
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
-    cube_vbo.storage(core::data::make_buffer(cube_vertices));
+    cube_vbo.storage(core::data::make_buffer(cube_vertices), opengl::constants::default_usage);
 
     opengl::Buffer cube_ebo;
     cube_ebo.create();
-    cube_ebo.storage(core::data::make_buffer(cube_elements));
+    cube_ebo.storage(core::data::make_buffer(cube_elements), opengl::constants::default_usage);
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
@@ -122,7 +129,7 @@ auto main() -> int32_t
 
     opengl::Buffer object_vbo;
     object_vbo.create();
-    object_vbo.storage(core::data::make_buffer(vertices));
+    object_vbo.storage(core::data::make_buffer(vertices), opengl::constants::default_usage);
 
     opengl::VertexArray object_vao;
     object_vao.create();
@@ -138,8 +145,8 @@ auto main() -> int32_t
 
     opengl::Texture square_texture { opengl::constants::texture_2d };
     square_texture.create();
-    square_texture.storage(base_image, opengl::constants::rgb8);
-    square_texture.upload (base_image, opengl::constants::rgb);
+    square_texture.storage(base_image, opengl::constants::rgb8, opengl::constants::default_levels);
+    square_texture.upload (base_image, opengl::constants::rgb,  opengl::constants::default_level);
 
     math::mat4 transform { 1.0f };
 
@@ -164,7 +171,7 @@ auto main() -> int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(core::data::make_buffer(camera_matrices));
+    camera_ubo.storage(core::data::make_buffer(camera_matrices), opengl::constants::default_usage);
     camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
@@ -215,25 +222,25 @@ auto main() -> int32_t
 
             cube_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&object.matrix()));
+        transform_ubo.upload(core::data::make_buffer(&object.matrix()), opengl::constants::default_offset);
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size());
+        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::default_offset);
 
         base_shader.bind();
          object_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&ground_transform));
-         material_ubo.upload(core::data::make_buffer(&ground_rgb));
+        transform_ubo.upload(core::data::make_buffer(&ground_transform), opengl::constants::default_offset);
+         material_ubo.upload(core::data::make_buffer(&ground_rgb), opengl::constants::default_offset);
 
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size());
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), opengl::constants::default_offset);
 
-        transform_ubo.upload(core::data::make_buffer(&left_wall_transform));
+        transform_ubo.upload(core::data::make_buffer(&left_wall_transform), opengl::constants::default_offset);
 
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size());
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), opengl::constants::default_offset);
 
-        transform_ubo.upload(core::data::make_buffer(&right_wall_transform));
+        transform_ubo.upload(core::data::make_buffer(&right_wall_transform), opengl::constants::default_offset);
 
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size());
+        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), opengl::constants::default_offset);
 
         window_manager.window_context().update();
     }
