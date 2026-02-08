@@ -2,6 +2,8 @@
 
 #include "core/time.hpp"
 
+#include "math/quat.hpp"
+
 namespace core
 {
     auto Object::roll(const float direction) -> void
