@@ -188,7 +188,7 @@ auto main() -> int32_t
     math::mat4 right_wall_transform(wall_scale);
                right_wall_transform.translation({ 1.375f, -quarter_size, 0.0f });
 
-    core::Object  object;
+    core::Object object;
 
     input_manager.input_actions().set_action(core::input::code::key_right, [&]
     {
