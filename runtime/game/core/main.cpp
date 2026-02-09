@@ -246,6 +246,7 @@ auto main() -> int32_t
     }
 
     transform_ubo.destroy();
+     material_ubo.destroy();
        camera_ubo.destroy();
 
     cube_vbo.destroy();
