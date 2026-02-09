@@ -157,6 +157,7 @@ auto main() -> int32_t
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
+
     math::mat4 view { 1.0f };
                view.translation({ 0.0f, 0.0f, -2.5f });
 
