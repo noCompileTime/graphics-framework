@@ -50,8 +50,8 @@ auto main() -> int32_t
     constexpr core::window::configuration window_configuration
     {
         "Graphics Framework",
-         window_width,
-         window_height
+           window_width,
+           window_height
     };
                    auto window_active { true };
     core::WindowManager window_manager;
