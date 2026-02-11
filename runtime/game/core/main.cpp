@@ -57,17 +57,17 @@ auto main() -> int32_t
 
     core::InputManager input_manager;
 
-    window_manager.window_input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state)
+    window_manager.window_input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state) noexcept
     {
         input_manager.update(key, state);
     };
 
-    window_manager.window_input().callbacks.on_btn_press = [&](const core::input::code btn, const core::input::state state)
+    window_manager.window_input().callbacks.on_btn_press = [&](const core::input::code btn, const core::input::state state) noexcept
     {
         input_manager.update(btn, state);
     };
 
-    window_manager.window_events().callbacks.on_close = [&]
+    window_manager.window_events().callbacks.on_close = [&] noexcept
     {
         window_active = false;
     };
