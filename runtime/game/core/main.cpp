@@ -1,8 +1,6 @@
 #include "core/file.hpp"
 #include "core/time.hpp"
 
-#include "math/functions.hpp"
-
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
 #include "core/window_manager.hpp"
