@@ -40,7 +40,7 @@ const std::vector<core::vertex::type::basic> vertices
 
 auto main() -> int32_t
 {
-    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "./", 0);
+    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "./", 3600);
 
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
@@ -189,12 +189,12 @@ auto main() -> int32_t
 
     core::Object object;
 
-    input_manager.input_actions().set_action(core::input::code::key_right, [&]
+    input_manager.input_actions().set_action(core::input::code::key_right, [&] noexcept
     {
         object.roll(1.0f);
     });
 
-    input_manager.input_actions().set_action(core::input::code::key_left, [&]
+    input_manager.input_actions().set_action(core::input::code::key_left, [&] noexcept
     {
         object.roll(-1.0f);
     });
