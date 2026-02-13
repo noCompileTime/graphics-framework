@@ -156,21 +156,13 @@ auto main() -> int32_t
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
 
-    math::mat4 view { 1.0f };
-               view.translation({ 0.0f, 0.0f, -2.5f });
-
-    math::mat4 projection { 1.0f };
-               projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
-
-    std::vector camera_matrices
-    {
-        view,
-        projection
-    };
+    core::data::camera base_camera_data;
+    base_camera_data.view.translation({ 0.0f, 0.0f, -2.5f });
+    base_camera_data.projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(core::data::make_buffer(camera_matrices), opengl::constants::default_usage);
+    camera_ubo.storage(make_buffer(&base_camera_data), opengl::constants::default_usage);
     camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
