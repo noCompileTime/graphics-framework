@@ -255,6 +255,9 @@ auto main() -> int32_t
     object_vbo.destroy();
     object_vao.destroy();
 
+    base_sprite_shader.destroy();
+    base_shader.destroy();
+
     window_manager.release();
 
     return 0;
