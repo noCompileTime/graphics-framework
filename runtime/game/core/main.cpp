@@ -181,12 +181,12 @@ auto main() -> int32_t
 
     core::Object object;
 
-    input_manager.input_actions().set_action(core::input::code::key_right, [&] noexcept
+    input_manager.input_actions().assign(core::input::code::key_right, [&] noexcept
     {
         object.roll(1.0f);
     });
 
-    input_manager.input_actions().set_action(core::input::code::key_left, [&] noexcept
+    input_manager.input_actions().assign(core::input::code::key_left, [&] noexcept
     {
         object.roll(-1.0f);
     });
