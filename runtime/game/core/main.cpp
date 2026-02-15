@@ -272,6 +272,7 @@ auto main() -> int32_t
     object_vao.destroy();
 
     base_sprite_shader.destroy();
+    base_model_shader.destroy();
     base_shader.destroy();
 
     window_manager.release();
