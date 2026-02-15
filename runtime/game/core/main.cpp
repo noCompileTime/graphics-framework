@@ -29,17 +29,6 @@
 
 #include "object.hpp"
 
-const std::vector<core::vertex::type::basic> vertices
-{
-    { -half_size, -half_size, 0.0f },
-    {  half_size, -half_size, 0.0f },
-    {  half_size,  half_size, 0.0f },
-
-    { -half_size, -half_size, 0.0f },
-    {  half_size,  half_size, 0.0f },
-    { -half_size,  half_size, 0.0f }
-};
-
 auto main() -> int32_t
 {
     tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "./", 3600);
@@ -122,7 +111,8 @@ auto main() -> int32_t
     base_model_shader.attach(base_model_shader_frag);
     base_model_shader.link();
 
-    auto [cube_vertices, cube_elements] = models::ObjModel::load("base_cube_scene.obj").geometry;
+    auto [cube_vertices,     cube_elements] = models::ObjModel::load("base_cube_scene.obj").geometry;
+    auto [ground_vertices, ground_elements] = models::ObjModel::load("base_ground_scene.obj").geometry;
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
@@ -141,14 +131,22 @@ auto main() -> int32_t
     cube_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::model, texcoord.x) });
     cube_vao.attach({ 2, 3, opengl::constants::type_float, offsetof(core::vertex::type::model,   normal.x) });
 
-    opengl::Buffer object_vbo;
-    object_vbo.create();
-    object_vbo.storage(core::data::make_buffer(vertices), opengl::constants::default_usage);
+    opengl::Buffer ground_vbo;
+    ground_vbo.create();
+    ground_vbo.storage(core::data::make_buffer(ground_vertices), opengl::constants::default_usage);
 
-    opengl::VertexArray object_vao;
-    object_vao.create();
-    object_vao.attach_vertices(object_vbo, sizeof(math::vec3));
-    object_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(math::vec3, x) });
+    opengl::Buffer ground_ebo;
+    ground_ebo.create();
+    ground_ebo.storage(core::data::make_buffer(ground_elements), opengl::constants::default_usage);
+
+    opengl::VertexArray ground_vao;
+    ground_vao.create();
+    ground_vao.attach_vertices(ground_vbo, sizeof(core::vertex::type::model));
+    ground_vao.attach_elements(ground_ebo);
+
+    ground_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(core::vertex::type::model, position.x) });
+    ground_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::model, texcoord.x) });
+    ground_vao.attach({ 2, 3, opengl::constants::type_float, offsetof(core::vertex::type::model,   normal.x) });
 
     opengl::TextureSampler base_sampler;
     base_sampler.create();
@@ -173,7 +171,7 @@ auto main() -> int32_t
                         static_cast<float>(window_height);
 
     core::data::camera base_camera_data;
-    base_camera_data.view.translation({ 0.0f, 0.0f, -2.5f });
+    base_camera_data.view.translation({ 0.0f, -0.25f, -2.5f });
     base_camera_data.projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 
     opengl::Buffer camera_ubo;
@@ -186,14 +184,7 @@ auto main() -> int32_t
     material_ubo.storage(sizeof(math::rgb), opengl::constants::dynamic_draw);
     material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::material));
 
-    math::mat4 ground_transform({ 5.0f, 0.5f, 1.0f });
-               ground_transform.translation({ 0.0f, -(size - quarter_size), 0.0f });
-
-    math::mat4 left_wall_transform(wall_scale);
-               left_wall_transform.translation({ -1.375f, -quarter_size, 0.0f });
-
-    math::mat4 right_wall_transform(wall_scale);
-               right_wall_transform.translation({ 1.375f, -quarter_size, 0.0f });
+    math::mat4 ground_transform { 1.0f };
 
     core::Object object;
 
@@ -230,32 +221,17 @@ auto main() -> int32_t
           base_sampler.bind(std::to_underlying(core::data::binding::texture::albedo));
         square_texture.bind(std::to_underlying(core::data::binding::texture::albedo));
 
-            cube_vao.bind();
+        cube_vao.bind();
 
-        math::quat quat_rotation;
-        quat_rotation.rotation({ 0.0f, 1.0f, 0.0f }, core::Time::total_time());
-
-        auto quat_matrix = quat_rotation.matrix();
-
-        transform_ubo.upload(core::data::make_buffer(&quat_matrix), opengl::constants::default_offset);
+        transform_ubo.upload(core::data::make_buffer(&object.matrix()), opengl::constants::default_offset);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::default_offset);
 
-        base_shader.bind();
-         object_vao.bind();
+        ground_vao.bind();
 
         transform_ubo.upload(core::data::make_buffer(&ground_transform), opengl::constants::default_offset);
-         material_ubo.upload(core::data::make_buffer(&ground_rgb), opengl::constants::default_offset);
 
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), opengl::constants::default_offset);
-
-        transform_ubo.upload(core::data::make_buffer(&left_wall_transform), opengl::constants::default_offset);
-
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), opengl::constants::default_offset);
-
-        transform_ubo.upload(core::data::make_buffer(&right_wall_transform), opengl::constants::default_offset);
-
-        opengl::Commands::draw_vertices(opengl::constants::triangles, vertices.size(), opengl::constants::default_offset);
+        opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), opengl::constants::default_offset);
 
         window_manager.window_context().update();
     }
@@ -268,8 +244,9 @@ auto main() -> int32_t
     cube_ebo.destroy();
     cube_vao.destroy();
 
-    object_vbo.destroy();
-    object_vao.destroy();
+    ground_vbo.destroy();
+    ground_ebo.destroy();
+    ground_vao.destroy();
 
     base_sprite_shader.destroy();
     base_model_shader.destroy();
