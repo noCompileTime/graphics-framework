@@ -8,6 +8,7 @@
 #include "opengl/constants/buffer.hpp"
 #include "opengl/constants/commands.hpp"
 #include "opengl/constants/common.hpp"
+#include "opengl/constants/pipeline.hpp"
 #include "opengl/constants/shader.hpp"
 #include "opengl/constants/texture.hpp"
 #include "opengl/constants/texture_sampler.hpp"
@@ -15,6 +16,7 @@
 #include "opengl/functions.hpp"
 
 #include "opengl/commands.hpp"
+#include "opengl/pipeline.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
 #include "opengl/texture_sampler.hpp"
@@ -94,6 +96,14 @@ auto main() -> int32_t
     base_sprite_shader_frag.create();
     base_sprite_shader_frag.source(core::File::read("base_sprite_shader.frag", std::ios::binary));
 
+    opengl::ShaderStage base_model_shader_vert { opengl::constants::vertex_shader };
+    base_model_shader_vert.create();
+    base_model_shader_vert.source(core::File::read("base_model_shader.vert", std::ios::binary));
+
+    opengl::ShaderStage base_model_shader_frag { opengl::constants::fragment_shader };
+    base_model_shader_frag.create();
+    base_model_shader_frag.source(core::File::read("base_model_shader.frag", std::ios::binary));
+
     opengl::Shader base_shader;
     base_shader.create();
     base_shader.attach(base_shader_vert);
@@ -105,6 +115,12 @@ auto main() -> int32_t
     base_sprite_shader.attach(base_sprite_shader_vert);
     base_sprite_shader.attach(base_sprite_shader_frag);
     base_sprite_shader.link();
+
+    opengl::Shader base_model_shader;
+    base_model_shader.create();
+    base_model_shader.attach(base_model_shader_vert);
+    base_model_shader.attach(base_model_shader_frag);
+    base_model_shader.link();
 
     auto [cube_vertices, cube_elements] = models::ObjModel::load("base_cube.obj").geometry;
 
@@ -151,7 +167,7 @@ auto main() -> int32_t
     opengl::Buffer transform_ubo;
     transform_ubo.create();
     transform_ubo.storage(core::data::make_buffer(&transform), opengl::constants::dynamic_draw);
-    transform_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::transform));
+    transform_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::transform));
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
@@ -163,12 +179,12 @@ auto main() -> int32_t
     opengl::Buffer camera_ubo;
     camera_ubo.create();
     camera_ubo.storage(make_buffer(&base_camera_data), opengl::constants::default_usage);
-    camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::camera));
+    camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
     material_ubo.storage(sizeof(math::rgb), opengl::constants::dynamic_draw);
-    material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::material));
+    material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::material));
 
     math::mat4 ground_transform({ 5.0f, 0.5f, 1.0f });
                ground_transform.translation({ 0.0f, -(size - quarter_size), 0.0f });
@@ -191,6 +207,9 @@ auto main() -> int32_t
         object.roll(-1.0f);
     });
 
+    opengl::Pipeline::enable(opengl::constants::depth_test);
+    opengl::Pipeline::enable(opengl::constants::cull_face);
+
     core::Time time;
                time.start();
 
@@ -204,16 +223,21 @@ auto main() -> int32_t
                 object.update();
 
         opengl::Commands::clear(0.105f, 0.235f, 0.325f);
-        opengl::Commands::clear(opengl::constants::color_buffer);
+        opengl::Commands::clear(opengl::constants::color_buffer | opengl::constants::depth_buffer);
 
-        base_sprite_shader.bind();
+        base_model_shader.bind();
 
-          base_sampler.bind(std::to_underlying(core::binding::texture::albedo));
-        square_texture.bind(std::to_underlying(core::binding::texture::albedo));
+          base_sampler.bind(std::to_underlying(core::data::binding::texture::albedo));
+        square_texture.bind(std::to_underlying(core::data::binding::texture::albedo));
 
             cube_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&object.matrix()), opengl::constants::default_offset);
+        math::quat quat_rotation;
+        quat_rotation.rotation({ 0.0f, 1.0f, 0.0f }, core::Time::total_time());
+
+        auto quat_matrix = quat_rotation.matrix();
+
+        transform_ubo.upload(core::data::make_buffer(&quat_matrix), opengl::constants::default_offset);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::default_offset);
 
