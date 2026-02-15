@@ -1,6 +1,7 @@
 #pragma once
 
-#include "constants.hpp"
+constexpr auto      size = 0.5f;
+constexpr auto half_size = 0.5f * size;
 
 namespace core
 {

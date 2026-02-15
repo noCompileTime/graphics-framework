@@ -111,7 +111,7 @@ auto main() -> int32_t
     base_model_shader.attach(base_model_shader_frag);
     base_model_shader.link();
 
-    auto [cube_vertices,     cube_elements] = models::ObjModel::load("base_cube_scene.obj").geometry;
+    auto [cube_vertices,     cube_elements] = models::ObjModel::load("base_cube_scene.obj")  .geometry;
     auto [ground_vertices, ground_elements] = models::ObjModel::load("base_ground_scene.obj").geometry;
 
     opengl::Buffer cube_vbo;
