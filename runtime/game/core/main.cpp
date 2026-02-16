@@ -31,16 +31,16 @@
 
 auto main() -> int32_t
 {
-    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "./", 3600);
+    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "./", 0);
 
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
 
     constexpr core::window::configuration window_configuration
     {
-        "Graphics Framework",
-           window_width,
-           window_height
+       "Game Framework",
+        window_width,
+        window_height
     };
                    auto window_active { true };
     core::WindowManager window_manager;
