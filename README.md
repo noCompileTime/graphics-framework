@@ -1,4 +1,4 @@
-# Graphics Framework
+# Game Framework
 
 `Work in progress`
 
