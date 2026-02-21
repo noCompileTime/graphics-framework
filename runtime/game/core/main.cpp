@@ -31,7 +31,7 @@
 
 auto main() -> int32_t
 {
-    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "./", 0);
+    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders", 3600);
 
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
@@ -71,27 +71,27 @@ auto main() -> int32_t
 
     opengl::ShaderStage base_shader_vert { opengl::constants::vertex_shader };
     base_shader_vert.create();
-    base_shader_vert.source(core::File::read("base_shader.vert", std::ios::binary));
+    base_shader_vert.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
 
     opengl::ShaderStage base_shader_frag { opengl::constants::fragment_shader };
     base_shader_frag.create();
-    base_shader_frag.source(core::File::read("base_shader.frag", std::ios::binary));
+    base_shader_frag.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
 
     opengl::ShaderStage base_sprite_shader_vert { opengl::constants::vertex_shader };
     base_sprite_shader_vert.create();
-    base_sprite_shader_vert.source(core::File::read("base_sprite_shader.vert", std::ios::binary));
+    base_sprite_shader_vert.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
 
     opengl::ShaderStage base_sprite_shader_frag { opengl::constants::fragment_shader };
     base_sprite_shader_frag.create();
-    base_sprite_shader_frag.source(core::File::read("base_sprite_shader.frag", std::ios::binary));
+    base_sprite_shader_frag.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
 
     opengl::ShaderStage base_model_shader_vert { opengl::constants::vertex_shader };
     base_model_shader_vert.create();
-    base_model_shader_vert.source(core::File::read("base_model_shader.vert", std::ios::binary));
+    base_model_shader_vert.source(core::File::read("shaders/base_model_shader.vert", std::ios::binary));
 
     opengl::ShaderStage base_model_shader_frag { opengl::constants::fragment_shader };
     base_model_shader_frag.create();
-    base_model_shader_frag.source(core::File::read("base_model_shader.frag", std::ios::binary));
+    base_model_shader_frag.source(core::File::read("shaders/base_model_shader.frag", std::ios::binary));
 
     opengl::Shader base_shader;
     base_shader.create();
@@ -111,8 +111,8 @@ auto main() -> int32_t
     base_model_shader.attach(base_model_shader_frag);
     base_model_shader.link();
 
-    auto [cube_vertices,     cube_elements] = models::ObjModel::load("base_cube_scene.obj")  .geometry;
-    auto [ground_vertices, ground_elements] = models::ObjModel::load("base_ground_scene.obj").geometry;
+    auto [cube_vertices,     cube_elements] = models::ObjModel::load("base_cube_model.obj").geometry;
+    auto [ground_vertices, ground_elements] = models::ObjModel::load("base_ground_model.obj").geometry;
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
@@ -153,7 +153,7 @@ auto main() -> int32_t
     base_sampler.parameter(opengl::constants::texture_min_filter, opengl::constants::nearest);
     base_sampler.parameter(opengl::constants::texture_mag_filter, opengl::constants::nearest);
 
-    auto base_image = images::TgaImage::load("base_albedo.tga");
+    auto base_image = images::TgaImage::load("base_cube_albedo.tga");
 
     opengl::Texture square_texture { opengl::constants::texture_2d };
     square_texture.create();
