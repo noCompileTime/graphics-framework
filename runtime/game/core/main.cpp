@@ -216,7 +216,7 @@ auto main() -> int32_t
         opengl::Commands::clear(0.105f, 0.235f, 0.325f);
         opengl::Commands::clear(opengl::constants::color_buffer | opengl::constants::depth_buffer);
 
-        base_model_shader.bind();
+     base_model_shader.bind();
 
           base_sampler.bind(std::to_underlying(core::data::binding::texture::albedo));
         square_texture.bind(std::to_underlying(core::data::binding::texture::albedo));
