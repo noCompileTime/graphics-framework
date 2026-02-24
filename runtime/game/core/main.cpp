@@ -46,7 +46,7 @@ auto main() -> int32_t
     core::WindowManager window_manager;
                         window_manager.init(core::PlatformFactory::create(), window_configuration);
 
-    core::InputManager input_manager;
+    core::InputManager  input_manager;
 
     window_manager.window_input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state) noexcept
     {
@@ -69,47 +69,47 @@ auto main() -> int32_t
 
     /* shaders */
 
-    opengl::ShaderStage base_shader_vert { opengl::constants::vertex_shader };
-    base_shader_vert.create();
-    base_shader_vert.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
+    opengl::ShaderStage base_shader_vertex { opengl::constants::vertex_shader };
+    base_shader_vertex.create();
+    base_shader_vertex.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
 
-    opengl::ShaderStage base_shader_frag { opengl::constants::fragment_shader };
-    base_shader_frag.create();
-    base_shader_frag.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
+    opengl::ShaderStage base_shader_fragment { opengl::constants::fragment_shader };
+    base_shader_fragment.create();
+    base_shader_fragment.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
 
-    opengl::ShaderStage base_sprite_shader_vert { opengl::constants::vertex_shader };
-    base_sprite_shader_vert.create();
-    base_sprite_shader_vert.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
+    opengl::ShaderStage sprite_shader_vertex { opengl::constants::vertex_shader };
+    sprite_shader_vertex.create();
+    sprite_shader_vertex.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
 
-    opengl::ShaderStage base_sprite_shader_frag { opengl::constants::fragment_shader };
-    base_sprite_shader_frag.create();
-    base_sprite_shader_frag.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
+    opengl::ShaderStage sprite_shader_fragment { opengl::constants::fragment_shader };
+    sprite_shader_fragment.create();
+    sprite_shader_fragment.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
 
-    opengl::ShaderStage base_model_shader_vert { opengl::constants::vertex_shader };
-    base_model_shader_vert.create();
-    base_model_shader_vert.source(core::File::read("shaders/base_model_shader.vert", std::ios::binary));
+    opengl::ShaderStage model_shader_vertex { opengl::constants::vertex_shader };
+    model_shader_vertex.create();
+    model_shader_vertex.source(core::File::read("shaders/base_model_shader.vert", std::ios::binary));
 
-    opengl::ShaderStage base_model_shader_frag { opengl::constants::fragment_shader };
-    base_model_shader_frag.create();
-    base_model_shader_frag.source(core::File::read("shaders/base_model_shader.frag", std::ios::binary));
+    opengl::ShaderStage model_shader_fragment { opengl::constants::fragment_shader };
+    model_shader_fragment.create();
+    model_shader_fragment.source(core::File::read("shaders/base_model_shader.frag", std::ios::binary));
 
     opengl::Shader base_shader;
     base_shader.create();
-    base_shader.attach(base_shader_vert);
-    base_shader.attach(base_shader_frag);
+    base_shader.attach(base_shader_vertex);
+    base_shader.attach(base_shader_fragment);
     base_shader.link();
 
-    opengl::Shader base_sprite_shader;
-    base_sprite_shader.create();
-    base_sprite_shader.attach(base_sprite_shader_vert);
-    base_sprite_shader.attach(base_sprite_shader_frag);
-    base_sprite_shader.link();
+    opengl::Shader sprite_shader;
+    sprite_shader.create();
+    sprite_shader.attach(sprite_shader_vertex);
+    sprite_shader.attach(sprite_shader_fragment);
+    sprite_shader.link();
 
-    opengl::Shader base_model_shader;
-    base_model_shader.create();
-    base_model_shader.attach(base_model_shader_vert);
-    base_model_shader.attach(base_model_shader_frag);
-    base_model_shader.link();
+    opengl::Shader model_shader;
+    model_shader.create();
+    model_shader.attach(model_shader_vertex);
+    model_shader.attach(model_shader_fragment);
+    model_shader.link();
 
     auto [  cube_vertices,   cube_elements] = models::ObjModel::load("base_cube_model.obj").geometry;
     auto [ground_vertices, ground_elements] = models::ObjModel::load("base_ground_model.obj").geometry;
@@ -155,28 +155,26 @@ auto main() -> int32_t
 
     auto base_image = images::TgaImage::load("base_cube_albedo.tga");
 
-    opengl::Texture square_texture { opengl::constants::texture_2d };
-    square_texture.create();
-    square_texture.storage(base_image, opengl::constants::rgb8, opengl::constants::default_levels);
-    square_texture.upload (base_image, opengl::constants::rgb,  opengl::constants::default_level);
-
-    math::mat4 transform { 1.0f };
+    opengl::Texture base_texture { opengl::constants::texture_2d };
+    base_texture.create();
+    base_texture.storage(base_image, opengl::constants::rgb8, opengl::constants::default_levels);
+    base_texture.upload (base_image, opengl::constants::rgb,  opengl::constants::default_level);
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
-    transform_ubo.storage(core::data::make_buffer(&transform), opengl::constants::dynamic_draw);
+    transform_ubo.storage(sizeof(math::mat4), opengl::constants::dynamic_draw);
     transform_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::transform));
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
 
-    core::data::camera base_camera_data;
-    base_camera_data.view.translation({ 0.0f, -0.25f, -2.5f });
-    base_camera_data.projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
+    core::data::camera camera_data;
+    camera_data.view.translation({ 0.0f, -0.25f, -2.5f });
+    camera_data.projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(make_buffer(&base_camera_data), opengl::constants::default_usage);
+    camera_ubo.storage(make_buffer(&camera_data), opengl::constants::default_usage);
     camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
@@ -202,7 +200,7 @@ auto main() -> int32_t
     opengl::Pipeline::enable(opengl::constants::cull_face);
 
     core::Time time;
-               time.start();
+    time.start();
 
     while (window_active)
     {
@@ -216,18 +214,18 @@ auto main() -> int32_t
         opengl::Commands::clear(0.105f, 0.235f, 0.325f);
         opengl::Commands::clear(opengl::constants::color_buffer | opengl::constants::depth_buffer);
 
-     base_model_shader.bind();
+         model_shader.bind();
 
-          base_sampler.bind(std::to_underlying(core::data::binding::texture::albedo));
-        square_texture.bind(std::to_underlying(core::data::binding::texture::albedo));
+         base_sampler.bind(std::to_underlying(core::data::binding::texture::albedo));
+         base_texture.bind(std::to_underlying(core::data::binding::texture::albedo));
 
-        cube_vao.bind();
+             cube_vao.bind();
 
         transform_ubo.upload(core::data::make_buffer(&object.matrix()), opengl::constants::default_offset);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::default_offset);
 
-        ground_vao.bind();
+           ground_vao.bind();
 
         transform_ubo.upload(core::data::make_buffer(&ground_transform), opengl::constants::default_offset);
 
@@ -236,21 +234,21 @@ auto main() -> int32_t
         window_manager.window_context().update();
     }
 
-    transform_ubo.destroy();
-     material_ubo.destroy();
-       camera_ubo.destroy();
+     transform_ubo.destroy();
+      material_ubo.destroy();
+        camera_ubo.destroy();
 
-    cube_vbo.destroy();
-    cube_ebo.destroy();
-    cube_vao.destroy();
+          cube_vbo.destroy();
+          cube_ebo.destroy();
+          cube_vao.destroy();
 
-    ground_vbo.destroy();
-    ground_ebo.destroy();
-    ground_vao.destroy();
+        ground_vbo.destroy();
+        ground_ebo.destroy();
+        ground_vao.destroy();
 
-    base_sprite_shader.destroy();
-    base_model_shader.destroy();
-    base_shader.destroy();
+     sprite_shader.destroy();
+      model_shader.destroy();
+       base_shader.destroy();
 
     window_manager.release();
 
