@@ -48,17 +48,17 @@ auto main() -> int32_t
 
     core::InputManager  input_manager;
 
-    window_manager.window_input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state) noexcept
+    window_manager.input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state) noexcept
     {
-        input_manager.update(key, state);
+        input_manager.state().update(key, state);
     };
 
-    window_manager.window_input().callbacks.on_btn_press = [&](const core::input::code btn, const core::input::state state) noexcept
+    window_manager.input().callbacks.on_btn_press = [&](const core::input::code btn, const core::input::state state) noexcept
     {
-        input_manager.update(btn, state);
+        input_manager.state().update(btn, state);
     };
 
-    window_manager.window_events().callbacks.on_close = [&] noexcept
+    window_manager.events().callbacks.on_close = [&] noexcept
     {
         window_active = false;
     };
@@ -186,12 +186,12 @@ auto main() -> int32_t
 
     core::Object object;
 
-    input_manager.input_actions().assign(core::input::code::key_right, [&] noexcept
+    input_manager.actions().assign(core::input::code::key_right, [&] noexcept
     {
         object.roll(1.0f);
     });
 
-    input_manager.input_actions().assign(core::input::code::key_left, [&] noexcept
+    input_manager.actions().assign(core::input::code::key_left, [&] noexcept
     {
         object.roll(-1.0f);
     });
@@ -231,7 +231,7 @@ auto main() -> int32_t
 
         opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), opengl::constants::default_offset);
 
-        window_manager.window_context().update();
+        window_manager.context().update();
     }
 
      transform_ubo.destroy();
