@@ -16,10 +16,10 @@ namespace core
     private:
         auto roll_step(const math::vec2& pivot, float ps0, float t, float direction) const -> std::pair<math::vec2, float>;
 
-        math::mat4 _matrix { 1.0f };
+        math::mat4 _matrix { 1.f };
 
-        math::vec2 _position { };
-        math::vec2 _pivot    { };
+        math::vec2   _position { };
+        math::vec2   _pivot    { };
 
         float        _rotation { };
         float  _start_rotation { };
