@@ -116,11 +116,11 @@ auto main() -> int32_t
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
-    cube_vbo.storage(core::data::make_buffer(cube_vertices), opengl::constants::default_usage);
+    cube_vbo.storage(core::data::make_buffer(cube_vertices), opengl::constants::static_draw);
 
     opengl::Buffer cube_ebo;
     cube_ebo.create();
-    cube_ebo.storage(core::data::make_buffer(cube_elements), opengl::constants::default_usage);
+    cube_ebo.storage(core::data::make_buffer(cube_elements), opengl::constants::static_draw);
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
@@ -133,11 +133,11 @@ auto main() -> int32_t
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
-    ground_vbo.storage(core::data::make_buffer(ground_vertices), opengl::constants::default_usage);
+    ground_vbo.storage(core::data::make_buffer(ground_vertices), opengl::constants::static_draw);
 
     opengl::Buffer ground_ebo;
     ground_ebo.create();
-    ground_ebo.storage(core::data::make_buffer(ground_elements), opengl::constants::default_usage);
+    ground_ebo.storage(core::data::make_buffer(ground_elements), opengl::constants::static_draw);
 
     opengl::VertexArray ground_vao;
     ground_vao.create();
@@ -174,7 +174,7 @@ auto main() -> int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(make_buffer(camera_data), opengl::constants::default_usage);
+    camera_ubo.storage(make_buffer(camera_data), opengl::constants::static_draw);
     camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
@@ -197,7 +197,7 @@ auto main() -> int32_t
     });
 
     opengl::Pipeline::enable(opengl::constants::depth_test);
-    opengl::Pipeline::enable(opengl::constants::cull_face);
+    opengl::Pipeline::enable(opengl::constants::cull_test);
 
     core::Time time;
     time.start();
