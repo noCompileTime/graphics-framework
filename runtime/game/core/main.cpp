@@ -174,7 +174,7 @@ auto main() -> int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(make_buffer(&camera_data), opengl::constants::default_usage);
+    camera_ubo.storage(make_buffer(camera_data), opengl::constants::default_usage);
     camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
@@ -221,13 +221,13 @@ auto main() -> int32_t
 
              cube_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&object.matrix()), 0);
+        transform_ubo.upload(core::data::make_buffer(object.matrix()), 0);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), 0);
 
            ground_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&ground_transform), 0);
+        transform_ubo.upload(core::data::make_buffer(ground_transform), 0);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), 0);
 
