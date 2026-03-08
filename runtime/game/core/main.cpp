@@ -150,8 +150,8 @@ auto main() -> int32_t
 
     opengl::TextureSampler base_sampler;
     base_sampler.create();
-    base_sampler.parameter(opengl::constants::texture_min_filter, opengl::constants::nearest);
-    base_sampler.parameter(opengl::constants::texture_mag_filter, opengl::constants::nearest);
+    base_sampler.parameter(opengl::constants::min_filter, opengl::constants::nearest);
+    base_sampler.parameter(opengl::constants::mag_filter, opengl::constants::nearest);
 
     auto base_image = images::TgaImage::load("base_cube_albedo.tga");
 
