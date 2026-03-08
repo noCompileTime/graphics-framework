@@ -157,8 +157,8 @@ auto main() -> int32_t
 
     opengl::Texture base_texture { opengl::constants::texture_2d };
     base_texture.create();
-    base_texture.storage(base_image, opengl::constants::rgb8, opengl::constants::default_levels);
-    base_texture.upload (base_image, opengl::constants::rgb,  opengl::constants::default_level);
+    base_texture.storage(base_image, opengl::constants::rgb8, 1);
+    base_texture.upload (base_image, opengl::constants::rgb,  0);
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
