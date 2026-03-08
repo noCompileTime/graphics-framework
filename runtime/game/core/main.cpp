@@ -127,9 +127,9 @@ auto main() -> int32_t
     cube_vao.attach_vertices(cube_vbo, sizeof(core::vertex::type::model));
     cube_vao.attach_elements(cube_ebo);
 
-    cube_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(core::vertex::type::model, position.x) });
-    cube_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::model, texcoord.u) });
-    cube_vao.attach({ 2, 3, opengl::constants::type_float, offsetof(core::vertex::type::model,   normal.x) });
+    cube_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
+    cube_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.u) });
+    cube_vao.attach({ 2, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
@@ -144,9 +144,9 @@ auto main() -> int32_t
     ground_vao.attach_vertices(ground_vbo, sizeof(core::vertex::type::model));
     ground_vao.attach_elements(ground_ebo);
 
-    ground_vao.attach({ 0, 3, opengl::constants::type_float, offsetof(core::vertex::type::model, position.x) });
-    ground_vao.attach({ 1, 2, opengl::constants::type_float, offsetof(core::vertex::type::model, texcoord.u) });
-    ground_vao.attach({ 2, 3, opengl::constants::type_float, offsetof(core::vertex::type::model,   normal.x) });
+    ground_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
+    ground_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.u) });
+    ground_vao.attach({ 2, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
 
     opengl::TextureSampler base_sampler;
     base_sampler.create();
@@ -221,15 +221,15 @@ auto main() -> int32_t
 
              cube_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&object.matrix()), opengl::constants::default_offset);
+        transform_ubo.upload(core::data::make_buffer(&object.matrix()), 0);
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::default_offset);
+        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), 0);
 
            ground_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(&ground_transform), opengl::constants::default_offset);
+        transform_ubo.upload(core::data::make_buffer(&ground_transform), 0);
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), opengl::constants::default_offset);
+        opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), 0);
 
         window_manager.context().update();
     }
