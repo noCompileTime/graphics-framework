@@ -71,27 +71,27 @@ auto main() -> int32_t
 
     opengl::ShaderStage base_shader_vertex { opengl::constants::vertex_shader };
     base_shader_vertex.create();
-    base_shader_vertex.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
+    base_shader_vertex.source(core::data::make_data_as_bytes(core::File::read("shaders/base_shader.vert", std::ios::binary)));
 
     opengl::ShaderStage base_shader_fragment { opengl::constants::fragment_shader };
     base_shader_fragment.create();
-    base_shader_fragment.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
+    base_shader_fragment.source(core::data::make_data_as_bytes(core::File::read("shaders/base_shader.frag", std::ios::binary)));
 
     opengl::ShaderStage sprite_shader_vertex { opengl::constants::vertex_shader };
     sprite_shader_vertex.create();
-    sprite_shader_vertex.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
+    sprite_shader_vertex.source(core::data::make_data_as_bytes(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary)));
 
     opengl::ShaderStage sprite_shader_fragment { opengl::constants::fragment_shader };
     sprite_shader_fragment.create();
-    sprite_shader_fragment.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
+    sprite_shader_fragment.source(core::data::make_data_as_bytes(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary)));
 
     opengl::ShaderStage model_shader_vertex { opengl::constants::vertex_shader };
     model_shader_vertex.create();
-    model_shader_vertex.source(core::File::read("shaders/base_model_shader.vert", std::ios::binary));
+    model_shader_vertex.source(core::data::make_data_as_bytes(core::File::read("shaders/base_model_shader.vert", std::ios::binary)));
 
     opengl::ShaderStage model_shader_fragment { opengl::constants::fragment_shader };
     model_shader_fragment.create();
-    model_shader_fragment.source(core::File::read("shaders/base_model_shader.frag", std::ios::binary));
+    model_shader_fragment.source(core::data::make_data_as_bytes(core::File::read("shaders/base_model_shader.frag", std::ios::binary)));
 
     opengl::Shader base_shader;
     base_shader.create();
@@ -116,11 +116,11 @@ auto main() -> int32_t
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
-    cube_vbo.storage(core::data::as_bytes(cube_vertices), opengl::constants::static_draw);
+    cube_vbo.storage(core::data::make_data_as_bytes(cube_vertices), opengl::constants::static_draw);
 
     opengl::Buffer cube_ebo;
     cube_ebo.create();
-    cube_ebo.storage(core::data::as_bytes(cube_elements), opengl::constants::static_draw);
+    cube_ebo.storage(core::data::make_data_as_bytes(cube_elements), opengl::constants::static_draw);
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
@@ -133,11 +133,11 @@ auto main() -> int32_t
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
-    ground_vbo.storage(core::data::make_buffer(ground_vertices), opengl::constants::static_draw);
+    ground_vbo.storage(core::data::make_data_as_bytes(ground_vertices), opengl::constants::static_draw);
 
     opengl::Buffer ground_ebo;
     ground_ebo.create();
-    ground_ebo.storage(core::data::make_buffer(ground_elements), opengl::constants::static_draw);
+    ground_ebo.storage(core::data::make_data_as_bytes(ground_elements), opengl::constants::static_draw);
 
     opengl::VertexArray ground_vao;
     ground_vao.create();
@@ -174,7 +174,7 @@ auto main() -> int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(make_buffer(camera_data), opengl::constants::static_draw);
+    camera_ubo.storage(make_data_as_bytes(camera_data), opengl::constants::static_draw);
     camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::data::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
@@ -221,13 +221,13 @@ auto main() -> int32_t
 
              cube_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(object.matrix()), 0);
+        transform_ubo.upload(core::data::make_data_as_bytes(object.matrix()), 0);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), 0);
 
            ground_vao.bind();
 
-        transform_ubo.upload(core::data::make_buffer(ground_transform), 0);
+        transform_ubo.upload(core::data::make_data_as_bytes(ground_transform), 0);
 
         opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), 0);
 
