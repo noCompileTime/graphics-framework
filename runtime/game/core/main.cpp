@@ -116,11 +116,11 @@ auto main() -> int32_t
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
-    cube_vbo.storage(core::data::make_buffer(cube_vertices), opengl::constants::static_draw);
+    cube_vbo.storage(core::data::as_bytes(cube_vertices), opengl::constants::static_draw);
 
     opengl::Buffer cube_ebo;
     cube_ebo.create();
-    cube_ebo.storage(core::data::make_buffer(cube_elements), opengl::constants::static_draw);
+    cube_ebo.storage(core::data::as_bytes(cube_elements), opengl::constants::static_draw);
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
