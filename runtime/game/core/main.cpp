@@ -164,7 +164,7 @@ auto main() -> int32_t
     opengl::Buffer transform_ubo;
     transform_ubo.create();
     transform_ubo.storage(sizeof(math::mat4), opengl::constants::dynamic_draw);
-    transform_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::transform));
+    transform_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::transform));
 
     auto aspect_ratio = static_cast<float>(window_width) /
                         static_cast<float>(window_height);
@@ -176,12 +176,12 @@ auto main() -> int32_t
     opengl::Buffer camera_ubo;
     camera_ubo.create();
     camera_ubo.storage(core::as_bytes(camera_data), opengl::constants::static_draw);
-    camera_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::camera));
+    camera_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::camera));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
     material_ubo.storage(sizeof(math::rgb), opengl::constants::dynamic_draw);
-    material_ubo.bind(opengl::constants::uniform_buffer, std::to_underlying(core::binding::buffer::material));
+    material_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::material));
 
     math::mat4 ground_transform { 1.0f };
 
@@ -217,8 +217,8 @@ auto main() -> int32_t
 
          model_shader.bind();
 
-         base_sampler.bind(std::to_underlying(core::binding::texture::albedo));
-         base_texture.bind(std::to_underlying(core::binding::texture::albedo));
+         base_sampler.bind(core::as_base(core::binding::texture::albedo));
+         base_texture.bind(core::as_base(core::binding::texture::albedo));
 
              cube_vao.bind();
 
