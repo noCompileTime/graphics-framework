@@ -6,6 +6,9 @@
 #include "core/platform_factory.hpp"
 #include "core/window_manager.hpp"
 
+#include "core/binding/buffer.hpp"
+#include "core/binding/texture.hpp"
+
 #include "opengl/constants/buffer.hpp"
 #include "opengl/constants/commands.hpp"
 #include "opengl/constants/common.hpp"
