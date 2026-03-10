@@ -15,7 +15,6 @@
 #include "opengl/constants/texture_sampler.hpp"
 
 #include "opengl/functions.hpp"
-
 #include "opengl/commands.hpp"
 #include "opengl/pipeline.hpp"
 #include "opengl/shader.hpp"
