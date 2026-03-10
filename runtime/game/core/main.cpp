@@ -17,8 +17,8 @@
 #include "opengl/constants/texture.hpp"
 #include "opengl/constants/texture_sampler.hpp"
 
-#include "opengl/functions.hpp"
 #include "opengl/commands.hpp"
+#include "opengl/functions.hpp"
 #include "opengl/pipeline.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
@@ -114,8 +114,10 @@ auto main() -> int32_t
     model_shader.attach(model_shader_fragment);
     model_shader.link();
 
-    auto [  cube_vertices,   cube_elements] = models::ObjModel::load("base_cube_model.obj")  .geometry;
-    auto [ground_vertices, ground_elements] = models::ObjModel::load("base_ground_model.obj").geometry;
+    auto [base_geometries] = models::ObjModel::load("base_scene_model.obj");
+
+    auto [  cube_vertices,   cube_elements] = base_geometries[0];
+    auto [ground_vertices, ground_elements] = base_geometries[1];
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
@@ -200,7 +202,7 @@ auto main() -> int32_t
     });
 
     opengl::Pipeline::enable(opengl::constants::depth_test);
-    opengl::Pipeline::enable(opengl::constants::cull_test);
+    opengl::Pipeline::enable(opengl::constants:: cull_test);
 
     core::Time time;
     time.start();
