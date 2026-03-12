@@ -74,27 +74,27 @@ auto main() -> int32_t
 
     opengl::ShaderStage base_shader_vertex { opengl::constants::vertex_shader };
     base_shader_vertex.create();
-    base_shader_vertex.source(core::File::read("shaders/base_shader.vert", std::ios::binary));
+    base_shader_vertex.source(core::File::read("shaders/base_shader.vert"));
 
     opengl::ShaderStage base_shader_fragment { opengl::constants::fragment_shader };
     base_shader_fragment.create();
-    base_shader_fragment.source(core::File::read("shaders/base_shader.frag", std::ios::binary));
+    base_shader_fragment.source(core::File::read("shaders/base_shader.frag"));
 
     opengl::ShaderStage sprite_shader_vertex { opengl::constants::vertex_shader };
     sprite_shader_vertex.create();
-    sprite_shader_vertex.source(core::File::read("shaders/base_sprite_shader.vert", std::ios::binary));
+    sprite_shader_vertex.source(core::File::read("shaders/base_sprite_shader.vert"));
 
     opengl::ShaderStage sprite_shader_fragment { opengl::constants::fragment_shader };
     sprite_shader_fragment.create();
-    sprite_shader_fragment.source(core::File::read("shaders/base_sprite_shader.frag", std::ios::binary));
+    sprite_shader_fragment.source(core::File::read("shaders/base_sprite_shader.frag"));
 
     opengl::ShaderStage model_shader_vertex { opengl::constants::vertex_shader };
     model_shader_vertex.create();
-    model_shader_vertex.source(core::File::read("shaders/base_model_shader.vert", std::ios::binary));
+    model_shader_vertex.source(core::File::read("shaders/base_model_shader.vert"));
 
     opengl::ShaderStage model_shader_fragment { opengl::constants::fragment_shader };
     model_shader_fragment.create();
-    model_shader_fragment.source(core::File::read("shaders/base_model_shader.frag", std::ios::binary));
+    model_shader_fragment.source(core::File::read("shaders/base_model_shader.frag"));
 
     opengl::Shader base_shader;
     base_shader.create();
