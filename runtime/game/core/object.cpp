@@ -4,33 +4,41 @@
 
 namespace core
 {
-    auto Object::roll(const float direction) -> void
+    auto Object::roll(const math::vec2& direction) -> void
     {
         if (_rolling)
         {
             return;
         }
 
-        if (const auto next_index  =     _square_index + static_cast<int32_t>(direction);
-              std::abs(next_index) > _max_square_index)
+        if ((direction.x == 0.0f && direction.y == 0.0f) ||
+            (direction.x != 0.0f && direction.y != 0.0f))
         {
             return;
         }
-        else
+
+        const auto next_index_x = _square_index_x + static_cast<int32_t>(direction.x);
+        const auto next_index_z = _square_index_z + static_cast<int32_t>(direction.y);
+
+        if (std::abs(next_index_x) > _max_square_index ||
+            std::abs(next_index_z) > _max_square_index)
         {
-            _square_index = next_index;
+            return;
         }
+
+        _square_index_x = next_index_x;
+        _square_index_z = next_index_z;
 
         _pivot =
         {
-            _position.x + half_size * direction,
-            _position.y - half_size
+            _position.x + half_size * direction.x,
+            _position.y - half_size,
+            _position.z + half_size * direction.y
         };
 
-        _rolling        =  true;
-        _roll_direction =  direction;
-        _animation_time =  0.0f;
-        _start_rotation = _rotation;
+        _rolling        = true;
+        _roll_direction = direction;
+        _animation_time = 0.0f;
     }
 
     auto Object::update() -> void
@@ -54,11 +62,22 @@ namespace core
             _rotation       = rotation;
         }
 
+        math::vec3 axis {};
+
+        if (_roll_direction.x != 0.0f)
+        {
+            axis = { 0.0f, 0.0f, -_roll_direction.x };
+        }
+        else
+        {
+            axis = { _roll_direction.y, 0.0f, 0.0f };
+        }
+
         math::quat quat_rotation;
-                   quat_rotation.rotation({ 0.0f, 0.0f, 1.0f }, rotation);
-        _matrix =  quat_rotation.matrix();
-        _matrix.translation({ center.x,
-                              center.y, 0.0f });
+        quat_rotation.rotation(axis, rotation);
+
+        _matrix = quat_rotation.matrix();
+        _matrix.translation({ center.x, center.y, center.z });
     }
 
     auto Object::matrix() const -> const math::mat4&
@@ -66,23 +85,46 @@ namespace core
         return _matrix;
     }
 
-    auto Object::roll_step(const math::vec2& pivot, const float ps0, const float t, const float direction) const -> std::pair<math::vec2, float>
+    auto Object::roll_step(const math::vec3& pivot, const float ps0, const float t, const math::vec2& direction) const -> std::pair<math::vec3, float>
     {
         constexpr auto half_pi = math::pi * 0.5f;
-        const     auto theta   = t * half_pi;
+        const auto theta = t * half_pi;
 
-        const auto base_phi = direction > 0.0f ? 3.0f * math::pi * 0.25f :
-                                                        math::pi * 0.25f;
-        const auto phi = base_phi - theta * direction;
-        const auto psi =      ps0 - theta * direction;
+        const auto dir_x = direction.x;
+        const auto dir_z = direction.y;
 
-        return
+        math::vec3 center { };
+        auto psi = ps0;
+
+        if (dir_x != 0.0f)
         {
+            const auto base_phi = dir_x > 0.0f ? 3.0f * math::pi * 0.25f
+                                               : math::pi * 0.25f;
+            const auto phi = base_phi - theta * dir_x;
+            psi = ps0 - theta * dir_x;
+
+            center =
             {
                 pivot.x + radius * std::cos(phi),
-                pivot.y + radius * std::sin(phi)
-            },
-            psi
-        };
+                pivot.y + radius * std::sin(phi),
+                pivot.z
+            };
+        }
+        else
+        {
+            const auto base_phi = dir_z > 0.0f ? 3.0f * math::pi * 0.25f
+                                               : math::pi * 0.25f;
+            const auto phi = base_phi - theta * dir_z;
+            psi = ps0 - theta * dir_z;
+
+            center =
+            {
+                pivot.x,
+                pivot.y + radius * std::sin(phi),
+                pivot.z + radius * std::cos(phi)
+            };
+        }
+
+        return { center, psi };
     }
 }

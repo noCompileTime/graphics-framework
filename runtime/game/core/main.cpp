@@ -174,7 +174,7 @@ auto main() -> int32_t
                         static_cast<float>(window_height);
 
     core::data::camera camera_data;
-    camera_data.view.translation({ 0.0f, -0.25f, -2.5f });
+    camera_data.view.translation({ 0.0f, -0.25f, -3.5f });
     camera_data.projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 
     opengl::Buffer camera_ubo;
@@ -193,12 +193,22 @@ auto main() -> int32_t
 
     input_manager.actions().assign(core::input::code::key_right, [&] noexcept
     {
-        object.roll(1.0f);
+        object.roll({ 1.0f, 0.0f });
     });
 
     input_manager.actions().assign(core::input::code::key_left, [&] noexcept
     {
-        object.roll(-1.0f);
+        object.roll({ -1.0f, 0.0f });
+    });
+
+    input_manager.actions().assign(core::input::code::key_up, [&] noexcept
+    {
+        object.roll({ 0.0f, -1.0f });
+    });
+
+    input_manager.actions().assign(core::input::code::key_down, [&] noexcept
+    {
+        object.roll({ 0.0f, 1.0f });
     });
 
     input_manager.actions().assign(core::input::code::key_escape, [&] noexcept
