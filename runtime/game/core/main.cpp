@@ -201,6 +201,11 @@ auto main() -> int32_t
         object.roll(-1.0f);
     });
 
+    input_manager.actions().assign(core::input::code::key_escape, [&] noexcept
+    {
+       window_active = false;
+    });
+
     opengl::Pipeline::enable(opengl::constants::depth_test);
     opengl::Pipeline::enable(opengl::constants:: cull_test);
 
