@@ -9,9 +9,9 @@ namespace core
     {
     public:
         auto   roll(const math::vec2& direction) -> void;
-        auto update()                -> void;
+        auto update() -> void;
 
-        auto matrix()  const -> const math::mat4&;
+        auto matrix() const -> const math::mat4&;
 
     private:
         auto roll_step(const math::vec3& pivot, float t, const math::vec2& direction) const -> std::pair<math::vec3, float>;
