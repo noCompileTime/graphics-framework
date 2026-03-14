@@ -36,10 +36,10 @@ namespace core
             _position.z + half_size * direction.y
         };
 
-        _rolling        = true;
-        _start_rotation = _rotation;
-        _roll_direction = direction;
-        _animation_time = 0.0f;
+        _rolling           = true;
+        _start_orientation = _orientation;
+        _roll_direction    = direction;
+        _animation_time    = 0.0f;
     }
 
     auto Object::update() -> void
@@ -53,15 +53,7 @@ namespace core
 
         const auto t = std::clamp(_animation_time, 0.0f, 1.0f);
 
-        const auto [center, rotation] = roll_step(_pivot, _start_rotation, t, _roll_direction);
-
-        if (t >= 1.0f)
-        {
-            _rolling        = false;
-            _animation_time = 0.0f;
-            _position       = center;
-            _rotation       = rotation;
-        }
+        const auto [center, angle] = roll_step(_pivot, t, _roll_direction);
 
         const math::vec3 axis
         {
@@ -70,10 +62,21 @@ namespace core
             -_roll_direction.x
         };
 
-        math::quat quat_rotation;
-        quat_rotation.rotation(axis, rotation);
+        math::quat delta_rotation;
+        delta_rotation.rotation(axis, angle);
 
-        _matrix = quat_rotation.matrix();
+        auto orientation = delta_rotation * _start_orientation;
+             orientation.normalize();
+
+        if (t >= 1.0f)
+        {
+            _rolling        = false;
+            _animation_time = 0.0f;
+            _position       = center;
+            _orientation    = orientation;
+        }
+
+        _matrix = orientation.matrix();
         _matrix.translation({ center.x, center.y, center.z });
     }
 
@@ -82,7 +85,7 @@ namespace core
         return _matrix;
     }
 
-    auto Object::roll_step(const math::vec3& pivot, const float ps0, const float t, const math::vec2& direction) const -> std::pair<math::vec3, float>
+    auto Object::roll_step(const math::vec3& pivot, const float t, const math::vec2& direction) const -> std::pair<math::vec3, float>
     {
         constexpr auto half_pi = math::pi * 0.5f;
         const auto theta = t * half_pi;
@@ -91,14 +94,12 @@ namespace core
         const auto dir_z = direction.y;
 
         math::vec3 center { };
-        auto psi = ps0;
 
         if (dir_x != 0.0f)
         {
             const auto base_phi = dir_x > 0.0f ? 3.0f * math::pi * 0.25f
                                                : math::pi * 0.25f;
             const auto phi = base_phi - theta * dir_x;
-            psi = ps0 + theta;
 
             center =
             {
@@ -112,7 +113,6 @@ namespace core
             const auto base_phi = dir_z > 0.0f ? 3.0f * math::pi * 0.25f
                                                : math::pi * 0.25f;
             const auto phi = base_phi - theta * dir_z;
-            psi = ps0 + theta;
 
             center =
             {
@@ -122,6 +122,6 @@ namespace core
             };
         }
 
-        return { center, psi };
+        return { center, theta };
     }
 }

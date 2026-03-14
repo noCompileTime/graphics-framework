@@ -14,15 +14,16 @@ namespace core
         auto matrix()  const -> const math::mat4&;
 
     private:
-        auto roll_step(const math::vec3& pivot, float ps0, float t, const math::vec2& direction) const -> std::pair<math::vec3, float>;
+        auto roll_step(const math::vec3& pivot, float t, const math::vec2& direction) const -> std::pair<math::vec3, float>;
 
-        math::mat4 _matrix { 1.f };
+        math::mat4 _matrix { 1.0f };
 
-        math::vec3   _position { };
-        math::vec3   _pivot    { };
+        math::vec3 _position { };
+        math::vec3 _pivot    { };
 
-        float        _rotation { };
-        float  _start_rotation { };
+        math::quat _orientation       { 1.0f };
+        math::quat _start_orientation { 1.0f };
+
         float  _animation_time { };
 
         math::vec2 _roll_direction { };
