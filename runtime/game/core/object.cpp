@@ -37,6 +37,7 @@ namespace core
         };
 
         _rolling        = true;
+        _start_rotation = _rotation;
         _roll_direction = direction;
         _animation_time = 0.0f;
     }
@@ -62,16 +63,12 @@ namespace core
             _rotation       = rotation;
         }
 
-        math::vec3 axis {};
-
-        if (_roll_direction.x != 0.0f)
+        const math::vec3 axis
         {
-            axis = { 0.0f, 0.0f, -_roll_direction.x };
-        }
-        else
-        {
-            axis = { _roll_direction.y, 0.0f, 0.0f };
-        }
+            _roll_direction.y,
+            0.0f,
+            -_roll_direction.x
+        };
 
         math::quat quat_rotation;
         quat_rotation.rotation(axis, rotation);
@@ -101,7 +98,7 @@ namespace core
             const auto base_phi = dir_x > 0.0f ? 3.0f * math::pi * 0.25f
                                                : math::pi * 0.25f;
             const auto phi = base_phi - theta * dir_x;
-            psi = ps0 - theta * dir_x;
+            psi = ps0 + theta;
 
             center =
             {
@@ -115,7 +112,7 @@ namespace core
             const auto base_phi = dir_z > 0.0f ? 3.0f * math::pi * 0.25f
                                                : math::pi * 0.25f;
             const auto phi = base_phi - theta * dir_z;
-            psi = ps0 - theta * dir_z;
+            psi = ps0 + theta;
 
             center =
             {
