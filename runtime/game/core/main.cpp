@@ -133,7 +133,7 @@ auto main() -> int32_t
     cube_vao.attach_elements(cube_ebo);
 
     cube_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
-    cube_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.u) });
+    cube_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.x) });
     cube_vao.attach({ 2, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
 
     opengl::Buffer ground_vbo;
@@ -150,7 +150,7 @@ auto main() -> int32_t
     ground_vao.attach_elements(ground_ebo);
 
     ground_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
-    ground_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.u) });
+    ground_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.x) });
     ground_vao.attach({ 2, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
 
     opengl::TextureSampler base_sampler;
