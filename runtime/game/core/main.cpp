@@ -13,6 +13,7 @@
 #include "opengl/constants/commands.hpp"
 #include "opengl/constants/common.hpp"
 #include "opengl/constants/pipeline.hpp"
+#include "opengl/constants/pipeline_debug.hpp"
 #include "opengl/constants/shader.hpp"
 #include "opengl/constants/texture.hpp"
 #include "opengl/constants/texture_sampler.hpp"
@@ -20,6 +21,7 @@
 #include "opengl/commands.hpp"
 #include "opengl/functions.hpp"
 #include "opengl/pipeline.hpp"
+#include "opengl/pipeline_debug.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
 #include "opengl/texture_sampler.hpp"
@@ -39,12 +41,15 @@ auto main() -> int32_t
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
 
-    constexpr core::window::configuration window_configuration
+    core::window::configuration window_configuration
     {
        "Game Framework",
         window_width,
         window_height
     };
+
+    //window_configuration.debug = true;
+
                    auto window_active { true };
     core::WindowManager window_manager;
                         window_manager.init(core::PlatformFactory::create(), window_configuration);
@@ -69,6 +74,11 @@ auto main() -> int32_t
     window_manager.window().show();
 
     opengl::Functions::init();
+
+    if (window_configuration.debug)
+    {
+        opengl::PipelineDebug::init();
+    }
 
     /* shaders */
 
@@ -214,6 +224,24 @@ auto main() -> int32_t
     input_manager.actions().assign(core::input::code::key_escape, [&] noexcept
     {
        window_active = false;
+    });
+
+    auto wireframe_mode { false };
+
+    input_manager.actions().assign(core::input::code::key_tab, [&] noexcept
+    {
+        if (wireframe_mode)
+        {
+            opengl::PipelineDebug::polygon_mode(opengl::constants::fill_mode);
+            //opengl::Pipeline::enable(opengl::constants::cull_test);
+        }
+        else
+        {
+            opengl::PipelineDebug::polygon_mode(opengl::constants::line_mode);
+            //opengl::Pipeline::disable(opengl::constants::cull_test);
+        }
+
+        wireframe_mode = !wireframe_mode;
     });
 
     opengl::Pipeline::enable(opengl::constants::depth_test);
