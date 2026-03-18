@@ -98,7 +98,7 @@ namespace core
         if (dir_x != 0.0f)
         {
             const auto base_phi = dir_x > 0.0f ? 3.0f * math::pi * 0.25f
-                                               : math::pi * 0.25f;
+                                               :        math::pi * 0.25f;
             const auto phi = base_phi - theta * dir_x;
 
             center =
@@ -111,7 +111,7 @@ namespace core
         else
         {
             const auto base_phi = dir_z > 0.0f ? 3.0f * math::pi * 0.25f
-                                               : math::pi * 0.25f;
+                                               :        math::pi * 0.25f;
             const auto phi = base_phi - theta * dir_z;
 
             center =
