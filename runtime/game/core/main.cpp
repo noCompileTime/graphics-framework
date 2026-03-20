@@ -73,12 +73,16 @@ auto main() -> int32_t
 
     window_manager.window().show();
 
+    // TODO begin - put this under some graphics class
+
     opengl::Functions::init();
 
     if (window_configuration.debug)
     {
         opengl::PipelineDebug::init();
     }
+
+    // TODO end - put this under some graphics class
 
     /* shaders */
 
