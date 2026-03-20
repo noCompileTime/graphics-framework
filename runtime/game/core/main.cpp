@@ -41,18 +41,18 @@ auto main() -> int32_t
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
 
-    core::window::configuration window_configuration
+    core::window::settings window_settings
     {
        "Game Framework",
         window_width,
         window_height
     };
 
-    //window_configuration.debug = true;
+    //window_settings.debug = true;
 
                    auto window_active { true };
     core::WindowManager window_manager;
-                        window_manager.init(core::PlatformFactory::create(), window_configuration);
+                        window_manager.init(core::PlatformFactory::create(), window_settings);
 
     core::InputManager  input_manager;
 
@@ -77,7 +77,7 @@ auto main() -> int32_t
 
     opengl::Functions::init();
 
-    if (window_configuration.debug)
+    if (window_settings.debug)
     {
         opengl::PipelineDebug::init();
     }
