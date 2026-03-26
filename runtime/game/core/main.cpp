@@ -54,16 +54,11 @@ auto main() -> int32_t
     core::WindowManager window_manager;
                         window_manager.init(core::PlatformFactory::create(), window_settings);
 
-    core::InputManager  input_manager;
+    core::InputManager input_manager;
 
-    window_manager.input().callbacks.on_key_press = [&](const core::input::code key, const core::input::state state) noexcept
+    window_manager.input().callbacks.on_btn_update = [&](const core::input::code code, const core::input::state state) noexcept
     {
-        input_manager.state().update(key, state);
-    };
-
-    window_manager.input().callbacks.on_btn_press = [&](const core::input::code btn, const core::input::state state) noexcept
-    {
-        input_manager.state().update(btn, state);
+        input_manager.state().update(code, state);
     };
 
     window_manager.events().callbacks.on_close = [&] noexcept
@@ -205,29 +200,29 @@ auto main() -> int32_t
 
     core::Object object;
 
-    input_manager.actions().assign(core::input::code::key_right, [&] noexcept
+    input_manager.actions().assign(core::input::code::key_d, [&] noexcept
     {
         object.roll({ 1.0f, 0.0f });
     });
 
-    input_manager.actions().assign(core::input::code::key_left, [&] noexcept
+    input_manager.actions().assign(core::input::code::key_a, [&] noexcept
     {
         object.roll({ -1.0f, 0.0f });
     });
 
-    input_manager.actions().assign(core::input::code::key_up, [&] noexcept
+    input_manager.actions().assign(core::input::code::key_w, [&] noexcept
     {
         object.roll({ 0.0f, -1.0f });
     });
 
-    input_manager.actions().assign(core::input::code::key_down, [&] noexcept
+    input_manager.actions().assign(core::input::code::key_s, [&] noexcept
     {
         object.roll({ 0.0f, 1.0f });
     });
 
     input_manager.actions().assign(core::input::code::key_escape, [&] noexcept
     {
-       window_active = false;
+        window_active = false;
     });
 
     auto wireframe_mode { false };
