@@ -230,12 +230,12 @@ auto main() -> int32_t
     {
         if (wireframe_mode)
         {
-            opengl::PipelineDebug::polygon(opengl::constants::fill_mode);
+            opengl::Pipeline::polygon(opengl::constants::fill_mode);
             //opengl::Pipeline::enable(opengl::constants::cull_test);
         }
         else
         {
-            opengl::PipelineDebug::polygon(opengl::constants::line_mode);
+            opengl::Pipeline::polygon(opengl::constants::line_mode);
             //opengl::Pipeline::disable(opengl::constants::cull_test);
         }
 
