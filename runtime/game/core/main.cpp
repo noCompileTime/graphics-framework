@@ -13,7 +13,6 @@
 #include "opengl/constants/commands.hpp"
 #include "opengl/constants/common.hpp"
 #include "opengl/constants/pipeline.hpp"
-#include "opengl/constants/pipeline_debug.hpp"
 #include "opengl/constants/shader.hpp"
 #include "opengl/constants/texture.hpp"
 #include "opengl/constants/texture_sampler.hpp"
