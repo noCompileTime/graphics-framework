@@ -16,6 +16,7 @@
 #include "opengl/constants/shader_stage.hpp"
 #include "opengl/constants/texture.hpp"
 #include "opengl/constants/sampler.hpp"
+#include "opengl/constants/pipeline_debug.hpp"
 
 #include "opengl/commands.hpp"
 #include "opengl/functions.hpp"
@@ -73,7 +74,10 @@ auto main() -> int32_t
 
     if (window_settings.debug)
     {
-        opengl::PipelineDebug::init();
+        opengl::Pipeline::enable(opengl::constants::debug_output);
+        //opengl::Pipeline::enable(opengl::constants::debug_output_synchronous);
+
+        opengl::PipelineDebug::enable();
     }
 
     // TODO end - put this under some graphics class
