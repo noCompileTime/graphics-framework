@@ -230,12 +230,12 @@ auto main() -> int32_t
     {
         if (wireframe_mode)
         {
-            opengl::Pipeline::polygon(opengl::constants::fill_mode);
+            opengl::Pipeline::polygon(opengl::constants::front_and_back, opengl::constants::fill_mode);
             //opengl::Pipeline::enable(opengl::constants::cull_test);
         }
         else
         {
-            opengl::Pipeline::polygon(opengl::constants::line_mode);
+            opengl::Pipeline::polygon(opengl::constants::front_and_back, opengl::constants::line_mode);
             //opengl::Pipeline::disable(opengl::constants::cull_test);
         }
 
@@ -269,13 +269,13 @@ auto main() -> int32_t
 
         transform_ubo.upload(core::as_bytes(object.matrix()), 0);
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::unsigned_int, 0);
 
            ground_vao.bind();
 
         transform_ubo.upload(core::as_bytes(ground_transform), 0);
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), opengl::constants::unsigned_int, 0);
 
         window_manager.context().update();
     }
