@@ -13,9 +13,9 @@
 #include "opengl/constants/commands.hpp"
 #include "opengl/constants/common.hpp"
 #include "opengl/constants/pipeline.hpp"
-#include "opengl/constants/shader.hpp"
+#include "opengl/constants/shader_stage.hpp"
 #include "opengl/constants/texture.hpp"
-#include "opengl/constants/texture_sampler.hpp"
+#include "opengl/constants/sampler.hpp"
 
 #include "opengl/commands.hpp"
 #include "opengl/functions.hpp"
@@ -23,7 +23,7 @@
 #include "opengl/pipeline_debug.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
-#include "opengl/texture_sampler.hpp"
+#include "opengl/sampler.hpp"
 #include "opengl/vertex_array.hpp"
 
 #include "tools/shaders_converter.hpp"
@@ -161,7 +161,7 @@ auto main() -> int32_t
     ground_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.x) });
     ground_vao.attach({ 2, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
 
-    opengl::TextureSampler base_sampler;
+    opengl::Sampler base_sampler;
     base_sampler.create();
     base_sampler.parameter(opengl::constants::min_filter, opengl::constants::nearest);
     base_sampler.parameter(opengl::constants::mag_filter, opengl::constants::nearest);
