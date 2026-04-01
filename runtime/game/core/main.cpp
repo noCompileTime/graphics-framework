@@ -243,7 +243,7 @@ auto main() -> int32_t
     });
 
     opengl::Pipeline::enable(opengl::constants::depth_test);
-    opengl::Pipeline::enable(opengl::constants:: cull_test);
+    opengl::Pipeline::enable(opengl::constants::cull_test);
 
     core::Time time;
     time.start();
