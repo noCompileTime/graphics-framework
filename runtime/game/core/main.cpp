@@ -82,27 +82,27 @@ auto main() -> int32_t
 
     opengl::ShaderStage base_shader_vertex { opengl::constants::vertex_shader };
     base_shader_vertex.create();
-    base_shader_vertex.source(core::File::read("shaders/base_shader.vert"));
+    base_shader_vertex.source(core::File::read("shaders/base_shader.vert"), opengl::constants::binary_format);
 
     opengl::ShaderStage base_shader_fragment { opengl::constants::fragment_shader };
     base_shader_fragment.create();
-    base_shader_fragment.source(core::File::read("shaders/base_shader.frag"));
+    base_shader_fragment.source(core::File::read("shaders/base_shader.frag"), opengl::constants::binary_format);
 
     opengl::ShaderStage sprite_shader_vertex { opengl::constants::vertex_shader };
     sprite_shader_vertex.create();
-    sprite_shader_vertex.source(core::File::read("shaders/base_sprite_shader.vert"));
+    sprite_shader_vertex.source(core::File::read("shaders/base_sprite_shader.vert"), opengl::constants::binary_format);
 
     opengl::ShaderStage sprite_shader_fragment { opengl::constants::fragment_shader };
     sprite_shader_fragment.create();
-    sprite_shader_fragment.source(core::File::read("shaders/base_sprite_shader.frag"));
+    sprite_shader_fragment.source(core::File::read("shaders/base_sprite_shader.frag"), opengl::constants::binary_format);
 
     opengl::ShaderStage model_shader_vertex { opengl::constants::vertex_shader };
     model_shader_vertex.create();
-    model_shader_vertex.source(core::File::read("shaders/base_model_shader.vert"));
+    model_shader_vertex.source(core::File::read("shaders/base_model_shader.vert"), opengl::constants::binary_format);
 
     opengl::ShaderStage model_shader_fragment { opengl::constants::fragment_shader };
     model_shader_fragment.create();
-    model_shader_fragment.source(core::File::read("shaders/base_model_shader.frag"));
+    model_shader_fragment.source(core::File::read("shaders/base_model_shader.frag"), opengl::constants::binary_format);
 
     opengl::Shader base_shader;
     base_shader.create();
