@@ -26,7 +26,7 @@
 
 #include "object.hpp"
 
-auto main() -> int32_t
+auto main() -> std::int32_t
 {
     tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders", 3600);
 
