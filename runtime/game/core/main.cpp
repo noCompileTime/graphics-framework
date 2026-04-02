@@ -167,22 +167,19 @@ auto main() -> std::int32_t
     base_texture.storage(base_image.width, base_image.height, opengl::constants::rgb8, 1);
     base_texture.upload(base_image.width, base_image.height, opengl::constants::rgb, 0, opengl::constants::unsigned_byte, base_image.pixels);
 
-    opengl::Buffer transform_ubo;
-    transform_ubo.create();
-    transform_ubo.storage(sizeof(math::mat4), opengl::constants::dynamic_draw);
-    transform_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::transform));
-
-    auto aspect_ratio = static_cast<float>(window_width) /
-                        static_cast<float>(window_height);
-
     core::data::camera camera_data;
+    camera_data.projection.perspective(math::radians(45.0f), static_cast<float>(window_width) / static_cast<float>(window_height), 0.1f, 100.0f);
     camera_data.view.translation({ 0.0f, -0.25f, -3.5f });
-    camera_data.projection.perspective(math::radians(45.0f), aspect_ratio, 0.1f, 100.0f);
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
     camera_ubo.storage(core::as_bytes(camera_data), opengl::constants::static_draw);
     camera_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::camera));
+
+    opengl::Buffer transform_ubo;
+    transform_ubo.create();
+    transform_ubo.storage(sizeof(math::mat4), opengl::constants::dynamic_draw);
+    transform_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::transform));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
