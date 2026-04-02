@@ -19,10 +19,10 @@
 #include "opengl/sampler.hpp"
 #include "opengl/vertex_array.hpp"
 
-#include "tools/shaders_converter.hpp"
-
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
+
+#include "tools/shaders_converter.hpp"
 
 #include "object.hpp"
 
