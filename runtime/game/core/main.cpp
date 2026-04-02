@@ -9,15 +9,7 @@
 #include "core/binding/buffer.hpp"
 #include "core/binding/texture.hpp"
 
-#include "opengl/constants/buffer.hpp"
-#include "opengl/constants/commands.hpp"
-#include "opengl/constants/common.hpp"
-#include "opengl/constants/pipeline.hpp"
-#include "opengl/constants/shader_stage.hpp"
-#include "opengl/constants/texture.hpp"
-#include "opengl/constants/sampler.hpp"
-#include "opengl/constants/pipeline_debug.hpp"
-
+#include "opengl/headers.hpp"
 #include "opengl/commands.hpp"
 #include "opengl/functions.hpp"
 #include "opengl/pipeline.hpp"
