@@ -64,9 +64,6 @@ auto main() -> std::int32_t
 
     if (window_settings.debug)
     {
-        opengl::Pipeline::enable(opengl::constants::debug_output);
-        //opengl::Pipeline::enable(opengl::constants::debug_output_synchronous);
-
         opengl::PipelineDebug::enable();
     }
 
