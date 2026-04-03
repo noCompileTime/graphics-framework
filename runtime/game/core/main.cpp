@@ -9,14 +9,14 @@
 #include "core/binding/buffer.hpp"
 #include "core/binding/texture.hpp"
 
-#include "opengl/headers.hpp"
 #include "opengl/commands.hpp"
 #include "opengl/functions.hpp"
+#include "opengl/headers.hpp"
 #include "opengl/pipeline.hpp"
 #include "opengl/pipeline_debug.hpp"
+#include "opengl/sampler.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/texture.hpp"
-#include "opengl/sampler.hpp"
 #include "opengl/vertex_array.hpp"
 
 #include "images/tga_image.hpp"
