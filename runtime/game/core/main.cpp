@@ -11,7 +11,7 @@
 
 #include "opengl/commands.hpp"
 #include "opengl/functions.hpp"
-#include "opengl/headers.hpp"
+#include "opengl/headers.hpp" // TODO to be removed at some point
 #include "opengl/pipeline.hpp"
 #include "opengl/pipeline_debug.hpp"
 #include "opengl/sampler.hpp"
