@@ -6,6 +6,8 @@
 #include "core/platform_factory.hpp"
 #include "core/window_manager.hpp"
 
+#include "core/shader_converter.hpp"
+
 #include "core/binding/buffer.hpp"
 #include "core/binding/texture.hpp"
 
@@ -22,13 +24,11 @@
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
 
-#include "tools/shaders_converter.hpp"
-
 #include "object.hpp"
 
 auto main() -> std::int32_t
 {
-    tools::ShadersConverter::convert_each(BASE_SHADERS_PATH, "shaders", 3600);
+    core::ShaderConverter::convert_each(BASE_SHADERS_PATH, "shaders", 3600);
 
     constexpr auto window_width  { 1280 };
     constexpr auto window_height {  720 };
