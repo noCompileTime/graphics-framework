@@ -185,7 +185,7 @@ auto main() -> std::int32_t
     axis_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
     axis_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
 
-    auto [debug_vertices, debug_elements] = core::Primitives::create_bouding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
+    auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
 
     opengl::Buffer debug_vbo;
     debug_vbo.create();
