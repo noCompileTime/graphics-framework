@@ -36,7 +36,7 @@ auto main() -> std::int32_t
 
     core::window::settings window_settings
     {
-        PROJECT_NAME, window_width, window_height
+        PROJECT_NAME, window_width, window_height, 0
     };
 
     //window_settings.debug = true;
@@ -185,7 +185,8 @@ auto main() -> std::int32_t
     axis_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
     axis_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
 
-    auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
+    //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
+    //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
 
     opengl::Buffer debug_vbo;
     debug_vbo.create();
@@ -289,6 +290,8 @@ auto main() -> std::int32_t
 
         wireframe_mode = !wireframe_mode;
     });
+
+    opengl::Pipeline::enable(opengl::constants::multisample);
 
     opengl::Pipeline::enable(opengl::constants::depth_test);
     opengl::Pipeline::enable(opengl::constants::cull_test);
