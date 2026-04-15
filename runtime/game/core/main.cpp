@@ -309,7 +309,7 @@ auto main() -> std::int32_t
 
                 object.update();
 
-        opengl::Commands::clear(0.105f, 0.235f, 0.325f, 1.0f);
+        opengl::Commands::clear(0.2745f, 0.5176f, 0.1961f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer | opengl::constants::depth_buffer);
 
          model_shader.bind();
