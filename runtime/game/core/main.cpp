@@ -222,7 +222,8 @@ auto main() -> std::int32_t
     x_view_rotation.rotation({ 1.0f, 0.0f, 0.0f }, math::radians( 45.0f));
     y_view_rotation.rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
 
-    auto view_matrix = (x_view_rotation * y_view_rotation).matrix();
+    //auto view_matrix = (x_view_rotation * y_view_rotation).matrix();
+    auto view_matrix = x_view_rotation.matrix();
          view_matrix.translation({ 0.0f, 0.0f, -5.0f });
 
     core::data::camera camera_data;
