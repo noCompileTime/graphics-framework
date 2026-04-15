@@ -188,21 +188,21 @@ auto main() -> std::int32_t
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
 
-    opengl::Buffer debug_vbo;
-    debug_vbo.create();
-    debug_vbo.storage(core::as_bytes(debug_vertices), opengl::constants::static_draw);
+    //opengl::Buffer debug_vbo;
+    //debug_vbo.create();
+    //debug_vbo.storage(core::as_bytes(debug_vertices), opengl::constants::static_draw);
 
-    opengl::Buffer debug_ebo;
-    debug_ebo.create();
-    debug_ebo.storage(core::as_bytes(debug_elements), opengl::constants::static_draw);
+    //opengl::Buffer debug_ebo;
+    //debug_ebo.create();
+    //debug_ebo.storage(core::as_bytes(debug_elements), opengl::constants::static_draw);
 
-    opengl::VertexArray debug_vao;
-    debug_vao.create();
-    debug_vao.attach_vertices(debug_vbo, sizeof(core::vertex::type::editor));
-    debug_vao.attach_elements(debug_ebo);
+    //opengl::VertexArray debug_vao;
+    //debug_vao.create();
+    //debug_vao.attach_vertices(debug_vbo, sizeof(core::vertex::type::editor));
+    //debug_vao.attach_elements(debug_ebo);
 
-    debug_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
-    debug_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
+    //debug_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
+    //debug_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
 
     opengl::Sampler base_sampler;
     base_sampler.create();
@@ -320,13 +320,13 @@ auto main() -> std::int32_t
 
         transform_ubo.upload(core::as_bytes(object.matrix()), 0);
 
-        //opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::unsigned_int, 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::unsigned_int, 0);
 
            ground_vao.bind();
 
         transform_ubo.upload(core::as_bytes(ground_transform), 0);
 
-        //opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), opengl::constants::unsigned_int, 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), opengl::constants::unsigned_int, 0);
 
         debug_shader.bind();
 
@@ -334,9 +334,9 @@ auto main() -> std::int32_t
 
         opengl::Commands::draw_elements(opengl::constants::lines, axis_elements.size(), opengl::constants::unsigned_int, 0);
 
-        debug_vao.bind();
+        //debug_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::lines, debug_elements.size(), opengl::constants::unsigned_int, 0);
+        //opengl::Commands::draw_elements(opengl::constants::lines, debug_elements.size(), opengl::constants::unsigned_int, 0);
 
         window_manager.context().update();
     }
