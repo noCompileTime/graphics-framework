@@ -167,7 +167,7 @@ auto main() -> std::int32_t
     ground_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
     ground_vao.attach({ 2, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.x) });
 
-    auto [axis_vertices, axis_elements] = core::Axis::create({ 10.0f, 10.0f, 10.0f });
+    auto [axis_vertices, axis_elements] = core::axis::create({ 10.0f, 10.0f, 10.0f });
 
     opengl::Buffer axis_vbo;
     axis_vbo.create();
