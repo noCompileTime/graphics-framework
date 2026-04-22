@@ -13,6 +13,7 @@
 #include "core/binding/texture.hpp"
 
 #include "opengl/commands.hpp"
+#include "opengl/framebuffer.hpp"
 #include "opengl/functions.hpp"
 #include "opengl/headers.hpp" // TODO to be removed at some point
 #include "opengl/pipeline.hpp"
@@ -128,6 +129,40 @@ auto main() -> std::int32_t
     model_shader.attach(model_shader_fragment);
     model_shader.link();
 
+    float view_scale  = 0.25f;
+    float view_width  = (float)window_width  * view_scale;
+    float view_height = (float)window_height * view_scale;
+
+    std::vector<core::vertex::type::sprite> view_vertices // TODO replace this with a create_sprite something
+    {
+        { { -view_width, -view_height }, { 0.0f, 1.0f } },
+        { {  view_width, -view_height }, { 1.0f, 1.0f } },
+        { {  view_width,  view_height }, { 1.0f, 0.0f } },
+        { { -view_width,  view_height }, { 0.0f, 0.0f } }
+    };
+
+    std::vector<std::uint32_t> view_elements
+    {
+        0, 2, 1,
+        0, 3, 2
+    };
+
+    opengl::Buffer view_vbo;
+    view_vbo.create();
+    view_vbo.storage(core::as_bytes(view_vertices), opengl::constants::static_draw);
+
+    opengl::Buffer view_ebo;
+    view_ebo.create();
+    view_ebo.storage(core::as_bytes(view_elements), opengl::constants::static_draw);
+
+    opengl::VertexArray view_vao;
+    view_vao.create();
+    view_vao.attach_vertices(view_vbo, sizeof(core::vertex::type::sprite));
+    view_vao.attach_elements(view_ebo);
+
+    view_vao.attach({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, position.x) });
+    view_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, texcoord.x) });
+
     auto [base_geometries] = models::ObjModel::load("base_scene_model.obj");
 
     auto [  cube_vertices,   cube_elements] = base_geometries[0];
@@ -216,6 +251,18 @@ auto main() -> std::int32_t
     base_texture.storage(base_image.width, base_image.height, opengl::constants::rgb8, 1);
     base_texture.upload(base_image.width, base_image.height, opengl::constants::rgb, 0, opengl::constants::unsigned_byte, base_image.pixels);
 
+    opengl::Texture game_view_texture { opengl::constants::texture_2d };
+    game_view_texture.create();
+    game_view_texture.storage(window_width, window_height, opengl::constants::rgb8, 1);
+
+    opengl::Framebuffer   default_fbo;
+    opengl::Framebuffer game_view_fbo;
+
+    game_view_fbo.create();
+    game_view_fbo.attach(game_view_texture, opengl::constants::color_attachment_0, 0);
+
+    assert(game_view_fbo.status() == opengl::constants::framebuffer_complete);
+
     math::quat x_view_rotation;
     math::quat y_view_rotation;
 
@@ -230,9 +277,12 @@ auto main() -> std::int32_t
     camera_data.view = view_matrix;
     camera_data.projection.perspective(math::radians(45.0f), static_cast<float>(window_width) / static_cast<float>(window_height), 0.1f, 100.0f);
 
+    core::data::camera view_camera_data;
+    view_camera_data.projection.ortho(0.0f, static_cast<float>(window_width), static_cast<float>(window_height), 0.0f);
+
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(core::as_bytes(camera_data), opengl::constants::static_draw);
+    camera_ubo.storage(core::as_bytes(camera_data), opengl::constants::dynamic_draw);
     camera_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::camera));
 
     opengl::Buffer transform_ubo;
@@ -294,7 +344,7 @@ auto main() -> std::int32_t
 
     opengl::Pipeline::enable(opengl::constants::multisample);
 
-    opengl::Pipeline::enable(opengl::constants::depth_test);
+    //opengl::Pipeline::enable(opengl::constants::depth_test);
     opengl::Pipeline::enable(opengl::constants::cull_test);
 
     core::Time time;
@@ -307,7 +357,9 @@ auto main() -> std::int32_t
         window_manager.update();
          input_manager.update();
 
-                object.update();
+               object.update();
+
+        game_view_fbo.bind();
 
         opengl::Commands::clear(0.2745f, 0.5176f, 0.1961f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer | opengl::constants::depth_buffer);
@@ -318,6 +370,8 @@ auto main() -> std::int32_t
          base_texture.bind(core::as_base(core::binding::texture::albedo));
 
              cube_vao.bind();
+
+        camera_ubo.upload(core::as_bytes(camera_data), 0);
 
         transform_ubo.upload(core::as_bytes(object.matrix()), 0);
 
@@ -338,6 +392,24 @@ auto main() -> std::int32_t
         //debug_vao.bind();
 
         //opengl::Commands::draw_elements(opengl::constants::lines, debug_elements.size(), opengl::constants::unsigned_int, 0);
+
+        default_fbo.bind();
+
+        sprite_shader.bind();
+
+        game_view_texture.bind(core::as_base(core::binding::texture::albedo));
+
+        camera_ubo.upload(core::as_bytes(view_camera_data), 0);
+
+        math::mat4 game_view_matrix { 1.0f };
+        game_view_matrix.translation({ (float)window_width  / 2.0f,
+                                       (float)window_height / 2.0f, 0.0f });
+
+        transform_ubo.upload(core::as_bytes(game_view_matrix), 0);
+
+        view_vao.bind();
+
+        opengl::Commands::draw_elements(opengl::constants::triangles, view_elements.size(), opengl::constants::unsigned_int, 0);
 
         window_manager.context().update();
     }
