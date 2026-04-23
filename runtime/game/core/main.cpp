@@ -20,7 +20,6 @@
 #include "opengl/pipeline_debug.hpp"
 #include "opengl/sampler.hpp"
 #include "opengl/shader.hpp"
-#include "opengl/texture.hpp"
 #include "opengl/vertex_array.hpp"
 
 #include "images/tga_image.hpp"
