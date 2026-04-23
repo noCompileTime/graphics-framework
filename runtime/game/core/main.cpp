@@ -349,10 +349,10 @@ auto main() -> std::int32_t
 
     while (window_active)
     {
-        time.tick();
+         time.tick();
 
-        window_manager.update();
-         input_manager.update();
+       window_manager.update();
+        input_manager.update();
 
                object.update();
 
