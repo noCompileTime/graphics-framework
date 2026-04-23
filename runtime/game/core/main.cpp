@@ -130,8 +130,8 @@ auto main() -> std::int32_t
     model_shader.link();
 
     float view_scale  = 0.25f;
-    float view_width  = (float)window_width  * view_scale;
-    float view_height = (float)window_height * view_scale;
+    float view_width  = static_cast<float>(window_width)  * view_scale;
+    float view_height = static_cast<float>(window_height) * view_scale;
 
     std::vector<core::vertex::type::sprite> view_vertices // TODO replace this with a create_sprite something
     {
@@ -157,8 +157,8 @@ auto main() -> std::int32_t
 
     opengl::VertexArray view_vao;
     view_vao.create();
-    view_vao.attach_vertices(view_vbo, sizeof(core::vertex::type::sprite));
-    view_vao.attach_elements(view_ebo);
+    view_vao.attach(view_vbo, sizeof(core::vertex::type::sprite));
+    view_vao.attach(view_ebo);
 
     view_vao.attach({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, position.x) });
     view_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, texcoord.x) });
@@ -178,8 +178,8 @@ auto main() -> std::int32_t
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
-    cube_vao.attach_vertices(cube_vbo, sizeof(core::vertex::type::model));
-    cube_vao.attach_elements(cube_ebo);
+    cube_vao.attach(cube_vbo, sizeof(core::vertex::type::model));
+    cube_vao.attach(cube_ebo);
 
     cube_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
     cube_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
@@ -195,8 +195,8 @@ auto main() -> std::int32_t
 
     opengl::VertexArray ground_vao;
     ground_vao.create();
-    ground_vao.attach_vertices(ground_vbo, sizeof(core::vertex::type::model));
-    ground_vao.attach_elements(ground_ebo);
+    ground_vao.attach(ground_vbo, sizeof(core::vertex::type::model));
+    ground_vao.attach(ground_ebo);
 
     ground_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
     ground_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
@@ -214,8 +214,8 @@ auto main() -> std::int32_t
 
     opengl::VertexArray axis_vao;
     axis_vao.create();
-    axis_vao.attach_vertices(axis_vbo, sizeof(core::vertex::type::editor));
-    axis_vao.attach_elements(axis_ebo);
+    axis_vao.attach(axis_vbo, sizeof(core::vertex::type::editor));
+    axis_vao.attach(axis_ebo);
 
     axis_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
     axis_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
@@ -233,8 +233,8 @@ auto main() -> std::int32_t
 
     //opengl::VertexArray debug_vao;
     //debug_vao.create();
-    //debug_vao.attach_vertices(debug_vbo, sizeof(core::vertex::type::editor));
-    //debug_vao.attach_elements(debug_ebo);
+    //debug_vao.attach(debug_vbo, sizeof(core::vertex::type::editor));
+    //debug_vao.attach(debug_ebo);
 
     //debug_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
     //debug_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
@@ -255,13 +255,11 @@ auto main() -> std::int32_t
     game_view_texture.create();
     game_view_texture.storage(window_width, window_height, opengl::constants::rgb8, 1);
 
-    opengl::Framebuffer   default_fbo;
     opengl::Framebuffer game_view_fbo;
-
     game_view_fbo.create();
     game_view_fbo.attach(game_view_texture, opengl::constants::color_attachment_0, 0);
 
-    assert(game_view_fbo.status() == opengl::constants::framebuffer_complete);
+    assert(game_view_fbo.complete());
 
     math::quat x_view_rotation;
     math::quat y_view_rotation;
@@ -393,7 +391,8 @@ auto main() -> std::int32_t
 
         //opengl::Commands::draw_elements(opengl::constants::lines, debug_elements.size(), opengl::constants::unsigned_int, 0);
 
-        default_fbo.bind();
+        opengl::Framebuffer default_fbo;
+                            default_fbo.bind();
 
         sprite_shader.bind();
 
@@ -401,9 +400,9 @@ auto main() -> std::int32_t
 
         camera_ubo.upload(core::as_bytes(view_camera_data), 0);
 
-        math::mat4 game_view_matrix { 1.0f };
-        game_view_matrix.translation({ (float)window_width  / 2.0f,
-                                       (float)window_height / 2.0f, 0.0f });
+        math::mat4 game_view_matrix  { 1.0f };
+        game_view_matrix.translation({ static_cast<float>(window_width)  / 2.0f,
+                                       static_cast<float>(window_height) / 2.0f, 0.0f });
 
         transform_ubo.upload(core::as_bytes(game_view_matrix), 0);
 
