@@ -128,9 +128,9 @@ auto main() -> std::int32_t
     model_shader.attach(model_shader_fragment);
     model_shader.link();
 
-    float view_scale  = 0.25f;
-    float view_width  = static_cast<float>(window_width)  * view_scale;
-    float view_height = static_cast<float>(window_height) * view_scale;
+    auto view_scale  = 0.25f;
+    auto view_width  = static_cast<float>(window_width)  * view_scale;
+    auto view_height = static_cast<float>(window_height) * view_scale;
 
     std::vector<core::vertex::type::sprite> view_vertices // TODO replace this with a create_sprite something
     {
