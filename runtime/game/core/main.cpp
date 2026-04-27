@@ -256,7 +256,7 @@ auto main() -> std::int32_t
 
     opengl::Framebuffer game_view_fbo;
     game_view_fbo.create();
-    game_view_fbo.attach(game_view_texture, opengl::constants::color_attachment_0, 0);
+    game_view_fbo.attach(game_view_texture, opengl::constants::color_attachment0, 0);
 
     assert(game_view_fbo.complete());
 
