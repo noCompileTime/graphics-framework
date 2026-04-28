@@ -340,8 +340,6 @@ auto main() -> std::int32_t
     });
 
     opengl::Pipeline::enable(opengl::constants::multisample);
-
-    //opengl::Pipeline::enable(opengl::constants::depth_test);
     opengl::Pipeline::enable(opengl::constants::cull_test);
 
     core::Time time;
@@ -361,12 +359,12 @@ auto main() -> std::int32_t
         opengl::Commands::clear(0.2745f, 0.5176f, 0.1961f, 1.0f);
         opengl::Commands::clear(opengl::constants::color_buffer | opengl::constants::depth_buffer);
 
-         model_shader.bind();
+        model_shader.bind();
 
-         base_sampler.bind(core::as_base(core::binding::texture::albedo));
-         base_texture.bind(core::as_base(core::binding::texture::albedo));
+        base_sampler.bind(core::as_base(core::binding::texture::albedo));
+        base_texture.bind(core::as_base(core::binding::texture::albedo));
 
-             cube_vao.bind();
+        cube_vao.bind();
 
         camera_ubo.upload(core::as_bytes(camera_data), 0);
 
@@ -374,7 +372,7 @@ auto main() -> std::int32_t
 
         opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::unsigned_int, 0);
 
-           ground_vao.bind();
+        ground_vao.bind();
 
         transform_ubo.upload(core::as_bytes(ground_transform), 0);
 
