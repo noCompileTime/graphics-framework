@@ -352,7 +352,7 @@ auto main() -> std::int32_t
        window_manager.update();
         input_manager.update();
 
-               object.update();
+        object.update();
 
         game_view_fbo.bind();
 
