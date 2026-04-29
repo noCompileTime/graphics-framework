@@ -27,7 +27,7 @@
     {
       "name": "release",
       "configurePreset": "default",
-      "configuration":   "Release"
+      "configuration": "Release"
     }
   ]
 }
