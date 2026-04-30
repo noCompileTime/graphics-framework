@@ -4,12 +4,13 @@
 #include "core/utility.hpp"
 
 #include "core/data/camera.hpp"
-#include "core/data/transform.hpp"
 #include "core/data/material.hpp"
+#include "core/data/transform.hpp"
 
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
 #include "core/window_manager.hpp"
+
 #include "core/shader_converter.hpp"
 
 #include "core/binding/buffer.hpp"
@@ -21,6 +22,7 @@
 #include "opengl/headers.hpp" // TODO to be removed at some point
 #include "opengl/pipeline.hpp"
 #include "opengl/pipeline_debug.hpp"
+#include "opengl/renderbuffer.hpp"
 #include "opengl/sampler.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/vertex_array.hpp"
@@ -131,16 +133,16 @@ auto main() -> std::int32_t
     model_shader.attach(model_shader_fragment);
     model_shader.link();
 
-    auto view_scale  = 0.25f;
+    auto view_scale  = 0.5f;
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
     std::vector<core::vertex::type::sprite> view_vertices // TODO replace this with a create_sprite something
     {
-        { { -view_width, -view_height }, { 0.0f, 1.0f } },
-        { {  view_width, -view_height }, { 1.0f, 1.0f } },
-        { {  view_width,  view_height }, { 1.0f, 0.0f } },
-        { { -view_width,  view_height }, { 0.0f, 0.0f } }
+        { { -view_width * 0.5f, -view_height * 0.5f }, { 0.0f, 1.0f } },
+        { {  view_width * 0.5f, -view_height * 0.5f }, { 1.0f, 1.0f } },
+        { {  view_width * 0.5f,  view_height * 0.5f }, { 1.0f, 0.0f } },
+        { { -view_width * 0.5f,  view_height * 0.5f }, { 0.0f, 0.0f } }
     };
 
     std::vector<std::uint32_t> view_elements
@@ -250,11 +252,16 @@ auto main() -> std::int32_t
 
     opengl::Texture game_view_texture { opengl::constants::texture_2d };
     game_view_texture.create();
-    game_view_texture.storage(window_width, window_height, opengl::constants::rgb8, 1);
+    game_view_texture.storage(view_width, view_height, opengl::constants::rgb8, 1);
+
+    opengl::Renderbuffer game_view_rbo;
+    game_view_rbo.create();
+    game_view_rbo.storage(view_width, view_height, opengl::constants::depth24);
 
     opengl::Framebuffer game_view_fbo;
     game_view_fbo.create();
     game_view_fbo.attach(game_view_texture, opengl::constants::color_attachment0, 0);
+    game_view_fbo.attach(game_view_rbo, opengl::constants::depth_attachment);
 
     assert(game_view_fbo.complete());
 
@@ -270,7 +277,7 @@ auto main() -> std::int32_t
 
     core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
     camera_data.view = view_matrix;
-    camera_data.projection.perspective(math::radians(45.0f), static_cast<float>(window_width) / static_cast<float>(window_height), 0.1f, 100.0f);
+    camera_data.projection.perspective(math::radians(45.0f), view_width / view_height, 0.1f, 100.0f);
 
     core::data::camera view_camera_data;
     view_camera_data.projection.ortho(0.0f, static_cast<float>(window_width), static_cast<float>(window_height), 0.0f);
@@ -337,8 +344,10 @@ auto main() -> std::int32_t
         wireframe_mode = !wireframe_mode;
     });
 
-    opengl::Pipeline::enable(opengl::constants::multisample);
-    opengl::Pipeline::enable(opengl::constants::cull_test);
+    constexpr float color[] { 0.2745f, 0.5176f, 0.1961f, 1.0f };
+
+    opengl::Pipeline::enable(opengl::constants::multisample); // TODO this also needs to be enabled per framebuffer? or we need it just in the game_view?
+    opengl::Pipeline::enable(opengl::constants::cull_test);   // TODO this also needs to be enabled per framebuffer? or we need it just in the game_view?
 
     core::Time time;
     time.start();
@@ -354,8 +363,12 @@ auto main() -> std::int32_t
 
         game_view_fbo.bind();
 
-        opengl::Commands::clear(0.2745f, 0.5176f, 0.1961f, 1.0f);
-        opengl::Commands::clear(opengl::constants::color_buffer | opengl::constants::depth_buffer);
+        opengl::Commands::viewport(0, 0, view_width, view_height);
+
+        game_view_fbo.clear(color, 0);
+        game_view_fbo.clear(1.0f);
+
+        opengl::Pipeline::enable(opengl::constants::depth_test);
 
         model_shader.bind();
 
@@ -389,6 +402,11 @@ auto main() -> std::int32_t
         opengl::Framebuffer default_fbo;
                             default_fbo.bind();
 
+        opengl::Commands::viewport(0, 0, window_width, window_height);
+        opengl::Commands::clear(opengl::constants::color_buffer);
+
+        opengl::Pipeline::disable(opengl::constants::depth_test); // TODO maybe this is not necesary anymore?
+
         sprite_shader.bind();
 
         game_view_texture.bind(core::as_base(core::binding::texture::albedo));
@@ -396,8 +414,8 @@ auto main() -> std::int32_t
         camera_ubo.upload(core::as_bytes(view_camera_data), 0);
 
         math::mat4 game_view_matrix  { 1.0f };
-        game_view_matrix.translation({ static_cast<float>(window_width)  / 2.0f,
-                                       static_cast<float>(window_height) / 2.0f, 0.0f });
+        game_view_matrix.translation({ static_cast<float>(window_width)  * 0.5f,
+                                       static_cast<float>(window_height) * 0.5f, 0.0f });
 
         transform_ubo.upload(core::as_bytes(game_view_matrix), 0);
 
