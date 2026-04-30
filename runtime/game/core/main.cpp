@@ -159,8 +159,8 @@ auto main() -> std::int32_t
     view_vao.attach(view_vbo, sizeof(core::vertex::type::sprite));
     view_vao.attach(view_ebo);
 
-    view_vao.attach({ 0, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, position.x) });
-    view_vao.attach({ 1, 2, opengl::constants::float_type, offsetof(core::vertex::type::sprite, texcoord.x) });
+    view_vao.attach({ 0, offsetof(core::vertex::type::sprite, position.x), 2, opengl::constants::float_type });
+    view_vao.attach({ 1, offsetof(core::vertex::type::sprite, texcoord.x), 2, opengl::constants::float_type });
 
     auto [base_geometries] = models::ObjModel::load("base_scene_model.obj");
 
@@ -180,9 +180,9 @@ auto main() -> std::int32_t
     cube_vao.attach(cube_vbo, sizeof(core::vertex::type::model));
     cube_vao.attach(cube_ebo);
 
-    cube_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
-    cube_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
-    cube_vao.attach({ 2, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.x) });
+    cube_vao.attach({ 0, offsetof(core::vertex::type::model, position.x), 3, opengl::constants::float_type });
+    cube_vao.attach({ 1, offsetof(core::vertex::type::model,   normal.x), 3, opengl::constants::float_type });
+    cube_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord.x), 2, opengl::constants::float_type });
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
@@ -197,9 +197,9 @@ auto main() -> std::int32_t
     ground_vao.attach(ground_vbo, sizeof(core::vertex::type::model));
     ground_vao.attach(ground_ebo);
 
-    ground_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::model, position.x) });
-    ground_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::model,   normal.x) });
-    ground_vao.attach({ 2, 2, opengl::constants::float_type, offsetof(core::vertex::type::model, texcoord.x) });
+    ground_vao.attach({ 0, offsetof(core::vertex::type::model, position.x), 3, opengl::constants::float_type });
+    ground_vao.attach({ 1, offsetof(core::vertex::type::model,   normal.x), 3, opengl::constants::float_type });
+    ground_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord.x), 2, opengl::constants::float_type });
 
     auto [axis_vertices, axis_elements] = core::Primitives::create_axis({ 10.0f, 10.0f, 10.0f });
 
@@ -216,8 +216,8 @@ auto main() -> std::int32_t
     axis_vao.attach(axis_vbo, sizeof(core::vertex::type::editor));
     axis_vao.attach(axis_ebo);
 
-    axis_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
-    axis_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
+    axis_vao.attach({ 0, offsetof(core::vertex::type::editor, position.x), 3, opengl::constants::float_type });
+    axis_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra.x), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
@@ -235,8 +235,8 @@ auto main() -> std::int32_t
     //debug_vao.attach(debug_vbo, sizeof(core::vertex::type::editor));
     //debug_vao.attach(debug_ebo);
 
-    //debug_vao.attach({ 0, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, position.x) });
-    //debug_vao.attach({ 1, 3, opengl::constants::float_type, offsetof(core::vertex::type::editor, extra.x) });
+    //debug_vao.attach({ 0, offsetof(core::vertex::type::editor, position.x), 3, opengl::constants::float_type });
+    //debug_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra.x), 3, opengl::constants::float_type });
 
     opengl::Sampler base_sampler;
     base_sampler.create();
