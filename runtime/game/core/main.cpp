@@ -161,9 +161,8 @@ auto main() -> std::int32_t
     view_vao.create();
     view_vao.attach(view_vbo, sizeof(core::vertex::type::sprite));
     view_vao.attach(view_ebo);
-
-    view_vao.attach({ 0, offsetof(core::vertex::type::sprite, position.x), 2, opengl::constants::float_type });
-    view_vao.attach({ 1, offsetof(core::vertex::type::sprite, texcoord.x), 2, opengl::constants::float_type });
+    view_vao.attach({ 0, offsetof(core::vertex::type::sprite, position), 2, opengl::constants::float_type });
+    view_vao.attach({ 1, offsetof(core::vertex::type::sprite, texcoord), 2, opengl::constants::float_type });
 
     auto [base_geometries] = models::ObjModel::load("base_scene_model.obj");
 
@@ -182,10 +181,9 @@ auto main() -> std::int32_t
     cube_vao.create();
     cube_vao.attach(cube_vbo, sizeof(core::vertex::type::model));
     cube_vao.attach(cube_ebo);
-
-    cube_vao.attach({ 0, offsetof(core::vertex::type::model, position.x), 3, opengl::constants::float_type });
-    cube_vao.attach({ 1, offsetof(core::vertex::type::model,   normal.x), 3, opengl::constants::float_type });
-    cube_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord.x), 2, opengl::constants::float_type });
+    cube_vao.attach({ 0, offsetof(core::vertex::type::model, position), 3, opengl::constants::float_type });
+    cube_vao.attach({ 1, offsetof(core::vertex::type::model,   normal), 3, opengl::constants::float_type });
+    cube_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord), 2, opengl::constants::float_type });
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
@@ -199,10 +197,9 @@ auto main() -> std::int32_t
     ground_vao.create();
     ground_vao.attach(ground_vbo, sizeof(core::vertex::type::model));
     ground_vao.attach(ground_ebo);
-
-    ground_vao.attach({ 0, offsetof(core::vertex::type::model, position.x), 3, opengl::constants::float_type });
-    ground_vao.attach({ 1, offsetof(core::vertex::type::model,   normal.x), 3, opengl::constants::float_type });
-    ground_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord.x), 2, opengl::constants::float_type });
+    ground_vao.attach({ 0, offsetof(core::vertex::type::model, position), 3, opengl::constants::float_type });
+    ground_vao.attach({ 1, offsetof(core::vertex::type::model,   normal), 3, opengl::constants::float_type });
+    ground_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord), 2, opengl::constants::float_type });
 
     auto [axis_vertices, axis_elements] = core::Primitives::create_axis({ 10.0f, 10.0f, 10.0f });
 
@@ -218,9 +215,8 @@ auto main() -> std::int32_t
     axis_vao.create();
     axis_vao.attach(axis_vbo, sizeof(core::vertex::type::editor));
     axis_vao.attach(axis_ebo);
-
-    axis_vao.attach({ 0, offsetof(core::vertex::type::editor, position.x), 3, opengl::constants::float_type });
-    axis_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra.x), 3, opengl::constants::float_type });
+    axis_vao.attach({ 0, offsetof(core::vertex::type::editor, position), 3, opengl::constants::float_type });
+    axis_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
@@ -237,9 +233,8 @@ auto main() -> std::int32_t
     //debug_vao.create();
     //debug_vao.attach(debug_vbo, sizeof(core::vertex::type::editor));
     //debug_vao.attach(debug_ebo);
-
-    //debug_vao.attach({ 0, offsetof(core::vertex::type::editor, position.x), 3, opengl::constants::float_type });
-    //debug_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra.x), 3, opengl::constants::float_type });
+    //debug_vao.attach({ 0, offsetof(core::vertex::type::editor, position), 3, opengl::constants::float_type });
+    //debug_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra), 3, opengl::constants::float_type });
 
     opengl::Sampler base_sampler;
     base_sampler.create();
