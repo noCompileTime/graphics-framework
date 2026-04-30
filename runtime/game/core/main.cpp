@@ -279,7 +279,7 @@ auto main() -> std::int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(core::as_bytes(camera_data), opengl::constants::dynamic_draw);
+    camera_ubo.storage(core::as_bytes(camera_data), opengl::constants::dynamic_draw); // TODO use the version with the size
     camera_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::camera));
 
     opengl::Buffer transform_ubo;
@@ -370,23 +370,23 @@ auto main() -> std::int32_t
 
         transform_ubo.upload(core::as_bytes(object.matrix()), 0);
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, cube_elements.size(), opengl::constants::unsigned_int, 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, cube_elements.size(), opengl::constants::unsigned_int);
 
         ground_vao.bind();
 
         transform_ubo.upload(core::as_bytes(ground_transform), 0);
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, ground_elements.size(), opengl::constants::unsigned_int, 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, ground_elements.size(), opengl::constants::unsigned_int);
 
         debug_shader.bind();
 
         axis_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::lines, axis_elements.size(), opengl::constants::unsigned_int, 0);
+        opengl::Commands::draw_elements(opengl::constants::lines, 0, axis_elements.size(), opengl::constants::unsigned_int);
 
         //debug_vao.bind();
 
-        //opengl::Commands::draw_elements(opengl::constants::lines, debug_elements.size(), opengl::constants::unsigned_int, 0);
+        //opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size(), opengl::constants::unsigned_int);
 
         opengl::Framebuffer default_fbo;
                             default_fbo.bind();
@@ -405,7 +405,7 @@ auto main() -> std::int32_t
 
         view_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, view_elements.size(), opengl::constants::unsigned_int, 0);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size(), opengl::constants::unsigned_int);
 
         window_manager.context().update();
     }
