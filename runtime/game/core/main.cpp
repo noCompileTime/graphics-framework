@@ -3,10 +3,13 @@
 #include "core/time.hpp"
 #include "core/utility.hpp"
 
+#include "core/data/camera.hpp"
+#include "core/data/transform.hpp"
+#include "core/data/material.hpp"
+
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
 #include "core/window_manager.hpp"
-
 #include "core/shader_converter.hpp"
 
 #include "core/binding/buffer.hpp"
@@ -270,7 +273,7 @@ auto main() -> std::int32_t
     auto view_matrix = x_view_rotation.matrix();
          view_matrix.translation({ 0.0f, 0.0f, -5.0f });
 
-    core::data::camera camera_data;
+    core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
     camera_data.view = view_matrix;
     camera_data.projection.perspective(math::radians(45.0f), static_cast<float>(window_width) / static_cast<float>(window_height), 0.1f, 100.0f);
 
@@ -279,17 +282,17 @@ auto main() -> std::int32_t
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(core::as_bytes(camera_data), opengl::constants::dynamic_draw); // TODO use the version with the size
+    camera_ubo.storage(sizeof(core::data::camera), opengl::constants::dynamic_draw);
     camera_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::camera));
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
-    transform_ubo.storage(sizeof(math::mat4), opengl::constants::dynamic_draw);
+    transform_ubo.storage(sizeof(core::data::transform), opengl::constants::dynamic_draw);
     transform_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::transform));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
-    material_ubo.storage(sizeof(math::rgb), opengl::constants::dynamic_draw);
+    material_ubo.storage(sizeof(core::data::material), opengl::constants::dynamic_draw);
     material_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::material));
 
     math::mat4 ground_transform { 1.0f };
