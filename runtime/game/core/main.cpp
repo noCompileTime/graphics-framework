@@ -133,7 +133,7 @@ auto main() -> std::int32_t
     model_shader.attach(model_shader_fragment);
     model_shader.link();
 
-    auto view_scale  = 0.5f;
+    auto view_scale  = 1.0f;
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
