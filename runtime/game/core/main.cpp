@@ -372,20 +372,20 @@ auto main() -> std::int32_t
 
         model_shader.bind();
 
+        camera_ubo.upload(core::as_bytes(camera_data), offsetof(core::data::camera, view));
+
         base_sampler.bind(core::as_base(core::binding::texture::albedo));
         base_texture.bind(core::as_base(core::binding::texture::albedo));
 
         cube_vao.bind();
 
-        camera_ubo.upload(core::as_bytes(camera_data), 0);
-
-        transform_ubo.upload(core::as_bytes(object.matrix()), 0);
+        transform_ubo.upload(core::as_bytes(object.matrix()), offsetof(core::data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, cube_elements.size(), opengl::constants::unsigned_int);
 
         ground_vao.bind();
 
-        transform_ubo.upload(core::as_bytes(ground_transform), 0);
+        transform_ubo.upload(core::as_bytes(ground_transform), offsetof(core::data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, ground_elements.size(), opengl::constants::unsigned_int);
 
@@ -411,13 +411,13 @@ auto main() -> std::int32_t
 
         game_view_texture.bind(core::as_base(core::binding::texture::albedo));
 
-        camera_ubo.upload(core::as_bytes(view_camera_data), 0);
+        camera_ubo.upload(core::as_bytes(view_camera_data), offsetof(core::data::camera, view));
 
         math::mat4 game_view_matrix  { 1.0f };
         game_view_matrix.translation({ static_cast<float>(window_width)  * 0.5f,
                                        static_cast<float>(window_height) * 0.5f, 0.0f });
 
-        transform_ubo.upload(core::as_bytes(game_view_matrix), 0);
+        transform_ubo.upload(core::as_bytes(game_view_matrix), offsetof(core::data::transform, model));
 
         view_vao.bind();
 
