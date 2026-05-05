@@ -381,23 +381,23 @@ auto main() -> std::int32_t
 
         transform_ubo.upload(core::as_bytes(object.matrix()), offsetof(core::data::transform, model));
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, cube_elements.size(), opengl::constants::unsigned_int);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, cube_elements.size());
 
         ground_vao.bind();
 
         transform_ubo.upload(core::as_bytes(ground_transform), offsetof(core::data::transform, model));
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, ground_elements.size(), opengl::constants::unsigned_int);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, ground_elements.size());
 
         debug_shader.bind();
 
         axis_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::lines, 0, axis_elements.size(), opengl::constants::unsigned_int);
+        opengl::Commands::draw_elements(opengl::constants::lines, 0, axis_elements.size());
 
         //debug_vao.bind();
 
-        //opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size(), opengl::constants::unsigned_int);
+        //opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size());
 
         opengl::Framebuffer default_fbo;
                             default_fbo.bind();
@@ -421,7 +421,7 @@ auto main() -> std::int32_t
 
         view_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size(), opengl::constants::unsigned_int);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size());
 
         window_manager.context().update();
     }
