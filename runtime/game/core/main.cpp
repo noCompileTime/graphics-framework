@@ -4,6 +4,7 @@
 #include "core/utility.hpp"
 
 #include "core/data/camera.hpp"
+#include "core/data/light.hpp"
 #include "core/data/material.hpp"
 #include "core/data/transform.hpp"
 
@@ -282,6 +283,17 @@ auto main() -> std::int32_t
     core::data::camera view_camera_data;
     view_camera_data.projection.ortho(0.0f, static_cast<float>(window_width), static_cast<float>(window_height), 0.0f);
 
+    core::data::light light_data
+    {
+        { 1.0f, 1.0f, 1.0f }, 0.35f,
+        { 1.0f, -1.0f, 0.0f }
+    };
+
+    opengl::Buffer light_ubo;
+    light_ubo.create();
+    light_ubo.storage(sizeof(core::data::light), opengl::constants::dynamic_draw);
+    light_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::light));
+
     opengl::Buffer camera_ubo;
     camera_ubo.create();
     camera_ubo.storage(sizeof(core::data::camera), opengl::constants::dynamic_draw);
@@ -372,6 +384,8 @@ auto main() -> std::int32_t
 
         model_shader.bind();
 
+        light_ubo.upload(core::as_bytes(light_data), offsetof(core::data::light, color));
+
         camera_ubo.upload(core::as_bytes(camera_data), offsetof(core::data::camera, view));
 
         base_sampler.bind(core::as_base(core::binding::texture::albedo));
@@ -391,9 +405,9 @@ auto main() -> std::int32_t
 
         debug_shader.bind();
 
-        axis_vao.bind();
+        //axis_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::lines, 0, axis_elements.size());
+        //opengl::Commands::draw_elements(opengl::constants::lines, 0, axis_elements.size());
 
         //debug_vao.bind();
 
