@@ -216,10 +216,10 @@ auto main() -> std::int32_t
 
     opengl::VertexArray axis_vao;
     axis_vao.create();
-    axis_vao.attach(axis_vbo, sizeof(core::vertex::type::editor));
+    axis_vao.attach(axis_vbo, sizeof(core::vertex::type::basic));
     axis_vao.attach(axis_ebo);
-    axis_vao.attach({ 0, offsetof(core::vertex::type::editor, position), 3, opengl::constants::float_type });
-    axis_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra), 3, opengl::constants::float_type });
+    axis_vao.attach({ 0, offsetof(core::vertex::type::basic, position), 3, opengl::constants::float_type });
+    axis_vao.attach({ 1, offsetof(core::vertex::type::basic,    extra), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
