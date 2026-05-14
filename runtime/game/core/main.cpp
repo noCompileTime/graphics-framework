@@ -283,9 +283,9 @@ auto main() -> std::int32_t
     core::data::camera view_camera_data;
     view_camera_data.projection.ortho(0.0f, static_cast<float>(window_width), static_cast<float>(window_height), 0.0f);
 
-    core::data::light light_data
+    constexpr core::data::light light_data
     {
-        { 1.0f, 1.0f, 1.0f }, 0.35f,
+        { 1.0f,  1.0f, 1.0f }, 0.35f,
         { 1.0f, -1.0f, 0.0f }
     };
 
