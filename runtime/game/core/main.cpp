@@ -375,7 +375,7 @@ auto main() -> std::int32_t
 
         game_view_fbo.bind();
 
-        opengl::Commands::viewport(0, 0, view_width, view_height);
+        opengl::Commands::viewport(0, 0, static_cast<int32_t>(view_width), static_cast<int32_t>(view_height));
 
         game_view_fbo.clear(color, 0);
         game_view_fbo.clear(1.0f);
