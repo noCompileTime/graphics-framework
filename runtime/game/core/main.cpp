@@ -138,7 +138,7 @@ auto main() -> std::int32_t
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
-    std::vector<core::vertex::type::sprite> view_vertices // TODO replace this with a create_sprite something
+    std::vector<geometry::vertex::sprite> view_vertices // TODO replace this with a create_sprite something
     {
         { { -view_width * 0.5f, -view_height * 0.5f }, { 0.0f, 1.0f } },
         { {  view_width * 0.5f, -view_height * 0.5f }, { 1.0f, 1.0f } },
@@ -162,10 +162,10 @@ auto main() -> std::int32_t
 
     opengl::VertexArray view_vao;
     view_vao.create();
-    view_vao.attach(view_vbo, sizeof(core::vertex::type::sprite));
+    view_vao.attach(view_vbo, sizeof(geometry::vertex::sprite));
     view_vao.attach(view_ebo);
-    view_vao.attach({ 0, offsetof(core::vertex::type::sprite, position), 2, opengl::constants::float_type });
-    view_vao.attach({ 1, offsetof(core::vertex::type::sprite, texcoord), 2, opengl::constants::float_type });
+    view_vao.attach({ 0, offsetof(geometry::vertex::sprite, position), 2, opengl::constants::float_type });
+    view_vao.attach({ 1, offsetof(geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
 
     auto [base_geometries] = models::ObjModel::load("base_scene_model.obj");
 
@@ -182,11 +182,11 @@ auto main() -> std::int32_t
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
-    cube_vao.attach(cube_vbo, sizeof(core::vertex::type::model));
+    cube_vao.attach(cube_vbo, sizeof(geometry::vertex::model));
     cube_vao.attach(cube_ebo);
-    cube_vao.attach({ 0, offsetof(core::vertex::type::model, position), 3, opengl::constants::float_type });
-    cube_vao.attach({ 1, offsetof(core::vertex::type::model,   normal), 3, opengl::constants::float_type });
-    cube_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord), 2, opengl::constants::float_type });
+    cube_vao.attach({ 0, offsetof(geometry::vertex::model, position), 3, opengl::constants::float_type });
+    cube_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
+    cube_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
@@ -198,13 +198,13 @@ auto main() -> std::int32_t
 
     opengl::VertexArray ground_vao;
     ground_vao.create();
-    ground_vao.attach(ground_vbo, sizeof(core::vertex::type::model));
+    ground_vao.attach(ground_vbo, sizeof(geometry::vertex::model));
     ground_vao.attach(ground_ebo);
-    ground_vao.attach({ 0, offsetof(core::vertex::type::model, position), 3, opengl::constants::float_type });
-    ground_vao.attach({ 1, offsetof(core::vertex::type::model,   normal), 3, opengl::constants::float_type });
-    ground_vao.attach({ 2, offsetof(core::vertex::type::model, texcoord), 2, opengl::constants::float_type });
+    ground_vao.attach({ 0, offsetof(geometry::vertex::model, position), 3, opengl::constants::float_type });
+    ground_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
+    ground_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
 
-    auto [axis_vertices, axis_elements] = core::Primitives::create_axis({ 10.0f, 10.0f, 10.0f });
+    auto [axis_vertices, axis_elements] = geometry::Primitives::create_axis({ 10.0f, 10.0f, 10.0f });
 
     opengl::Buffer axis_vbo;
     axis_vbo.create();
@@ -216,10 +216,10 @@ auto main() -> std::int32_t
 
     opengl::VertexArray axis_vao;
     axis_vao.create();
-    axis_vao.attach(axis_vbo, sizeof(core::vertex::type::basic));
+    axis_vao.attach(axis_vbo, sizeof(geometry::vertex::basic));
     axis_vao.attach(axis_ebo);
-    axis_vao.attach({ 0, offsetof(core::vertex::type::basic, position), 3, opengl::constants::float_type });
-    axis_vao.attach({ 1, offsetof(core::vertex::type::basic,    extra), 3, opengl::constants::float_type });
+    axis_vao.attach({ 0, offsetof(geometry::vertex::basic, position), 3, opengl::constants::float_type });
+    axis_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
