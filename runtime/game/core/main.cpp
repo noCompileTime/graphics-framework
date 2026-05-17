@@ -1,5 +1,4 @@
 #include "core/file.hpp"
-#include "core/primitives.hpp"
 #include "core/time.hpp"
 #include "core/utility.hpp"
 
@@ -27,6 +26,8 @@
 #include "opengl/sampler.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/vertex_array.hpp"
+
+#include "geometry/primitives.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
