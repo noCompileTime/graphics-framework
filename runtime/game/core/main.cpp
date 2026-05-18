@@ -28,6 +28,7 @@
 #include "opengl/vertex_array.hpp"
 
 #include "geometry/primitives.hpp"
+#include "geometry/sprites.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
@@ -139,19 +140,7 @@ auto main() -> std::int32_t
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
-    std::vector<geometry::vertex::sprite> view_vertices // TODO replace this with a create_sprite something
-    {
-        { { -view_width * 0.5f, -view_height * 0.5f }, { 0.0f, 1.0f } },
-        { {  view_width * 0.5f, -view_height * 0.5f }, { 1.0f, 1.0f } },
-        { {  view_width * 0.5f,  view_height * 0.5f }, { 1.0f, 0.0f } },
-        { { -view_width * 0.5f,  view_height * 0.5f }, { 0.0f, 0.0f } }
-    };
-
-    std::vector<std::uint32_t> view_elements
-    {
-        0, 2, 1,
-        0, 3, 2
-    };
+    auto [view_vertices, view_elements] = geometry::Sprites::create(view_width, view_height);
 
     opengl::Buffer view_vbo;
     view_vbo.create();
@@ -244,6 +233,30 @@ auto main() -> std::int32_t
     base_sampler.create();
     base_sampler.parameter(opengl::constants::min_filter, opengl::constants::nearest);
     base_sampler.parameter(opengl::constants::mag_filter, opengl::constants::nearest);
+
+    auto logo_img = images::TgaImage::load("logo.tga");
+
+    opengl::Texture logo_texture { opengl::constants::texture_2d };
+    logo_texture.create();
+    logo_texture.storage(logo_img.width, logo_img.height, opengl::constants::rgba8, 1);
+    logo_texture.upload(logo_img.width, logo_img.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_img.pixels);
+
+    auto [logo_vertices, logo_elements] = geometry::Sprites::create(logo_img.width, logo_img.height);
+
+    opengl::Buffer logo_vbo;
+    logo_vbo.create();
+    logo_vbo.storage(core::as_bytes(logo_vertices), opengl::constants::static_draw);
+
+    opengl::Buffer logo_ebo;
+    logo_ebo.create();
+    logo_ebo.storage(core::as_bytes(logo_elements), opengl::constants::static_draw);
+
+    opengl::VertexArray logo_vao;
+    logo_vao.create();
+    logo_vao.attach(logo_vbo, sizeof(geometry::vertex::sprite));
+    logo_vao.attach(logo_ebo);
+    logo_vao.attach({ 0, offsetof(geometry::vertex::sprite, position), 2, opengl::constants::float_type });
+    logo_vao.attach({ 1, offsetof(geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
 
     auto base_image = images::TgaImage::load("base_cube_albedo.tga");
 
@@ -359,8 +372,11 @@ auto main() -> std::int32_t
 
     constexpr float color[] { 0.2745f, 0.5176f, 0.1961f, 1.0f };
 
+    opengl::Pipeline::enable(opengl::constants::blend_mode);
     opengl::Pipeline::enable(opengl::constants::multisample); // TODO this also needs to be enabled per framebuffer? or we need it just in the game_view?
     opengl::Pipeline::enable(opengl::constants::cull_test);   // TODO this also needs to be enabled per framebuffer? or we need it just in the game_view?
+
+    opengl::Pipeline::blend(opengl::constants::src_alpha, opengl::constants::one_minus_src_alpha);
 
     core::Time time;
     time.start();
@@ -428,15 +444,23 @@ auto main() -> std::int32_t
 
         camera_ubo.upload(core::as_bytes(view_camera_data), offsetof(core::data::camera, view));
 
-        math::mat4 game_view_matrix  { 1.0f };
-        game_view_matrix.translation({ static_cast<float>(window_width)  * 0.5f,
-                                       static_cast<float>(window_height) * 0.5f, 0.0f });
+        math::mat4 game_view_matrix { 1.0f };
 
         transform_ubo.upload(core::as_bytes(game_view_matrix), offsetof(core::data::transform, model));
 
         view_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size());
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * geometry::primitive::triangle::elements);
+
+        logo_texture.bind(core::as_base(core::binding::texture::albedo));
+
+        math::mat4 logo_transform { 0.5f };
+
+        transform_ubo.upload(core::as_bytes(logo_transform), offsetof(core::data::transform, model));
+
+        logo_vao.bind();
+
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * geometry::primitive::triangle::elements);
 
         window_manager.context().update();
     }
