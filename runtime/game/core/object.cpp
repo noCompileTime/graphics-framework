@@ -57,8 +57,7 @@ namespace core
 
         const math::vec3 axis
         {
-            _roll_direction.y,
-            0.0f,
+            _roll_direction.y, 0.0f,
             -_roll_direction.x
         };
 
@@ -76,7 +75,7 @@ namespace core
             _orientation    = orientation;
         }
 
-        _matrix = orientation.matrix();
+        _matrix = math::matrix(orientation);
         _matrix.translation({ center.x, center.y, center.z });
     }
 
