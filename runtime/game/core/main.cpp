@@ -27,9 +27,9 @@
 #include "opengl/shader.hpp"
 #include "opengl/vertex_array.hpp"
 
+#include "geometry/gizmo.hpp"
 #include "geometry/primitive.hpp"
 #include "geometry/sprite.hpp"
-#include "geometry/gizmo.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
