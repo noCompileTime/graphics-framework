@@ -195,7 +195,7 @@ auto main() -> int32_t
     ground_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
     ground_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
 
-    auto [axis_vertices, axis_elements] = geometry::Primitive::axis({ 10.0f, 10.0f, 10.0f });
+    auto [axis_vertices, axis_elements] = geometry::Gizmo::axis({ 10.0f, 10.0f, 10.0f });
 
     opengl::Buffer axis_vbo;
     axis_vbo.create();
