@@ -27,8 +27,8 @@
 #include "opengl/shader.hpp"
 #include "opengl/vertex_array.hpp"
 
-#include "geometry/primitives.hpp"
-#include "geometry/sprites.hpp"
+#include "geometry/primitive.hpp"
+#include "geometry/sprite.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
@@ -140,7 +140,7 @@ auto main() -> int32_t
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
-    auto [view_vertices, view_elements] = geometry::Sprites::create(view_width, view_height);
+    auto [view_vertices, view_elements] = geometry::Sprite::create(view_width, view_height);
 
     opengl::Buffer view_vbo;
     view_vbo.create();
@@ -194,7 +194,7 @@ auto main() -> int32_t
     ground_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
     ground_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
 
-    auto [axis_vertices, axis_elements] = geometry::Primitives::create_axis({ 10.0f, 10.0f, 10.0f });
+    auto [axis_vertices, axis_elements] = geometry::Primitive::axis({ 10.0f, 10.0f, 10.0f });
 
     opengl::Buffer axis_vbo;
     axis_vbo.create();
@@ -241,7 +241,7 @@ auto main() -> int32_t
     logo_texture.storage(logo_img.width, logo_img.height, opengl::constants::rgba8, 1);
     logo_texture.upload(logo_img.width, logo_img.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_img.pixels);
 
-    auto [logo_vertices, logo_elements] = geometry::Sprites::create(logo_img.width, logo_img.height);
+    auto [logo_vertices, logo_elements] = geometry::Sprite::create(logo_img.width, logo_img.height);
 
     opengl::Buffer logo_vbo;
     logo_vbo.create();
@@ -287,7 +287,7 @@ auto main() -> int32_t
     y_view_rotation.rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
 
     //auto view_matrix = (x_view_rotation * y_view_rotation).matrix();
-    auto view_matrix = x_view_rotation.matrix();
+    auto view_matrix = math::matrix(x_view_rotation);
          view_matrix.translation({ 0.0f, 0.0f, -5.0f });
 
     core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
