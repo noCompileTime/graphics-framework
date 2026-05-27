@@ -8,6 +8,14 @@
 
 Coming soon
 
+## Modules
+
+* [common](https://github.com/noCompileTimes/common-module)
+* [graphics](https://github.com/noCompileTimes/graphics-module)
+* [platforms](https://github.com/noCompileTimes/platforms-module)
+* [resources](https://github.com/noCompileTimes/resources-module)
+* [tools](https://github.com/noCompileTimes/tools-module)
+
 ## Reporting bugs
 
 Please report any [issues](https://github.com/noCompileTimes/game-framework/issues) you encounter,
