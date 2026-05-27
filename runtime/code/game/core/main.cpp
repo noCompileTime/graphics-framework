@@ -235,14 +235,14 @@ auto main() -> int32_t
     base_sampler.parameter(opengl::constants::min_filter, opengl::constants::nearest);
     base_sampler.parameter(opengl::constants::mag_filter, opengl::constants::nearest);
 
-    auto logo_img = images::TgaImage::load("logo.tga");
+    const auto logo_image = images::TgaImage::load("logo.tga");
 
     opengl::Texture logo_texture { opengl::constants::texture_2d };
     logo_texture.create();
-    logo_texture.storage(logo_img.width, logo_img.height, opengl::constants::rgba8, 1);
-    logo_texture.upload(logo_img.width, logo_img.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_img.pixels);
+    logo_texture.storage(logo_image.width, logo_image.height, opengl::constants::rgba8, 1);
+    logo_texture.upload(logo_image.width, logo_image.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_image.pixels);
 
-    auto [logo_vertices, logo_elements] = geometry::Sprite::create(logo_img.width, logo_img.height);
+    auto [logo_vertices, logo_elements] = geometry::Sprite::create(logo_image.width, logo_image.height);
 
     opengl::Buffer logo_vbo;
     logo_vbo.create();
