@@ -36,6 +36,82 @@
 
 #include "object.hpp"
 
+#include "math/aabb.hpp"
+
+#include <print>
+
+#ifdef near // TODO remove this
+#undef near
+#endif
+
+#ifdef far // TODO remove this
+#undef far
+#endif
+
+struct ray
+{
+    math::vec3 origin;
+    math::vec3 direction;
+};
+
+// TODO make it more generic with the width and height (maybe viewport?)
+auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const core::data::camera& camera) noexcept
+{
+    const math::vec2 ndc
+    {
+               2.0f * point.x / static_cast<float>(window_width) - 1.0f,
+        1.0f - 2.0f * point.y / static_cast<float>(window_height)
+    };
+
+    const auto inverse_matrix = inverse(camera.projection * camera.view);
+
+    auto origin = inverse_matrix * math::vec4 { ndc.x, ndc.y, -1.0f, 1.0f };
+    auto finish = inverse_matrix * math::vec4 { ndc.x, ndc.y,  1.0f, 1.0f };
+
+         origin /= origin.w;
+         finish /= finish.w;
+
+    auto direction = static_cast<math::vec3>(finish - origin);
+         direction.normalize();
+
+    return ray
+    {
+        static_cast<math::vec3>(origin), direction
+    };
+}
+
+auto intersects(const ray& ray, const math::aabb& aabb) noexcept
+{
+    const math::vec3 inverse_direction
+    {
+        1.0f / ray.direction.x,
+        1.0f / ray.direction.y,
+        1.0f / ray.direction.z
+    };
+
+    const auto [x0, y0, z0] = (aabb.min - ray.origin) * inverse_direction;
+    const auto [x1, y1, z1] = (aabb.max - ray.origin) * inverse_direction;
+
+    const math::vec3 tmin
+    {
+        min(x0, x1),
+        min(y0, y1),
+        min(z0, z1)
+    };
+
+    const math::vec3 tmax
+    {
+        max(x0, x1),
+        max(y0, y1),
+        max(z0, z1)
+    };
+
+    const auto near = max(max(tmin.x, tmin.y), tmin.z); // TODO rename this
+    const auto far  = min(min(tmax.x, tmax.y), tmax.z); // TODO rename this
+
+    return far >= max(near, 0.0f);
+}
+
 auto main() -> int32_t
 {
     core::ShaderConverter::convert_each(BASE_SHADERS_PATH, "shaders", 3600);
@@ -213,22 +289,22 @@ auto main() -> int32_t
     axis_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
-    //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_box({ 1.0f, 1.0f, 1.0f }, { 1.0f, 1.0f, 1.0f });
+    auto [debug_vertices, debug_elements] = geometry::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
 
-    //opengl::Buffer debug_vbo;
-    //debug_vbo.create();
-    //debug_vbo.storage(core::as_bytes(debug_vertices), opengl::constants::static_draw);
+    opengl::Buffer debug_vbo;
+    debug_vbo.create();
+    debug_vbo.storage(core::as_bytes(debug_vertices), opengl::constants::static_draw);
 
-    //opengl::Buffer debug_ebo;
-    //debug_ebo.create();
-    //debug_ebo.storage(core::as_bytes(debug_elements), opengl::constants::static_draw);
+    opengl::Buffer debug_ebo;
+    debug_ebo.create();
+    debug_ebo.storage(core::as_bytes(debug_elements), opengl::constants::static_draw);
 
-    //opengl::VertexArray debug_vao;
-    //debug_vao.create();
-    //debug_vao.attach(debug_vbo, sizeof(core::vertex::type::editor));
-    //debug_vao.attach(debug_ebo);
-    //debug_vao.attach({ 0, offsetof(core::vertex::type::editor, position), 3, opengl::constants::float_type });
-    //debug_vao.attach({ 1, offsetof(core::vertex::type::editor,    extra), 3, opengl::constants::float_type });
+    opengl::VertexArray debug_vao;
+    debug_vao.create();
+    debug_vao.attach(debug_vbo, sizeof(geometry::vertex::basic));
+    debug_vao.attach(debug_ebo);
+    debug_vao.attach({ 0, offsetof(geometry::vertex::basic, position), 3, opengl::constants::float_type });
+    debug_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     opengl::Sampler base_sampler;
     base_sampler.create();
@@ -284,15 +360,17 @@ auto main() -> int32_t
     math::quat x_view_rotation;
     math::quat y_view_rotation;
 
-    x_view_rotation.rotation({ 1.0f, 0.0f, 0.0f }, math::radians( 45.0f));
+    x_view_rotation.rotation({ 1.0f, 0.0f, 0.0f }, math::radians(-45.0f));
     y_view_rotation.rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
 
+    math::vec3 camera_position { 0.0f, 0.0f, 5.0f };
+
     //auto view_matrix = (x_view_rotation * y_view_rotation).matrix();
-    auto view_matrix = math::matrix(x_view_rotation);
-         view_matrix.translation({ 0.0f, 0.0f, -5.0f });
+    auto view_matrix = matrix(x_view_rotation);
+         view_matrix.translate(camera_position);
 
     core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
-    camera_data.view = view_matrix;
+    camera_data.view = inverse_rigid(view_matrix);
     camera_data.projection.perspective(math::radians(45.0f), view_width / view_height, 0.1f, 100.0f);
 
     core::data::camera view_camera_data;
@@ -327,6 +405,12 @@ auto main() -> int32_t
     math::mat4 ground_transform { 1.0f };
 
     core::Object object;
+
+    const math::aabb object_aabb
+    {
+        { -0.25f, -0.25f, -0.25f },
+        {  0.25f,  0.25f,  0.25f }
+    };
 
     input_manager.actions().assign(core::input::code::key_d, [&] noexcept
     {
@@ -371,6 +455,15 @@ auto main() -> int32_t
         wireframe_mode = !wireframe_mode;
     });
 
+    int32_t mouse_x { };
+    int32_t mouse_y { };
+
+    window_manager.input().callbacks.on_mouse_motion = [&] (const int32_t x, const int32_t y) noexcept
+    {
+        mouse_x = x;
+        mouse_y = y;
+    };
+
     constexpr float color[] { 0.2745f, 0.5176f, 0.1961f, 1.0f };
 
     opengl::Pipeline::enable(opengl::constants::blend_mode);
@@ -390,6 +483,13 @@ auto main() -> int32_t
         input_manager.update();
 
         object.update();
+
+        auto point = math::vec2 { static_cast<float>(mouse_x), static_cast<float>(mouse_y) };
+
+        if (const auto ray = ray_to_world(point, window_width, window_height, camera_data); intersects(ray, object_aabb))
+        {
+            std::println("ray intersects object");
+        }
 
         game_view_fbo.bind();
 
@@ -427,9 +527,9 @@ auto main() -> int32_t
 
         //opengl::Commands::draw_elements(opengl::constants::lines, 0, axis_elements.size());
 
-        //debug_vao.bind();
+        debug_vao.bind();
 
-        //opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size());
+        opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size());
 
         opengl::Framebuffer default_fbo;
                             default_fbo.bind();
