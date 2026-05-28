@@ -19,13 +19,22 @@
 #include "opengl/commands.hpp"
 #include "opengl/framebuffer.hpp"
 #include "opengl/functions.hpp"
-#include "opengl/headers.hpp" // TODO to be removed at some point
 #include "opengl/pipeline.hpp"
 #include "opengl/pipeline_debug.hpp"
 #include "opengl/renderbuffer.hpp"
 #include "opengl/sampler.hpp"
 #include "opengl/shader.hpp"
 #include "opengl/vertex_array.hpp"
+
+#include "opengl/constants/buffer.hpp"
+#include "opengl/constants/commands.hpp"
+#include "opengl/constants/common.hpp"
+#include "opengl/constants/framebuffer.hpp"
+#include "opengl/constants/pipeline.hpp"
+#include "opengl/constants/renderbuffer.hpp"
+#include "opengl/constants/sampler.hpp"
+#include "opengl/constants/shader_stage.hpp"
+#include "opengl/constants/texture.hpp"
 
 #include "geometry/gizmo.hpp"
 #include "geometry/primitive.hpp"
@@ -42,14 +51,6 @@
 #include "math/quat_matrix.hpp"
 
 #include <print>
-
-#ifdef near // TODO remove this
-#undef near
-#endif
-
-#ifdef far // TODO remove this
-#undef far
-#endif
 
 struct ray
 {
@@ -109,8 +110,8 @@ auto intersects(const ray& ray, const math::aabb& aabb) noexcept
         math::max(z0, z1)
     };
 
-    const auto near = math::max(max(tmin.x, tmin.y), tmin.z); // TODO rename this
-    const auto far  = math::min(min(tmax.x, tmax.y), tmax.z); // TODO rename this
+    const auto near = math::max(math::max(tmin.x, tmin.y), tmin.z); // TODO rename this
+    const auto far  = math::min(math::min(tmax.x, tmax.y), tmax.z); // TODO rename this
 
     return far >= math::max(near, 0.0f);
 }
