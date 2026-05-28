@@ -2,8 +2,6 @@
 
 #include "core/time.hpp"
 
-#include "math/quat_matrix.hpp"
-
 namespace core
 {
     auto Object::roll(const math::vec2& direction) -> void

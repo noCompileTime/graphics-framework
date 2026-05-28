@@ -45,11 +45,6 @@
 
 #include "object.hpp"
 
-#include "math/aabb.hpp"
-#include "math/mat4_inverse.hpp"
-#include "math/functions.hpp"
-#include "math/quat_matrix.hpp"
-
 #include <print>
 
 struct ray
