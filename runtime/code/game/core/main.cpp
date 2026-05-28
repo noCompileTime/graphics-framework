@@ -97,22 +97,22 @@ auto intersects(const ray& ray, const math::aabb& aabb) noexcept
 
     const math::vec3 tmin
     {
-        min(x0, x1),
-        min(y0, y1),
-        min(z0, z1)
+        math::min(x0, x1),
+        math::min(y0, y1),
+        math::min(z0, z1)
     };
 
     const math::vec3 tmax
     {
-        max(x0, x1),
-        max(y0, y1),
-        max(z0, z1)
+        math::max(x0, x1),
+        math::max(y0, y1),
+        math::max(z0, z1)
     };
 
-    const auto near = max(max(tmin.x, tmin.y), tmin.z); // TODO rename this
-    const auto far  = min(min(tmax.x, tmax.y), tmax.z); // TODO rename this
+    const auto near = math::max(max(tmin.x, tmin.y), tmin.z); // TODO rename this
+    const auto far  = math::min(min(tmax.x, tmax.y), tmax.z); // TODO rename this
 
-    return far >= max(near, 0.0f);
+    return far >= math::max(near, 0.0f);
 }
 
 auto main() -> int32_t
