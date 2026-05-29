@@ -63,7 +63,7 @@ auto ray_to_world(const math::vec2& point, const int32_t window_width, const int
         1.0f - 2.0f * point.y / static_cast<float>(window_height)
     };
 
-    const auto inverse_matrix = inverse(camera.projection * camera.view);
+    const auto inverse_matrix = math::inverse(camera.projection * camera.view);
 
     auto origin  = inverse_matrix * math::vec4 { ndc.x, ndc.y, -1.0f, 1.0f };
     auto finish  = inverse_matrix * math::vec4 { ndc.x, ndc.y,  1.0f, 1.0f };
