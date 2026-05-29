@@ -55,7 +55,7 @@ struct ray
 };
 
 // TODO make it more generic with the width and height (maybe viewport?)
-auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const core::data::camera& camera) noexcept
+auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const code::data::camera& camera) noexcept
 {
     const math::vec2 ndc
     {
@@ -369,14 +369,14 @@ auto main() -> int32_t
     auto view_matrix = matrix(x_view_rotation);
          view_matrix.translate(camera_position);
 
-    core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
+    code::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
     camera_data.view = inverse_rigid(view_matrix);
     camera_data.projection.perspective(math::radians(45.0f), view_width / view_height, 0.1f, 100.0f);
 
-    core::data::camera view_camera_data;
+    code::data::camera view_camera_data;
     view_camera_data.projection.ortho(0.0f, static_cast<float>(window_width), static_cast<float>(window_height), 0.0f);
 
-    constexpr core::data::light light_data
+    constexpr code::data::light light_data
     {
         { 1.0f,  1.0f, 1.0f }, 0.35f,
         { 1.0f, -1.0f, 0.0f }
@@ -384,22 +384,22 @@ auto main() -> int32_t
 
     opengl::Buffer light_ubo;
     light_ubo.create();
-    light_ubo.storage(sizeof(core::data::light), opengl::constants::dynamic_draw);
+    light_ubo.storage(sizeof(code::data::light), opengl::constants::dynamic_draw);
     light_ubo.bind(opengl::constants::uniform_buffer, code::as_base(core::binding::buffer::light));
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(sizeof(core::data::camera), opengl::constants::dynamic_draw);
+    camera_ubo.storage(sizeof(code::data::camera), opengl::constants::dynamic_draw);
     camera_ubo.bind(opengl::constants::uniform_buffer, code::as_base(core::binding::buffer::camera));
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
-    transform_ubo.storage(sizeof(core::data::transform), opengl::constants::dynamic_draw);
+    transform_ubo.storage(sizeof(code::data::transform), opengl::constants::dynamic_draw);
     transform_ubo.bind(opengl::constants::uniform_buffer, code::as_base(core::binding::buffer::transform));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
-    material_ubo.storage(sizeof(core::data::material), opengl::constants::dynamic_draw);
+    material_ubo.storage(sizeof(code::data::material), opengl::constants::dynamic_draw);
     material_ubo.bind(opengl::constants::uniform_buffer, code::as_base(core::binding::buffer::material));
 
     math::mat4 ground_transform { 1.0f };
@@ -502,22 +502,22 @@ auto main() -> int32_t
 
         model_shader.bind();
 
-         light_ubo.upload(code::as_bytes(light_data), offsetof(core::data::light, color));
+         light_ubo.upload(code::as_bytes(light_data), offsetof(code::data::light, color));
 
-        camera_ubo.upload(code::as_bytes(camera_data), offsetof(core::data::camera, view));
+        camera_ubo.upload(code::as_bytes(camera_data), offsetof(code::data::camera, view));
 
         base_sampler.bind(code::as_base(core::binding::texture::albedo));
         base_texture.bind(code::as_base(core::binding::texture::albedo));
 
         cube_vao.bind();
 
-        transform_ubo.upload(code::as_bytes(object.matrix()), offsetof(core::data::transform, model));
+        transform_ubo.upload(code::as_bytes(object.matrix()), offsetof(code::data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, cube_elements.size());
 
         ground_vao.bind();
 
-        transform_ubo.upload(code::as_bytes(ground_transform), offsetof(core::data::transform, model));
+        transform_ubo.upload(code::as_bytes(ground_transform), offsetof(code::data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, ground_elements.size());
 
@@ -543,11 +543,11 @@ auto main() -> int32_t
 
         game_view_texture.bind(code::as_base(core::binding::texture::albedo));
 
-        camera_ubo.upload(code::as_bytes(view_camera_data), offsetof(core::data::camera, view));
+        camera_ubo.upload(code::as_bytes(view_camera_data), offsetof(code::data::camera, view));
 
         math::mat4 game_view_matrix { 1.0f };
 
-        transform_ubo.upload(code::as_bytes(game_view_matrix), offsetof(core::data::transform, model));
+        transform_ubo.upload(code::as_bytes(game_view_matrix), offsetof(code::data::transform, model));
 
         view_vao.bind();
 
@@ -557,7 +557,7 @@ auto main() -> int32_t
 
         math::mat4 logo_transform { 0.5f };
 
-        transform_ubo.upload(code::as_bytes(logo_transform), offsetof(core::data::transform, model));
+        transform_ubo.upload(code::as_bytes(logo_transform), offsetof(code::data::transform, model));
 
         logo_vao.bind();
 
