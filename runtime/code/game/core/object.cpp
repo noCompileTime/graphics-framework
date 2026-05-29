@@ -20,8 +20,8 @@ namespace core
         const auto next_index_x = _square_index_x + static_cast<int32_t>(direction.x);
         const auto next_index_z = _square_index_z + static_cast<int32_t>(direction.y);
 
-        if (std::abs(next_index_x) > _max_square_index ||
-            std::abs(next_index_z) > _max_square_index)
+        if (math::abs(next_index_x) > _max_square_index ||
+            math::abs(next_index_z) > _max_square_index)
         {
             return;
         }
