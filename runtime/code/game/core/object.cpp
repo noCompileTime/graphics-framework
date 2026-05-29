@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-#include "core/time.hpp"
+#include "../../../../modules/common/code/time.hpp"
 
 namespace core
 {
