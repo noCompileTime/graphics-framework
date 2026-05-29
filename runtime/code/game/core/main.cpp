@@ -43,6 +43,8 @@
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
 
+#include "math/aabb.hpp"
+
 #include "object.hpp"
 
 #include <print>
