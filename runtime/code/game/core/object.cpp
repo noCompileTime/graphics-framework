@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-#include "../../../../modules/common/code/time.hpp"
+#include "time.hpp"
 
 namespace core
 {
@@ -49,7 +49,7 @@ namespace core
             return;
         }
 
-        _animation_time += Time::delta_time() * 2.0f;
+        _animation_time += code::Time::delta_time() * 2.0f;
 
         const auto t = std::clamp(_animation_time, 0.0f, 1.0f);
 
@@ -102,8 +102,8 @@ namespace core
 
             center =
             {
-                pivot.x + radius * std::cos(phi),
-                pivot.y + radius * std::sin(phi),
+                pivot.x + radius * math::cos(phi),
+                pivot.y + radius * math::sin(phi),
                 pivot.z
             };
         }
@@ -116,8 +116,8 @@ namespace core
             center =
             {
                 pivot.x,
-                pivot.y + radius * std::sin(phi),
-                pivot.z + radius * std::cos(phi)
+                pivot.y + radius * math::sin(phi),
+                pivot.z + radius * math::cos(phi)
             };
         }
 

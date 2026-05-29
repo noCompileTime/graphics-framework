@@ -39,6 +39,6 @@ namespace core
 
         bool  _rolling { };
 
-        constexpr static auto radius { size / math::sqrt2 };
+        static constexpr auto radius { size / math::sqrt2 };
     };
 }
