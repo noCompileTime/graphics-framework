@@ -10,7 +10,6 @@
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
 #include "core/window_manager.hpp"
-
 #include "core/shader_converter.hpp"
 
 #include "core/binding/buffer.hpp"
@@ -43,7 +42,7 @@
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
 
-#include "math/aabb.hpp"
+#include "math/aabb.hpp" // TODO remove this when add it in the primitive
 
 #include "object.hpp"
 
