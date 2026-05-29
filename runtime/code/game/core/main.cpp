@@ -9,8 +9,8 @@
 
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
-#include "core/window_manager.hpp"
 #include "core/shader_converter.hpp"
+#include "core/window_manager.hpp"
 
 #include "core/binding/buffer.hpp"
 #include "core/binding/texture.hpp"
@@ -63,7 +63,7 @@ auto ray_to_world(const math::vec2& point, const int32_t window_width, const int
         1.0f - 2.0f * point.y / static_cast<float>(window_height)
     };
 
-    const auto inverse_matrix = math::inverse(camera.projection * camera.view);
+    const auto inverse_matrix = inverse(camera.projection * camera.view);
 
     auto origin  = inverse_matrix * math::vec4 { ndc.x, ndc.y, -1.0f, 1.0f };
     auto finish  = inverse_matrix * math::vec4 { ndc.x, ndc.y,  1.0f, 1.0f };
@@ -121,7 +121,7 @@ auto main() -> int32_t
 
     core::window::settings window_settings
     {
-        PROJECT_NAME, window_width, window_height, 0
+        "Game Framework", window_width, window_height, 0
     };
 
     //window_settings.debug = true;
@@ -406,7 +406,7 @@ auto main() -> int32_t
 
     core::Object object;
 
-    const math::aabb object_aabb
+    constexpr math::aabb object_aabb
     {
         { -0.25f, -0.25f, -0.25f },
         {  0.25f,  0.25f,  0.25f }
