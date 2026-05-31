@@ -12,8 +12,8 @@
 #include "core/shader_converter.hpp"
 #include "core/window_manager.hpp"
 
-#include "core/binding/buffer.hpp"
-#include "core/binding/texture.hpp"
+#include "binding/buffer.hpp"
+#include "binding/texture.hpp"
 
 #include "opengl/commands.hpp"
 #include "opengl/framebuffer.hpp"
