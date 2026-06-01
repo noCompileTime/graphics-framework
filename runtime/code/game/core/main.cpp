@@ -53,7 +53,7 @@ struct ray
 };
 
 // TODO make it more generic with the width and height (maybe viewport?)
-auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const data::camera& camera) noexcept
+auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const core::data::camera& camera) noexcept
 {
     const math::vec2 ndc
     {
@@ -157,35 +157,35 @@ auto main() -> int32_t
 
     opengl::ShaderStage base_shader_vertex { opengl::constants::vertex_shader };
     base_shader_vertex.create();
-    base_shader_vertex.source(File::read("shaders/base_shader.vert"));
+    base_shader_vertex.source(core::File::read("shaders/base_shader.vert"));
 
     opengl::ShaderStage base_shader_fragment { opengl::constants::fragment_shader };
     base_shader_fragment.create();
-    base_shader_fragment.source(File::read("shaders/base_shader.frag"));
+    base_shader_fragment.source(core::File::read("shaders/base_shader.frag"));
 
     opengl::ShaderStage debug_shader_vertex { opengl::constants::vertex_shader };
     debug_shader_vertex.create();
-    debug_shader_vertex.source(File::read("shaders/base_debug_shader.vert"));
+    debug_shader_vertex.source(core::File::read("shaders/base_debug_shader.vert"));
 
     opengl::ShaderStage debug_shader_fragment { opengl::constants::fragment_shader };
     debug_shader_fragment.create();
-    debug_shader_fragment.source(File::read("shaders/base_debug_shader.frag"));
+    debug_shader_fragment.source(core::File::read("shaders/base_debug_shader.frag"));
 
     opengl::ShaderStage sprite_shader_vertex { opengl::constants::vertex_shader };
     sprite_shader_vertex.create();
-    sprite_shader_vertex.source(File::read("shaders/base_sprite_shader.vert"));
+    sprite_shader_vertex.source(core::File::read("shaders/base_sprite_shader.vert"));
 
     opengl::ShaderStage sprite_shader_fragment { opengl::constants::fragment_shader };
     sprite_shader_fragment.create();
-    sprite_shader_fragment.source(File::read("shaders/base_sprite_shader.frag"));
+    sprite_shader_fragment.source(core::File::read("shaders/base_sprite_shader.frag"));
 
     opengl::ShaderStage model_shader_vertex { opengl::constants::vertex_shader };
     model_shader_vertex.create();
-    model_shader_vertex.source(File::read("shaders/base_model_shader.vert"));
+    model_shader_vertex.source(core::File::read("shaders/base_model_shader.vert"));
 
     opengl::ShaderStage model_shader_fragment { opengl::constants::fragment_shader };
     model_shader_fragment.create();
-    model_shader_fragment.source(File::read("shaders/base_model_shader.frag"));
+    model_shader_fragment.source(core::File::read("shaders/base_model_shader.frag"));
 
     opengl::Shader base_shader;
     base_shader.create();
@@ -215,7 +215,7 @@ auto main() -> int32_t
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
-    auto [view_vertices, view_elements] = geometry::Sprite::create(view_width, view_height);
+    auto [view_vertices, view_elements] = core::geometry::Sprite::create(view_width, view_height);
 
     opengl::Buffer view_vbo;
     view_vbo.create();
@@ -227,10 +227,10 @@ auto main() -> int32_t
 
     opengl::VertexArray view_vao;
     view_vao.create();
-    view_vao.attach(view_vbo, sizeof(geometry::vertex::sprite));
+    view_vao.attach(view_vbo, sizeof(core::geometry::vertex::sprite));
     view_vao.attach(view_ebo);
-    view_vao.attach({ 0, offsetof(geometry::vertex::sprite, position), 2, opengl::constants::float_type });
-    view_vao.attach({ 1, offsetof(geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
+    view_vao.attach({ 0, offsetof(core::geometry::vertex::sprite, position), 2, opengl::constants::float_type });
+    view_vao.attach({ 1, offsetof(core::geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
 
     auto [base_geometries] = models::ObjModel::load("base_scene_model.obj");
 
@@ -247,11 +247,11 @@ auto main() -> int32_t
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
-    cube_vao.attach(cube_vbo, sizeof(geometry::vertex::model));
+    cube_vao.attach(cube_vbo, sizeof(core::geometry::vertex::model));
     cube_vao.attach(cube_ebo);
-    cube_vao.attach({ 0, offsetof(geometry::vertex::model, position), 3, opengl::constants::float_type });
-    cube_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
-    cube_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
+    cube_vao.attach({ 0, offsetof(core::geometry::vertex::model, position), 3, opengl::constants::float_type });
+    cube_vao.attach({ 1, offsetof(core::geometry::vertex::model,   normal), 3, opengl::constants::float_type });
+    cube_vao.attach({ 2, offsetof(core::geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
@@ -263,13 +263,13 @@ auto main() -> int32_t
 
     opengl::VertexArray ground_vao;
     ground_vao.create();
-    ground_vao.attach(ground_vbo, sizeof(geometry::vertex::model));
+    ground_vao.attach(ground_vbo, sizeof(core::geometry::vertex::model));
     ground_vao.attach(ground_ebo);
-    ground_vao.attach({ 0, offsetof(geometry::vertex::model, position), 3, opengl::constants::float_type });
-    ground_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
-    ground_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
+    ground_vao.attach({ 0, offsetof(core::geometry::vertex::model, position), 3, opengl::constants::float_type });
+    ground_vao.attach({ 1, offsetof(core::geometry::vertex::model,   normal), 3, opengl::constants::float_type });
+    ground_vao.attach({ 2, offsetof(core::geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
 
-    auto [axis_vertices, axis_elements] = geometry::Gizmo::axis({ 10.0f, 10.0f, 10.0f });
+    auto [axis_vertices, axis_elements] = core::geometry::Gizmo::axis({ 10.0f, 10.0f, 10.0f });
 
     opengl::Buffer axis_vbo;
     axis_vbo.create();
@@ -281,13 +281,13 @@ auto main() -> int32_t
 
     opengl::VertexArray axis_vao;
     axis_vao.create();
-    axis_vao.attach(axis_vbo, sizeof(geometry::vertex::basic));
+    axis_vao.attach(axis_vbo, sizeof(core::geometry::vertex::basic));
     axis_vao.attach(axis_ebo);
-    axis_vao.attach({ 0, offsetof(geometry::vertex::basic, position), 3, opengl::constants::float_type });
-    axis_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
+    axis_vao.attach({ 0, offsetof(core::geometry::vertex::basic, position), 3, opengl::constants::float_type });
+    axis_vao.attach({ 1, offsetof(core::geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
-    auto [debug_vertices, debug_elements] = geometry::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
+    auto [debug_vertices, debug_elements] = core::geometry::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
 
     opengl::Buffer debug_vbo;
     debug_vbo.create();
@@ -299,10 +299,10 @@ auto main() -> int32_t
 
     opengl::VertexArray debug_vao;
     debug_vao.create();
-    debug_vao.attach(debug_vbo, sizeof(geometry::vertex::basic));
+    debug_vao.attach(debug_vbo, sizeof(core::geometry::vertex::basic));
     debug_vao.attach(debug_ebo);
-    debug_vao.attach({ 0, offsetof(geometry::vertex::basic, position), 3, opengl::constants::float_type });
-    debug_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
+    debug_vao.attach({ 0, offsetof(core::geometry::vertex::basic, position), 3, opengl::constants::float_type });
+    debug_vao.attach({ 1, offsetof(core::geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     opengl::Sampler base_sampler;
     base_sampler.create();
@@ -316,7 +316,7 @@ auto main() -> int32_t
     logo_texture.storage(logo_image.width, logo_image.height, opengl::constants::rgba8, 1);
     logo_texture.upload(logo_image.width, logo_image.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_image.pixels);
 
-    auto [logo_vertices, logo_elements] = geometry::Sprite::create(logo_image.width, logo_image.height);
+    auto [logo_vertices, logo_elements] = core::geometry::Sprite::create(logo_image.width, logo_image.height);
 
     opengl::Buffer logo_vbo;
     logo_vbo.create();
@@ -328,10 +328,10 @@ auto main() -> int32_t
 
     opengl::VertexArray logo_vao;
     logo_vao.create();
-    logo_vao.attach(logo_vbo, sizeof(geometry::vertex::sprite));
+    logo_vao.attach(logo_vbo, sizeof(core::geometry::vertex::sprite));
     logo_vao.attach(logo_ebo);
-    logo_vao.attach({ 0, offsetof(geometry::vertex::sprite, position), 2, opengl::constants::float_type });
-    logo_vao.attach({ 1, offsetof(geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
+    logo_vao.attach({ 0, offsetof(core::geometry::vertex::sprite, position), 2, opengl::constants::float_type });
+    logo_vao.attach({ 1, offsetof(core::geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
 
     auto base_image = images::TgaImage::load("base_cube_albedo.tga");
 
@@ -367,14 +367,14 @@ auto main() -> int32_t
     auto view_matrix = matrix(x_view_rotation);
          view_matrix.translate(camera_position);
 
-    data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
+    core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
     camera_data.view = inverse_rigid(view_matrix);
     camera_data.projection.perspective(math::radians(45.0f), view_width / view_height, 0.1f, 100.0f);
 
-    data::camera view_camera_data;
+    core::data::camera view_camera_data;
     view_camera_data.projection.ortho(0.0f, static_cast<float>(window_width), static_cast<float>(window_height), 0.0f);
 
-    constexpr data::light light_data
+    constexpr core::data::light light_data
     {
         { 1.0f,  1.0f, 1.0f }, 0.35f,
         { 1.0f, -1.0f, 0.0f }
@@ -382,22 +382,22 @@ auto main() -> int32_t
 
     opengl::Buffer light_ubo;
     light_ubo.create();
-    light_ubo.storage(sizeof(data::light), opengl::constants::dynamic_draw);
+    light_ubo.storage(sizeof(core::data::light), opengl::constants::dynamic_draw);
     light_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::light));
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
-    camera_ubo.storage(sizeof(data::camera), opengl::constants::dynamic_draw);
+    camera_ubo.storage(sizeof(core::data::camera), opengl::constants::dynamic_draw);
     camera_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::camera));
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
-    transform_ubo.storage(sizeof(data::transform), opengl::constants::dynamic_draw);
+    transform_ubo.storage(sizeof(core::data::transform), opengl::constants::dynamic_draw);
     transform_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::transform));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
-    material_ubo.storage(sizeof(data::material), opengl::constants::dynamic_draw);
+    material_ubo.storage(sizeof(core::data::material), opengl::constants::dynamic_draw);
     material_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::material));
 
     math::mat4 ground_transform { 1.0f };
@@ -470,7 +470,7 @@ auto main() -> int32_t
 
     opengl::Pipeline::blend(opengl::constants::src_alpha, opengl::constants::one_minus_src_alpha);
 
-    Time time;
+    core::Time time;
     time.start();
 
     while (window_active)
@@ -500,22 +500,22 @@ auto main() -> int32_t
 
         model_shader.bind();
 
-         light_ubo.upload(core::as_bytes(light_data), offsetof(data::light, color));
+         light_ubo.upload(core::as_bytes(light_data), offsetof(core::data::light, color));
 
-        camera_ubo.upload(core::as_bytes(camera_data), offsetof(data::camera, view));
+        camera_ubo.upload(core::as_bytes(camera_data), offsetof(core::data::camera, view));
 
         base_sampler.bind(core::as_base(core::binding::texture::albedo));
         base_texture.bind(core::as_base(core::binding::texture::albedo));
 
         cube_vao.bind();
 
-        transform_ubo.upload(core::as_bytes(object.matrix()), offsetof(data::transform, model));
+        transform_ubo.upload(core::as_bytes(object.matrix()), offsetof(core::data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, cube_elements.size());
 
         ground_vao.bind();
 
-        transform_ubo.upload(core::as_bytes(ground_transform), offsetof(data::transform, model));
+        transform_ubo.upload(core::as_bytes(ground_transform), offsetof(core::data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, ground_elements.size());
 
@@ -539,27 +539,27 @@ auto main() -> int32_t
 
         sprite_shader.bind();
 
-        game_view_texture.bind(as_base(core::binding::texture::albedo));
+        game_view_texture.bind(core::as_base(core::binding::texture::albedo));
 
-        camera_ubo.upload(as_bytes(view_camera_data), offsetof(data::camera, view));
+        camera_ubo.upload(core::as_bytes(view_camera_data), offsetof(core::data::camera, view));
 
         math::mat4 game_view_matrix { 1.0f };
 
-        transform_ubo.upload(as_bytes(game_view_matrix), offsetof(data::transform, model));
+        transform_ubo.upload(core::as_bytes(game_view_matrix), offsetof(core::data::transform, model));
 
         view_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * geometry::primitive::triangle::elements);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * core::geometry::primitive::triangle::elements);
 
-        logo_texture.bind(as_base(core::binding::texture::albedo));
+        logo_texture.bind(core::as_base(core::binding::texture::albedo));
 
         math::mat4 logo_transform { 0.5f };
 
-        transform_ubo.upload(as_bytes(logo_transform), offsetof(data::transform, model));
+        transform_ubo.upload(core::as_bytes(logo_transform), offsetof(core::data::transform, model));
 
         logo_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * geometry::primitive::triangle::elements);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * core::geometry::primitive::triangle::elements);
 
         window_manager.context().update();
     }
