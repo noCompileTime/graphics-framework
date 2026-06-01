@@ -46,8 +46,6 @@
 
 #include "object.hpp"
 
-#include <print>
-
 struct ray
 {
     math::vec3 origin;
@@ -488,7 +486,7 @@ auto main() -> int32_t
 
         if (const auto ray = ray_to_world(point, window_width, window_height, camera_data); intersects(ray, object_aabb))
         {
-            std::println("ray intersects object");
+            // TODO do something
         }
 
         game_view_fbo.bind();
