@@ -550,7 +550,7 @@ auto main() -> int32_t
 
         view_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * core::geometry::primitive::triangle::elements);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * core::geometry::element::triangle::size);
 
         logo_texture.bind(core::as_base(core::binding::texture::albedo));
 
@@ -560,7 +560,7 @@ auto main() -> int32_t
 
         logo_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * core::geometry::primitive::triangle::elements);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * core::geometry::element::triangle::size);
 
         window_manager.context().update();
     }
