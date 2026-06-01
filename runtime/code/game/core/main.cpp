@@ -43,6 +43,7 @@
 #include "models/obj_model.hpp"
 
 #include "math/aabb.hpp" // TODO remove this when add it in the primitive
+#include "math/mat4_inverse.hpp"
 
 #include "object.hpp"
 
@@ -61,7 +62,7 @@ auto ray_to_world(const math::vec2& point, const int32_t window_width, const int
         1.0f - 2.0f * point.y / static_cast<float>(window_height)
     };
 
-    const auto inverse_matrix = math::mat4::inverse(camera.projection * camera.view);
+    const auto inverse_matrix = inverse(camera.projection * camera.view);
 
     auto origin  = inverse_matrix * math::vec4 { ndc.x, ndc.y, -1.0f, 1.0f };
     auto finish  = inverse_matrix * math::vec4 { ndc.x, ndc.y,  1.0f, 1.0f };
@@ -368,7 +369,7 @@ auto main() -> int32_t
          view_matrix.translate(camera_position);
 
     core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
-    camera_data.view = math::mat4::inverse_rigid(view_matrix);
+    camera_data.view = inverse_rigid(view_matrix);
     camera_data.projection.perspective(math::radians(45.0f), view_width / view_height, 0.1f, 100.0f);
 
     core::data::camera view_camera_data;
