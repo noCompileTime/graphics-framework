@@ -219,11 +219,11 @@ auto main() -> int32_t
 
     opengl::Buffer view_vbo;
     view_vbo.create();
-    view_vbo.storage(as_bytes(view_vertices), opengl::constants::static_draw);
+    view_vbo.storage(core::as_bytes(view_vertices), opengl::constants::static_draw);
 
     opengl::Buffer view_ebo;
     view_ebo.create();
-    view_ebo.storage(as_bytes(view_elements), opengl::constants::static_draw);
+    view_ebo.storage(core::as_bytes(view_elements), opengl::constants::static_draw);
 
     opengl::VertexArray view_vao;
     view_vao.create();
@@ -239,11 +239,11 @@ auto main() -> int32_t
 
     opengl::Buffer cube_vbo;
     cube_vbo.create();
-    cube_vbo.storage(as_bytes(cube_vertices), opengl::constants::static_draw);
+    cube_vbo.storage(core::as_bytes(cube_vertices), opengl::constants::static_draw);
 
     opengl::Buffer cube_ebo;
     cube_ebo.create();
-    cube_ebo.storage(as_bytes(cube_elements), opengl::constants::static_draw);
+    cube_ebo.storage(core::as_bytes(cube_elements), opengl::constants::static_draw);
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
@@ -255,11 +255,11 @@ auto main() -> int32_t
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
-    ground_vbo.storage(as_bytes(ground_vertices), opengl::constants::static_draw);
+    ground_vbo.storage(core::as_bytes(ground_vertices), opengl::constants::static_draw);
 
     opengl::Buffer ground_ebo;
     ground_ebo.create();
-    ground_ebo.storage(as_bytes(ground_elements), opengl::constants::static_draw);
+    ground_ebo.storage(core::as_bytes(ground_elements), opengl::constants::static_draw);
 
     opengl::VertexArray ground_vao;
     ground_vao.create();
@@ -273,11 +273,11 @@ auto main() -> int32_t
 
     opengl::Buffer axis_vbo;
     axis_vbo.create();
-    axis_vbo.storage(as_bytes(axis_vertices), opengl::constants::static_draw);
+    axis_vbo.storage(core::as_bytes(axis_vertices), opengl::constants::static_draw);
 
     opengl::Buffer axis_ebo;
     axis_ebo.create();
-    axis_ebo.storage(as_bytes(axis_elements), opengl::constants::static_draw);
+    axis_ebo.storage(core::as_bytes(axis_elements), opengl::constants::static_draw);
 
     opengl::VertexArray axis_vao;
     axis_vao.create();
@@ -291,11 +291,11 @@ auto main() -> int32_t
 
     opengl::Buffer debug_vbo;
     debug_vbo.create();
-    debug_vbo.storage(as_bytes(debug_vertices), opengl::constants::static_draw);
+    debug_vbo.storage(core::as_bytes(debug_vertices), opengl::constants::static_draw);
 
     opengl::Buffer debug_ebo;
     debug_ebo.create();
-    debug_ebo.storage(as_bytes(debug_elements), opengl::constants::static_draw);
+    debug_ebo.storage(core::as_bytes(debug_elements), opengl::constants::static_draw);
 
     opengl::VertexArray debug_vao;
     debug_vao.create();
@@ -320,11 +320,11 @@ auto main() -> int32_t
 
     opengl::Buffer logo_vbo;
     logo_vbo.create();
-    logo_vbo.storage(as_bytes(logo_vertices), opengl::constants::static_draw);
+    logo_vbo.storage(core::as_bytes(logo_vertices), opengl::constants::static_draw);
 
     opengl::Buffer logo_ebo;
     logo_ebo.create();
-    logo_ebo.storage(as_bytes(logo_elements), opengl::constants::static_draw);
+    logo_ebo.storage(core::as_bytes(logo_elements), opengl::constants::static_draw);
 
     opengl::VertexArray logo_vao;
     logo_vao.create();
@@ -383,22 +383,22 @@ auto main() -> int32_t
     opengl::Buffer light_ubo;
     light_ubo.create();
     light_ubo.storage(sizeof(data::light), opengl::constants::dynamic_draw);
-    light_ubo.bind(opengl::constants::uniform_buffer, as_base(core::binding::buffer::light));
+    light_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::light));
 
     opengl::Buffer camera_ubo;
     camera_ubo.create();
     camera_ubo.storage(sizeof(data::camera), opengl::constants::dynamic_draw);
-    camera_ubo.bind(opengl::constants::uniform_buffer, as_base(core::binding::buffer::camera));
+    camera_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::camera));
 
     opengl::Buffer transform_ubo;
     transform_ubo.create();
     transform_ubo.storage(sizeof(data::transform), opengl::constants::dynamic_draw);
-    transform_ubo.bind(opengl::constants::uniform_buffer, as_base(core::binding::buffer::transform));
+    transform_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::transform));
 
     opengl::Buffer material_ubo;
     material_ubo.create();
     material_ubo.storage(sizeof(data::material), opengl::constants::dynamic_draw);
-    material_ubo.bind(opengl::constants::uniform_buffer, as_base(core::binding::buffer::material));
+    material_ubo.bind(opengl::constants::uniform_buffer, core::as_base(core::binding::buffer::material));
 
     math::mat4 ground_transform { 1.0f };
 
@@ -500,22 +500,22 @@ auto main() -> int32_t
 
         model_shader.bind();
 
-         light_ubo.upload(as_bytes(light_data), offsetof(data::light, color));
+         light_ubo.upload(core::as_bytes(light_data), offsetof(data::light, color));
 
-        camera_ubo.upload(as_bytes(camera_data), offsetof(data::camera, view));
+        camera_ubo.upload(core::as_bytes(camera_data), offsetof(data::camera, view));
 
-        base_sampler.bind(as_base(core::binding::texture::albedo));
-        base_texture.bind(as_base(core::binding::texture::albedo));
+        base_sampler.bind(core::as_base(core::binding::texture::albedo));
+        base_texture.bind(core::as_base(core::binding::texture::albedo));
 
         cube_vao.bind();
 
-        transform_ubo.upload(as_bytes(object.matrix()), offsetof(data::transform, model));
+        transform_ubo.upload(core::as_bytes(object.matrix()), offsetof(data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, cube_elements.size());
 
         ground_vao.bind();
 
-        transform_ubo.upload(as_bytes(ground_transform), offsetof(data::transform, model));
+        transform_ubo.upload(core::as_bytes(ground_transform), offsetof(data::transform, model));
 
         opengl::Commands::draw_elements(opengl::constants::triangles, 0, ground_elements.size());
 

@@ -2,8 +2,8 @@
 
 #include "vec2.hpp"
 
-#include "mat4_inverse.hpp"
-#include "quat_matrix.hpp"
+#include "mat4_utils.hpp"
+#include "quat_utils.hpp"
 
 constexpr auto      size = 0.5f;
 constexpr auto half_size = 0.5f * size;
