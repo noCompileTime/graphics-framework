@@ -1,9 +1,8 @@
 #pragma once
 
-#include "vec2.hpp"
-
-#include "mat4_utils.hpp"
-#include "quat_utils.hpp"
+#include "math/mat4.hpp"
+#include "math/quat.hpp"
+#include "math/vec2.hpp"
 
 constexpr auto      size = 0.5f;
 constexpr auto half_size = 0.5f * size;

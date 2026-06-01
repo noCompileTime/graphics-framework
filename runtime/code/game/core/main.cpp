@@ -1,11 +1,11 @@
-#include "file.hpp"
-#include "time.hpp"
-#include "utility.hpp"
+#include "core/file.hpp"
+#include "core/time.hpp"
+#include "core/utility.hpp"
 
-#include "data/camera.hpp"
-#include "data/light.hpp"
-#include "data/material.hpp"
-#include "data/transform.hpp"
+#include "core/data/camera.hpp"
+#include "core/data/light.hpp"
+#include "core/data/material.hpp"
+#include "core/data/transform.hpp"
 
 #include "core/input_manager.hpp"
 #include "core/platform_factory.hpp"
@@ -35,14 +35,14 @@
 #include "opengl/constants/shader_stage.hpp"
 #include "opengl/constants/texture.hpp"
 
-#include "geometry/gizmo.hpp"
-#include "geometry/primitive.hpp"
-#include "geometry/sprite.hpp"
+#include "core/geometry/gizmo.hpp"
+#include "core/geometry/primitive.hpp"
+#include "core/geometry/sprite.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
 
-#include "aabb.hpp" // TODO remove this when add it in the primitive
+#include "math/aabb.hpp" // TODO remove this when add it in the primitive
 
 #include "object.hpp"
 
@@ -61,7 +61,7 @@ auto ray_to_world(const math::vec2& point, const int32_t window_width, const int
         1.0f - 2.0f * point.y / static_cast<float>(window_height)
     };
 
-    const auto inverse_matrix = inverse(camera.projection * camera.view);
+    const auto inverse_matrix = math::mat4::inverse(camera.projection * camera.view);
 
     auto origin  = inverse_matrix * math::vec4 { ndc.x, ndc.y, -1.0f, 1.0f };
     auto finish  = inverse_matrix * math::vec4 { ndc.x, ndc.y,  1.0f, 1.0f };
@@ -364,11 +364,11 @@ auto main() -> int32_t
     math::vec3 camera_position { 0.0f, 0.0f, 5.0f };
 
     //auto view_matrix = (x_view_rotation * y_view_rotation).matrix();
-    auto view_matrix = matrix(x_view_rotation);
+    auto view_matrix = static_cast<math::mat4>(x_view_rotation);
          view_matrix.translate(camera_position);
 
     core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
-    camera_data.view = inverse_rigid(view_matrix);
+    camera_data.view = math::mat4::inverse_rigid(view_matrix);
     camera_data.projection.perspective(math::radians(45.0f), view_width / view_height, 0.1f, 100.0f);
 
     core::data::camera view_camera_data;

@@ -1,6 +1,6 @@
 #include "object.hpp"
 
-#include "time.hpp"
+#include "core/time.hpp"
 
 namespace core
 {
@@ -75,7 +75,7 @@ namespace core
             _orientation    = orientation;
         }
 
-        _matrix = math::matrix(orientation);
+        _matrix = static_cast<math::mat4>(orientation);
         _matrix.translation({ center.x, center.y, center.z });
     }
 
