@@ -105,8 +105,8 @@ auto intersects(const ray& ray, const math::aabb& aabb) noexcept
         math::max(z0, z1)
     };
 
-    const auto near = math::max(math::max(tmin.x, tmin.y), tmin.z); // TODO rename this
-    const auto far  = math::min(math::min(tmax.x, tmax.y), tmax.z); // TODO rename this
+    const auto near = math::max(math::max(tmin.x, tmin.y), tmin.z); // TODO rename this?
+    const auto far  = math::min(math::min(tmax.x, tmax.y), tmax.z); // TODO rename this?
 
     return far >= math::max(near, 0.0f);
 }
