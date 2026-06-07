@@ -44,9 +44,8 @@
 
 #include "object.hpp"
 
-#include "math/functions.hpp"
-
 #include "math/aabb.hpp"
+#include "math/functions.hpp"
 
 struct ray
 {
