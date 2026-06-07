@@ -45,6 +45,9 @@
 #include "object.hpp"
 
 #include "math/functions.hpp"
+#include "math/mat4_inverse.hpp"
+
+#include "math/aabb.hpp"
 
 struct ray
 {
