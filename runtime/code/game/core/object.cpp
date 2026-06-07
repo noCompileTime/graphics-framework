@@ -2,6 +2,8 @@
 
 #include "core/time.hpp"
 
+#include "math/functions.hpp"
+
 namespace core
 {
     auto Object::roll(const math::vec2& direction) -> void

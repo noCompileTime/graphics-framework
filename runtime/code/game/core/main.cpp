@@ -44,6 +44,8 @@
 
 #include "object.hpp"
 
+#include "math/functions.hpp"
+
 struct ray
 {
     math::vec3 origin;
