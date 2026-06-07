@@ -42,9 +42,6 @@
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
 
-#include "math/aabb.hpp" // TODO remove this when add it in the primitive
-#include "math/mat4_inverse.hpp"
-
 #include "object.hpp"
 
 struct ray
