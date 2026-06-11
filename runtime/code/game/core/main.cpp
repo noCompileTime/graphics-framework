@@ -46,12 +46,8 @@
 
 #include "math/aabb.hpp"
 #include "math/functions.hpp"
-
-struct ray
-{
-    math::vec3 origin;
-    math::vec3 direction;
-};
+#include "math/ray.hpp"
+#include "math/mat4_inverse.hpp"
 
 // TODO make it more generic with the width and height (maybe viewport?)
 auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const core::data::camera& camera) noexcept
@@ -62,7 +58,7 @@ auto ray_to_world(const math::vec2& point, const int32_t window_width, const int
         1.0f - 2.0f * point.y / static_cast<float>(window_height)
     };
 
-    const auto inverse_matrix = (camera.projection * camera.view).inverse();
+    const auto inverse_matrix = math::inverse(camera.projection * camera.view);
 
     auto origin  = inverse_matrix * math::vec4 { ndc.x, ndc.y, -1.0f, 1.0f };
     auto finish  = inverse_matrix * math::vec4 { ndc.x, ndc.y,  1.0f, 1.0f };
@@ -73,13 +69,13 @@ auto ray_to_world(const math::vec2& point, const int32_t window_width, const int
     auto direction = static_cast<math::vec3>(finish - origin);
          direction.normalize();
 
-    return ray
+    return math::ray
     {
         static_cast<math::vec3>(origin), direction
     };
 }
 
-auto intersects(const ray& ray, const math::aabb& aabb) noexcept
+auto intersects(const math::ray& ray, const math::aabb& aabb) noexcept
 {
     const math::vec3 inverse_direction
     {
@@ -369,7 +365,7 @@ auto main() -> int32_t
          view_matrix.translate(camera_position);
 
     core::data::camera camera_data; // TODO rename this with scene_ or base_ or even game_
-    camera_data.view = view_matrix.inverse_rigid();
+    camera_data.view = math::inverse_rigid(view_matrix);
     camera_data.projection.perspective(math::radians(45.0f), view_width / view_height, 0.1f, 100.0f);
 
     core::data::camera view_camera_data;
