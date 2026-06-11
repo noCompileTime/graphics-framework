@@ -216,7 +216,7 @@ auto main() -> int32_t
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
-    auto [view_vertices, view_elements] = geometry::Sprite::create(view_width, view_height);
+    auto [view_vertices, view_elements] = geometry::Sprite::create({ { }, view_width, view_height });
 
     opengl::Buffer view_vbo;
     view_vbo.create();
@@ -315,9 +315,9 @@ auto main() -> int32_t
     opengl::Texture logo_texture { opengl::constants::texture_2d };
     logo_texture.create();
     logo_texture.storage(logo_image.width, logo_image.height, opengl::constants::rgba8, 1);
-    logo_texture.upload(logo_image.width, logo_image.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_image.pixels);
+    logo_texture.upload(0, 0, logo_image.width, logo_image.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_image.pixels);
 
-    auto [logo_vertices, logo_elements] = geometry::Sprite::create(logo_image.width, logo_image.height);
+    auto [logo_vertices, logo_elements] = geometry::Sprite::create({ { }, static_cast<float>(logo_image.width), static_cast<float>(logo_image.height) });
 
     opengl::Buffer logo_vbo;
     logo_vbo.create();
@@ -339,7 +339,7 @@ auto main() -> int32_t
     opengl::Texture base_texture { opengl::constants::texture_2d };
     base_texture.create();
     base_texture.storage(base_image.width, base_image.height, opengl::constants::rgb8, 1);
-    base_texture.upload(base_image.width, base_image.height, opengl::constants::rgb, 0, opengl::constants::unsigned_byte, base_image.pixels);
+    base_texture.upload(0, 0, base_image.width, base_image.height, opengl::constants::rgb, 0, opengl::constants::unsigned_byte, base_image.pixels);
 
     opengl::Texture game_view_texture { opengl::constants::texture_2d };
     game_view_texture.create();
