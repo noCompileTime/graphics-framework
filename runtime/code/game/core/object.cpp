@@ -86,7 +86,7 @@ namespace core
         return _matrix;
     }
 
-    auto Object::roll_step(const math::vec3& pivot, const float t, const math::vec2& direction) const -> std::pair<math::vec3, float>
+    auto Object::roll_step(const math::vec3& pivot, const float t, const math::vec2& direction) -> std::pair<math::vec3, float>
     {
         constexpr auto half_pi = math::pi * 0.5f;
         const auto theta = t * half_pi;
@@ -94,7 +94,7 @@ namespace core
         const auto dir_x = direction.x;
         const auto dir_z = direction.y;
 
-        math::vec3 center { };
+        math::vec3 center;
 
         if (dir_x != 0.0f)
         {

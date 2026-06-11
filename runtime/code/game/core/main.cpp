@@ -349,8 +349,7 @@ auto main() -> int32_t
     game_view_fbo.create();
     game_view_fbo.attach(game_view_texture, opengl::constants::color_attachment0, 0);
     game_view_fbo.attach(game_view_rbo, opengl::constants::depth_attachment);
-
-    assert(game_view_fbo.complete());
+    game_view_fbo.complete();
 
     math::quat x_view_rotation;
     math::quat y_view_rotation;
