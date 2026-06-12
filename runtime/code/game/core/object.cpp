@@ -63,8 +63,7 @@ namespace core
             -_roll_direction.x
         };
 
-        math::quat delta_rotation;
-        delta_rotation.rotation(axis, angle);
+        const auto delta_rotation = math::quat::rotation(axis, angle);
 
         auto orientation = delta_rotation * _start_orientation;
              orientation.normalize();

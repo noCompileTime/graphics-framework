@@ -351,11 +351,8 @@ auto main() -> int32_t
     game_view_fbo.attach(game_view_rbo, opengl::constants::depth_attachment);
     game_view_fbo.complete();
 
-    math::quat x_view_rotation;
-    math::quat y_view_rotation;
-
-    x_view_rotation.rotation({ 1.0f, 0.0f, 0.0f }, math::radians(-45.0f));
-    y_view_rotation.rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
+    auto x_view_rotation = math::quat::rotation({ 1.0f, 0.0f, 0.0f }, math::radians(-45.0f));
+    auto y_view_rotation = math::quat::rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
 
     math::vec3 camera_position { 0.0f, 0.0f, 5.0f };
 
