@@ -46,8 +46,8 @@
 
 #include "math/aabb.hpp"
 #include "math/functions.hpp"
-#include "math/ray.hpp"
 #include "math/mat4_inverse.hpp"
+#include "math/ray.hpp"
 
 // TODO make it more generic with the width and height (maybe viewport?)
 auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const core::data::camera& camera) noexcept
