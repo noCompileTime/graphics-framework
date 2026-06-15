@@ -520,7 +520,7 @@ auto main() -> int32_t
 
         debug_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size());
+        opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size() * geometry::element::line::size);
 
         opengl::Framebuffer default_fbo;
                             default_fbo.bind();
