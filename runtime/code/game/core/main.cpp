@@ -35,9 +35,9 @@
 #include "opengl/constants/shader_stage.hpp"
 #include "opengl/constants/texture.hpp"
 
-#include "geometry/gizmo.hpp"
-#include "geometry/primitive.hpp"
-#include "geometry/sprite.hpp"
+#include "../../../../modules/common/geometry/builder/gizmo.hpp"
+#include "geometry/primitives.hpp"
+#include "../../../../modules/common/geometry/builder/sprite.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
@@ -284,7 +284,7 @@ auto main() -> int32_t
     axis_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
-    auto [debug_vertices, debug_elements] = geometry::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
+    auto [debug_vertices, debug_elements] = geometry::primitives::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
 
     opengl::Buffer debug_vbo;
     debug_vbo.create();
