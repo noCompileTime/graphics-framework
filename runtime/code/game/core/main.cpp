@@ -35,9 +35,9 @@
 #include "opengl/constants/shader_stage.hpp"
 #include "opengl/constants/texture.hpp"
 
-#include "../../../../modules/common/geometry/builder/gizmo.hpp"
-#include "geometry/primitives.hpp"
-#include "../../../../modules/common/geometry/builder/sprite.hpp"
+#include "geometry/gizmo.hpp"
+#include "geometry/primitive.hpp"
+#include "geometry/sprite.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
@@ -283,8 +283,8 @@ auto main() -> int32_t
     axis_vao.attach({ 0, offsetof(geometry::vertex::basic, position), 3, opengl::constants::float_type });
     axis_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
 
-    //auto [debug_vertices, debug_elements] = core::Primitives::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
-    auto [debug_vertices, debug_elements] = geometry::primitives::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
+    //auto [debug_vertices, debug_elements] = core::Primitive::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
+    auto [debug_vertices, debug_elements] = geometry::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
 
     opengl::Buffer debug_vbo;
     debug_vbo.create();
@@ -520,7 +520,7 @@ auto main() -> int32_t
 
         debug_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size() * geometry::element::line::size);
+        opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size() * geometry::primitive::line::size);
 
         opengl::Framebuffer default_fbo;
                             default_fbo.bind();
@@ -542,7 +542,7 @@ auto main() -> int32_t
 
         view_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * geometry::element::triangle::size);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * geometry::primitive::triangle::size);
 
         logo_texture.bind(core::as_base(core::binding::texture::albedo));
 
@@ -552,7 +552,7 @@ auto main() -> int32_t
 
         logo_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * geometry::element::triangle::size);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * geometry::primitive::triangle::size);
 
         window_manager.context().update();
     }
