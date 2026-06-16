@@ -1,6 +1,5 @@
 #pragma once
 
-#include "math/mat4.hpp"
 #include "math/quat.hpp"
 #include "math/vec2.hpp"
 
@@ -13,7 +12,7 @@ namespace core
     {
     public:
         auto   roll(const math::vec2& direction) -> void;
-        auto update() -> void;
+        auto update(float delta_time) -> void;
 
         auto matrix() const -> const math::mat4&;
 

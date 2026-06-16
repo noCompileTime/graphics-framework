@@ -44,14 +44,14 @@ namespace core
         _animation_time    = 0.0f;
     }
 
-    auto Object::update() -> void
+    auto Object::update(const float delta_time) -> void
     {
         if (!_rolling)
         {
             return;
         }
 
-        _animation_time += Time::delta_time() * 2.0f;
+        _animation_time += delta_time * 2.0f;
 
         const auto t = std::clamp(_animation_time, 0.0f, 1.0f);
 

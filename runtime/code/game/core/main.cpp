@@ -473,7 +473,7 @@ auto main() -> int32_t
        window_manager.update();
         input_manager.update();
 
-        object.update();
+        object.update(time.delta_time());
 
         auto point = math::vec2 { static_cast<float>(mouse_x), static_cast<float>(mouse_y) };
 
