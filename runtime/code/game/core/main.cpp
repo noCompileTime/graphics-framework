@@ -43,8 +43,8 @@
 #include "models/obj_model.hpp"
 
 #include "math/mat4_inverse.hpp"
-#include "math/ray_utility.hpp"
 #include "math/ray_intersects.hpp"
+#include "math/ray_utility.hpp"
 
 #include "object.hpp"
 
