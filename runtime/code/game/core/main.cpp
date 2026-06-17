@@ -42,11 +42,11 @@
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
 
-#include "object.hpp"
-
 #include "math/mat4_inverse.hpp"
 #include "math/ray_utility.hpp"
 #include "math/ray_intersects.hpp"
+
+#include "object.hpp"
 
 auto main() -> int32_t
 {
