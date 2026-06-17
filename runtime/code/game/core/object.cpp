@@ -1,7 +1,5 @@
 #include "object.hpp"
 
-#include "core/time.hpp"
-
 #include "math/functions.hpp"
 
 namespace core
