@@ -44,68 +44,9 @@
 
 #include "object.hpp"
 
-#include "math/aabb.hpp"
-#include "math/functions.hpp"
 #include "math/mat4_inverse.hpp"
-#include "math/ray.hpp"
-
-// TODO make it more generic with the width and height (maybe viewport?)
-auto ray_to_world(const math::vec2& point, const int32_t window_width, const int32_t window_height, const core::data::camera& camera) noexcept
-{
-    const math::vec2 ndc
-    {
-               2.0f * point.x / static_cast<float>(window_width) - 1.0f,
-        1.0f - 2.0f * point.y / static_cast<float>(window_height)
-    };
-
-    const auto inverse_matrix = inverse(camera.projection * camera.view);
-
-    auto origin  = inverse_matrix * math::vec4 { ndc.x, ndc.y, -1.0f, 1.0f };
-    auto finish  = inverse_matrix * math::vec4 { ndc.x, ndc.y,  1.0f, 1.0f };
-
-         origin /= origin.w;
-         finish /= finish.w;
-
-    auto direction = static_cast<math::vec3>(finish - origin);
-         direction.normalize();
-
-    return math::ray
-    {
-        static_cast<math::vec3>(origin), direction
-    };
-}
-
-auto intersects(const math::ray& ray, const math::aabb& aabb) noexcept
-{
-    const math::vec3 inverse_direction
-    {
-        1.0f / ray.direction.x,
-        1.0f / ray.direction.y,
-        1.0f / ray.direction.z
-    };
-
-    const auto [x0, y0, z0] = (aabb.min - ray.origin) * inverse_direction;
-    const auto [x1, y1, z1] = (aabb.max - ray.origin) * inverse_direction;
-
-    const math::vec3 tmin
-    {
-        math::min(x0, x1),
-        math::min(y0, y1),
-        math::min(z0, z1)
-    };
-
-    const math::vec3 tmax
-    {
-        math::max(x0, x1),
-        math::max(y0, y1),
-        math::max(z0, z1)
-    };
-
-    const auto near = math::max(math::max(tmin.x, tmin.y), tmin.z); // TODO rename this?
-    const auto far  = math::min(math::min(tmax.x, tmax.y), tmax.z); // TODO rename this?
-
-    return far >= math::max(near, 0.0f);
-}
+#include "math/ray_utility.hpp"
+#include "math/ray_intersects.hpp"
 
 auto main() -> int32_t
 {
@@ -477,7 +418,7 @@ auto main() -> int32_t
 
         auto point = math::vec2 { static_cast<float>(mouse_x), static_cast<float>(mouse_y) };
 
-        if (const auto ray = ray_to_world(point, window_width, window_height, camera_data); intersects(ray, object_aabb))
+        if (const auto ray = math::ray_to_world(point, window_width, window_height, camera_data.view, camera_data.projection); intersects(ray, object_aabb))
         {
             // TODO do something
         }
