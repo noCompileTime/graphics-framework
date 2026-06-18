@@ -1,6 +1,6 @@
 #pragma once
 
-namespace tools
+namespace core
 {
     class ShaderConverter
     {
