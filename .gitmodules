@@ -10,6 +10,3 @@
 [submodule "modules/resources"]
     path = modules/resources
     url = https://github.com/noCompileTimes/resources-module.git
-[submodule "modules/tools"]
-	path = modules/tools
-	url = https://github.com/noCompileTimes/tools-module.git
