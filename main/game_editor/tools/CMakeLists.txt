@@ -1,5 +1,5 @@
 #=======================================================================================================================
-target_include_directories(${PROJECT_NAME} PRIVATE PUBLIC ..)
+target_precompile_headers(${PROJECT_NAME} PRIVATE headers.hpp)
 #=======================================================================================================================
- target_precompile_headers(${PROJECT_NAME} PRIVATE headers.hpp)
+           target_sources(${PROJECT_NAME} PRIVATE shader_converter.cpp)
 #=======================================================================================================================

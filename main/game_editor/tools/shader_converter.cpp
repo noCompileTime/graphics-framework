@@ -1,6 +1,6 @@
 #include "shader_converter.hpp"
 
-namespace core
+namespace tools
 {
     auto ShaderConverter::convert_each(const std::filesystem::path& input, const std::filesystem::path& output, const int32_t seconds) -> void
     {
