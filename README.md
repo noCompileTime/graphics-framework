@@ -14,7 +14,6 @@ Coming soon
 * [graphics](https://github.com/noCompileTimes/graphics-module)
 * [platforms](https://github.com/noCompileTimes/platforms-module)
 * [resources](https://github.com/noCompileTimes/resources-module)
-* [tools](https://github.com/noCompileTimes/tools-module)
 
 ## Reporting bugs
 
