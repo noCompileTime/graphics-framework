@@ -247,7 +247,7 @@ auto main() -> int32_t
     base_sampler.parameter(opengl::constants::min_filter, opengl::constants::nearest);
     base_sampler.parameter(opengl::constants::mag_filter, opengl::constants::nearest);
 
-    const auto logo_image = images::TgaImage::load("logo.tga");
+    const auto logo_image = images::TgaImage::load("textures/logo.tga");
 
     opengl::Texture logo_texture { opengl::constants::texture_2d };
     logo_texture.create();
@@ -271,7 +271,7 @@ auto main() -> int32_t
     logo_vao.attach({ 0, offsetof(geometry::vertex::sprite, position), 2, opengl::constants::float_type });
     logo_vao.attach({ 1, offsetof(geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
 
-    auto base_image = images::TgaImage::load("base_cube_albedo.tga");
+    auto base_image = images::TgaImage::load("textures/base_cube_albedo.tga");
 
     opengl::Texture base_texture { opengl::constants::texture_2d };
     base_texture.create();
