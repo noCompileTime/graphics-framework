@@ -293,7 +293,7 @@ auto main() -> int32_t
     game_view_fbo.complete();
 
     auto x_view_rotation = math::quat::rotation({ 1.0f, 0.0f, 0.0f }, math::radians(-45.0f));
-    auto y_view_rotation = math::quat::rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
+    //auto y_view_rotation = math::quat::rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
 
     math::vec3 camera_position { 0.0f, 0.0f, 5.0f };
 
@@ -307,12 +307,6 @@ auto main() -> int32_t
 
     core::data::camera view_camera_data;
     view_camera_data.projection.ortho(0.0f, static_cast<float>(window_width), static_cast<float>(window_height), 0.0f);
-
-    constexpr core::data::light light_data
-    {
-        { 1.0f,  1.0f, 1.0f }, 0.35f,
-        { 1.0f, -1.0f, 0.0f }
-    };
 
     opengl::Buffer light_ubo;
     light_ubo.create();
@@ -337,12 +331,6 @@ auto main() -> int32_t
     math::mat4 ground_transform { 1.0f };
 
     core::Object object;
-
-    constexpr math::aabb object_aabb
-    {
-        { -0.25f, -0.25f, -0.25f },
-        {  0.25f,  0.25f,  0.25f }
-    };
 
     input_manager.actions().assign(core::input::code::key_d, [&] noexcept
     {
@@ -409,16 +397,28 @@ auto main() -> int32_t
 
     while (window_active)
     {
-         time.tick();
+        time.tick();
 
        window_manager.update();
         input_manager.update();
+
+        constexpr math::aabb object_aabb
+        {
+            { -0.25f, -0.25f, -0.25f },
+            {  0.25f,  0.25f,  0.25f }
+        };
+
+        constexpr core::data::light light_data
+        {
+            { 1.0f,  1.0f, 1.0f }, 0.35f,
+            { 1.0f, -1.0f, 0.0f }
+        };
 
         object.update(time.delta_time());
 
         auto point = math::vec2 { static_cast<float>(mouse_x), static_cast<float>(mouse_y) };
 
-        if (const auto ray = math::ray_to_world(point, window_width, window_height, camera_data.view, camera_data.projection); intersects(ray, object_aabb))
+        if (const auto ray = ray_to_world(point, window_width, window_height, camera_data.view, camera_data.projection); intersects(ray, object_aabb))
         {
             // TODO do something
         }
