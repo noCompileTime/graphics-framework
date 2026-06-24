@@ -251,7 +251,7 @@ auto main() -> int32_t
 
     opengl::Texture logo_texture { opengl::constants::texture_2d };
     logo_texture.create();
-    logo_texture.storage(logo_image.width, logo_image.height, opengl::constants::rgba8, 1);
+    logo_texture.storage(logo_image.width, logo_image.height, opengl::constants::rgba8);
     logo_texture.upload(logo_image.width, logo_image.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_image.pixels);
 
     auto [logo_vertices, logo_elements] = geometry::Sprite::create({ { }, static_cast<float>(logo_image.width), static_cast<float>(logo_image.height) });
@@ -275,12 +275,12 @@ auto main() -> int32_t
 
     opengl::Texture base_texture { opengl::constants::texture_2d };
     base_texture.create();
-    base_texture.storage(base_image.width, base_image.height, opengl::constants::rgb8, 1);
+    base_texture.storage(base_image.width, base_image.height, opengl::constants::rgb8);
     base_texture.upload(base_image.width, base_image.height, opengl::constants::rgb, 0, opengl::constants::unsigned_byte, base_image.pixels);
 
     opengl::Texture game_view_texture { opengl::constants::texture_2d };
     game_view_texture.create();
-    game_view_texture.storage(view_width, view_height, opengl::constants::rgb8, 1);
+    game_view_texture.storage(view_width, view_height, opengl::constants::rgb8);
 
     opengl::Renderbuffer game_view_rbo;
     game_view_rbo.create();
