@@ -35,9 +35,9 @@
 #include "opengl/constants/shader_stage.hpp"
 #include "opengl/constants/texture.hpp"
 
-#include "geometry/gizmo.hpp"
-#include "geometry/primitive.hpp"
-#include "geometry/sprite.hpp"
+#include "mesh/gizmo.hpp"
+#include "mesh/primitive.hpp"
+#include "mesh/sprite.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
@@ -153,7 +153,7 @@ auto main() -> int32_t
     auto view_width  = static_cast<float>(window_width)  * view_scale;
     auto view_height = static_cast<float>(window_height) * view_scale;
 
-    auto [view_vertices, view_elements] = geometry::Sprite::create({ { }, view_width, view_height });
+    auto [view_vertices, view_elements] = mesh::Sprite::create({ { }, view_width, view_height });
 
     opengl::Buffer view_vbo;
     view_vbo.create();
@@ -165,10 +165,10 @@ auto main() -> int32_t
 
     opengl::VertexArray view_vao;
     view_vao.create();
-    view_vao.attach(view_vbo, sizeof(geometry::vertex::sprite));
+    view_vao.attach(view_vbo, sizeof(mesh::vertex::sprite));
     view_vao.attach(view_ebo);
-    view_vao.attach({ 0, offsetof(geometry::vertex::sprite, position), 2, opengl::constants::float_type });
-    view_vao.attach({ 1, offsetof(geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
+    view_vao.attach({ 0, offsetof(mesh::vertex::sprite, position), 2, opengl::constants::float_type });
+    view_vao.attach({ 1, offsetof(mesh::vertex::sprite, texcoord), 2, opengl::constants::float_type });
 
     auto [base_geometries] = models::ObjModel::load("base_scene_model.obj");
 
@@ -185,11 +185,11 @@ auto main() -> int32_t
 
     opengl::VertexArray cube_vao;
     cube_vao.create();
-    cube_vao.attach(cube_vbo, sizeof(geometry::vertex::model));
+    cube_vao.attach(cube_vbo, sizeof(mesh::vertex::model));
     cube_vao.attach(cube_ebo);
-    cube_vao.attach({ 0, offsetof(geometry::vertex::model, position), 3, opengl::constants::float_type });
-    cube_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
-    cube_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
+    cube_vao.attach({ 0, offsetof(mesh::vertex::model, position), 3, opengl::constants::float_type });
+    cube_vao.attach({ 1, offsetof(mesh::vertex::model,   normal), 3, opengl::constants::float_type });
+    cube_vao.attach({ 2, offsetof(mesh::vertex::model, texcoord), 2, opengl::constants::float_type });
 
     opengl::Buffer ground_vbo;
     ground_vbo.create();
@@ -201,13 +201,13 @@ auto main() -> int32_t
 
     opengl::VertexArray ground_vao;
     ground_vao.create();
-    ground_vao.attach(ground_vbo, sizeof(geometry::vertex::model));
+    ground_vao.attach(ground_vbo, sizeof(mesh::vertex::model));
     ground_vao.attach(ground_ebo);
-    ground_vao.attach({ 0, offsetof(geometry::vertex::model, position), 3, opengl::constants::float_type });
-    ground_vao.attach({ 1, offsetof(geometry::vertex::model,   normal), 3, opengl::constants::float_type });
-    ground_vao.attach({ 2, offsetof(geometry::vertex::model, texcoord), 2, opengl::constants::float_type });
+    ground_vao.attach({ 0, offsetof(mesh::vertex::model, position), 3, opengl::constants::float_type });
+    ground_vao.attach({ 1, offsetof(mesh::vertex::model,   normal), 3, opengl::constants::float_type });
+    ground_vao.attach({ 2, offsetof(mesh::vertex::model, texcoord), 2, opengl::constants::float_type });
 
-    auto [axis_vertices, axis_elements] = geometry::Gizmo::axis({ 10.0f, 10.0f, 10.0f });
+    auto [axis_vertices, axis_elements] = mesh::Gizmo::axis({ 10.0f, 10.0f, 10.0f });
 
     opengl::Buffer axis_vbo;
     axis_vbo.create();
@@ -219,13 +219,13 @@ auto main() -> int32_t
 
     opengl::VertexArray axis_vao;
     axis_vao.create();
-    axis_vao.attach(axis_vbo, sizeof(geometry::vertex::basic));
+    axis_vao.attach(axis_vbo, sizeof(mesh::vertex::basic));
     axis_vao.attach(axis_ebo);
-    axis_vao.attach({ 0, offsetof(geometry::vertex::basic, position), 3, opengl::constants::float_type });
-    axis_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
+    axis_vao.attach({ 0, offsetof(mesh::vertex::basic, position), 3, opengl::constants::float_type });
+    axis_vao.attach({ 1, offsetof(mesh::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     //auto [debug_vertices, debug_elements] = core::Primitive::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
-    auto [debug_vertices, debug_elements] = geometry::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
+    auto [debug_vertices, debug_elements] = mesh::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
 
     opengl::Buffer debug_vbo;
     debug_vbo.create();
@@ -237,10 +237,10 @@ auto main() -> int32_t
 
     opengl::VertexArray debug_vao;
     debug_vao.create();
-    debug_vao.attach(debug_vbo, sizeof(geometry::vertex::basic));
+    debug_vao.attach(debug_vbo, sizeof(mesh::vertex::basic));
     debug_vao.attach(debug_ebo);
-    debug_vao.attach({ 0, offsetof(geometry::vertex::basic, position), 3, opengl::constants::float_type });
-    debug_vao.attach({ 1, offsetof(geometry::vertex::basic,    extra), 3, opengl::constants::float_type });
+    debug_vao.attach({ 0, offsetof(mesh::vertex::basic, position), 3, opengl::constants::float_type });
+    debug_vao.attach({ 1, offsetof(mesh::vertex::basic,    extra), 3, opengl::constants::float_type });
 
     opengl::Sampler base_sampler;
     base_sampler.create();
@@ -254,7 +254,7 @@ auto main() -> int32_t
     logo_texture.storage(logo_image.width, logo_image.height, opengl::constants::rgba8);
     logo_texture.upload(logo_image.width, logo_image.height, opengl::constants::rgba, 0, opengl::constants::unsigned_byte, logo_image.pixels);
 
-    auto [logo_vertices, logo_elements] = geometry::Sprite::create({ { }, static_cast<float>(logo_image.width), static_cast<float>(logo_image.height) });
+    auto [logo_vertices, logo_elements] = mesh::Sprite::create({ { }, static_cast<float>(logo_image.width), static_cast<float>(logo_image.height) });
 
     opengl::Buffer logo_vbo;
     logo_vbo.create();
@@ -266,10 +266,10 @@ auto main() -> int32_t
 
     opengl::VertexArray logo_vao;
     logo_vao.create();
-    logo_vao.attach(logo_vbo, sizeof(geometry::vertex::sprite));
+    logo_vao.attach(logo_vbo, sizeof(mesh::vertex::sprite));
     logo_vao.attach(logo_ebo);
-    logo_vao.attach({ 0, offsetof(geometry::vertex::sprite, position), 2, opengl::constants::float_type });
-    logo_vao.attach({ 1, offsetof(geometry::vertex::sprite, texcoord), 2, opengl::constants::float_type });
+    logo_vao.attach({ 0, offsetof(mesh::vertex::sprite, position), 2, opengl::constants::float_type });
+    logo_vao.attach({ 1, offsetof(mesh::vertex::sprite, texcoord), 2, opengl::constants::float_type });
 
     auto base_image = images::TgaImage::load("textures/base_cube_albedo.tga");
 
@@ -461,7 +461,7 @@ auto main() -> int32_t
 
         debug_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::lines, 0, debug_elements.size() * geometry::primitive::line::size);
+        opengl::Commands::draw_elements(opengl::constants::lines, 0, mesh::primitive::line::size * debug_elements.size());
 
         opengl::Framebuffer default_fbo;
                             default_fbo.bind();
@@ -483,7 +483,7 @@ auto main() -> int32_t
 
         view_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, view_elements.size() * geometry::primitive::triangle::size);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, mesh::primitive::triangle::size * view_elements.size());
 
         logo_texture.bind(core::as_base(core::binding::texture::albedo));
 
@@ -493,7 +493,7 @@ auto main() -> int32_t
 
         logo_vao.bind();
 
-        opengl::Commands::draw_elements(opengl::constants::triangles, 0, logo_elements.size() * geometry::primitive::triangle::size);
+        opengl::Commands::draw_elements(opengl::constants::triangles, 0, mesh::primitive::triangle::size * logo_elements.size());
 
         window_manager.context().update();
     }
