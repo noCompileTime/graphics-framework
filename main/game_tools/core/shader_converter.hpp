@@ -2,7 +2,7 @@
 
 namespace core
 {
-    class ShaderConverter
+    class ShaderConverter // TODO remove the source, have just a header?
     {
     public:
         static auto convert_each(const std::filesystem::path& input, const std::filesystem::path& output, int32_t seconds) -> void;
