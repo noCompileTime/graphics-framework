@@ -33,7 +33,8 @@ namespace core
             if (const auto age = std::chrono::duration_cast<std::chrono::seconds>(now_time - last_time).count();
                            age < seconds || seconds == -1)
             {
-                const auto cmd = std::format("glslangvalidator -V -G -S {} -o {} {}", ext.substr(1), out.string(), input.generic_string());
+                const auto opt = "-Os"; // TODO someday try this with -O should give you better performance?
+                const auto cmd = std::format("glslangvalidator -V -G {} -S {} -o {} {}", opt, ext.substr(1), out.string(), input.generic_string());
                 const auto err = std::system(cmd.c_str());
 
                    assert(!err);
