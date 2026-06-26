@@ -427,7 +427,7 @@ auto main() -> int32_t
 
         opengl::Commands::viewport(0, 0, static_cast<int32_t>(view_width), static_cast<int32_t>(view_height));
 
-        game_view_fbo.clear(color, 0);
+        game_view_fbo.clear(color);
         game_view_fbo.clear(1.0f);
 
         opengl::Pipeline::enable(opengl::constants::depth_test);
