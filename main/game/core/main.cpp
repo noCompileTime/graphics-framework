@@ -35,16 +35,16 @@
 #include "opengl/constants/shader_stage.hpp"
 #include "opengl/constants/texture.hpp"
 
+#include "math/mat4_inverse.hpp"
+#include "math/ray_intersects.hpp"
+#include "math/ray_utility.hpp"
+
 #include "mesh/gizmo.hpp"
 #include "mesh/primitive.hpp"
 #include "mesh/sprite.hpp"
 
 #include "images/tga_image.hpp"
 #include "models/obj_model.hpp"
-
-#include "math/mat4_inverse.hpp"
-#include "math/ray_intersects.hpp"
-#include "math/ray_utility.hpp"
 
 #include "object.hpp"
 
@@ -224,7 +224,6 @@ auto main() -> int32_t
     axis_vao.attach({ 0, offsetof(mesh::vertex::basic, position), 3, opengl::constants::float_type });
     axis_vao.attach({ 1, offsetof(mesh::vertex::basic,    extra), 3, opengl::constants::float_type });
 
-    //auto [debug_vertices, debug_elements] = core::Primitive::create_bounding_sphere(32, 0.5f, { 1.0f, 1.0f, 1.0f });
     auto [debug_vertices, debug_elements] = mesh::Primitive::bounding_box({ 0.505f, 0.505f, 0.505f }, { 1.0f, 0.0f, 1.0f });
 
     opengl::Buffer debug_vbo;
@@ -292,12 +291,10 @@ auto main() -> int32_t
     game_view_fbo.attach(game_view_rbo, opengl::constants::depth_attachment);
     game_view_fbo.complete();
 
-    auto x_view_rotation = math::quat::rotation({ 1.0f, 0.0f, 0.0f }, math::radians(-45.0f));
-    //auto y_view_rotation = math::quat::rotation({ 0.0f, 1.0f, 0.0f }, math::radians(-45.0f));
-
     math::vec3 camera_position { 0.0f, 0.0f, 5.0f };
 
-    //auto view_matrix = (x_view_rotation * y_view_rotation).matrix();
+    auto x_view_rotation = math::quat::rotation({ 1.0f, 0.0f, 0.0f }, math::radians(-45.0f));
+
     auto view_matrix = static_cast<math::mat4>(x_view_rotation);
          view_matrix.translate(camera_position);
 
