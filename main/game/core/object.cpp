@@ -57,7 +57,7 @@ namespace core
 
         const math::vec3 axis
         {
-            _roll_direction.y, 0.0f,
+             _roll_direction.y, 0.0f,
             -_roll_direction.x
         };
 
